@@ -1,9 +1,10 @@
 import React from "react";
 
+// SHS module
 const SHS = () => {
   return (
     <>
-      <h2>HELLO</h2>
+      <h2>test</h2>
     </>
   );
 };
