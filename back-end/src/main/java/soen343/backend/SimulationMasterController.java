@@ -76,7 +76,7 @@ public class SimulationMasterController{
 	
 	public static void updateSecurityModule() {
 		//Call SecurityModuleModel or the controller?
-		if (SecurityModuleModel.isAwayMode())
+		while (SecurityModuleModel.isAwayMode())
 		{
 			//Check for intruders using sensors and motion detectors
 		}
@@ -93,5 +93,46 @@ public class SimulationMasterController{
 	
 	public static void updateLayoutModule() {
 		//Call LayoutModuleModel or the controller?
+	}
+	
+	public static boolean toggleLightInRoom(int xPos, int yPos, boolean lightOn) 
+	{
+		return false;
+	}
+	
+	public static boolean turnOnAllLights() {
+		return false;
+	}
+	
+	public static boolean turnOffAllLights() {
+		return false;
+	}
+	
+	public static boolean toggleWindowInRoom(int xPos, int yPos, boolean windowOpen) 
+	{
+		return false;
+	}
+	
+	public static boolean openAllWindows() {
+		return false;
+	}
+	
+	public static boolean closeAllWindows() {
+		return false;
+	}
+	
+	public static boolean toggleDoorInRoom(int xPos, int yPos, boolean doorOpen) {
+		//Use for door, backdoor, garage
+		return false;
+	}
+	
+	public static boolean openAllDoors() {
+		//Use for door, backdoor, garage
+		return false;
+	}
+	
+	public static boolean closeAllDoors() {
+		//Use for door, backdoor, garage
+		return false;
 	}
 }
