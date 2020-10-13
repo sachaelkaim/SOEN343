@@ -7,8 +7,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import soen343.backend.model.House;
-import soen343.backend.service.HouseService;
+import org.springframework.context.annotation.ComponentScan;
+import soen343.backend.house.House;
+import soen343.backend.house.HouseService;
 
 import java.io.IOException;
 import java.io.InputStream;

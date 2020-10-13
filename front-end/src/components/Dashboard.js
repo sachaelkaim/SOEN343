@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import SHS from "./SHS";
+import HouseLayout from "./HouseLayout";
 import Simulation from "./Simulation";
 
 // Dashboard contains the SHS/simulation profile/layout
@@ -41,7 +41,7 @@ const Dashboard = () => {
                     marginTop: "3rem",
                   }}
                 >
-                  Layout
+                 <HouseLayout />
                 </h4>
               </Col>
             </Row>

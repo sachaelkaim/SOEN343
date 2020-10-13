@@ -1,8 +1,7 @@
-package soen343.backend.service;
+package soen343.backend.house;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import soen343.backend.model.House;
-import soen343.backend.repository.HouseRepository;
 
 import java.util.List;
 
@@ -10,6 +9,7 @@ import java.util.List;
 @Service
 public class HouseService {
 
+    @Autowired
     private HouseRepository houseRepository;
 
     public HouseService(HouseRepository houseRepository) {

@@ -1,4 +1,4 @@
-package soen343.backend.model;
+package soen343.backend.house;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
