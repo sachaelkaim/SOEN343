@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import HouseLayout from "./HouseLayout";
 import Simulation from "./Simulation";
+import SHS from "./modules/SHS";
 
 // Dashboard contains the SHS/simulation profile/layout
 const Dashboard = () => {
@@ -22,16 +23,15 @@ const Dashboard = () => {
           <Col>
             <Row>
               <Col xs={12} md={12} lg={6}>
-                <h4
+                <div
                   style={{
                     border: "1px solid black",
                     height: "30rem",
-                    marginTop: "3rem",
-                    textAlign: "center",
+                    marginTop: "3rem"
                   }}
                 >
-                  Modules
-                </h4>
+                  <SHS />
+                </div>
               </Col>
               <Col xs={12} md={12} lg={6}>
                 <h4
