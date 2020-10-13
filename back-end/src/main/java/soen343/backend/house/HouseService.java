@@ -24,6 +24,4 @@ public class HouseService {
         houseRepository.saveAll(rooms);
     }
 
-
-
 }

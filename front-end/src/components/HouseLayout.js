@@ -1,5 +1,5 @@
 import React from "react";
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 // Fetch house layout
@@ -20,14 +20,17 @@ const HouseLayout = () => {
 
   return (
     <>
-    <div>
-      <ul>
-        {layout.map((l) => (
-          <li key={l.id}>Name: {l.name}<br/>Windows: {l.windows}<br/>Lights:{l.lights}</li>
-          
-        ))}
-      </ul>
-    </div>
+      {layout.map((item) => (
+        <ul key={item.name}>
+          <li>
+            Name: {item.name}
+            <br />
+            Windows: {item.windows}
+            <br />
+            Lights:{item.lights}
+          </li>
+        </ul>
+      ))}
     </>
   );
 };
