@@ -21,6 +21,7 @@ public class BackEndApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BackEndApplication.class, args);
 		new SimulationMasterController();
+		System.out.println("Simulation master controller running");
 	}
 
 	@Bean

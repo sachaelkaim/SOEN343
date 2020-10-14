@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
 public class SimulationMasterController{
 	//Static to be accessed anywhere
@@ -22,7 +24,6 @@ public class SimulationMasterController{
 		coreModel = new CoreModuleModel();
 		layoutModel = new LayoutModuleModel();
 		
-		setSimulationDateTime(LocalDateTime.now());
 		run();
 	}
 
@@ -58,12 +59,19 @@ public class SimulationMasterController{
 	{
 		return CoreModuleModel.getDate() + " " + CoreModuleModel.getTime();
 	}
-
+	
 	public static void setSimulationDateTime(LocalDateTime simulationDateTime) {
-		CoreModuleModel.setSimulationDateTime(simulationDateTime);
+		if (simulationDateTime != null) {
+			CoreModuleModel.setSimulationDateTime(simulationDateTime);
+		} else {
+			CoreModuleModel.setSimulationDateTime(LocalDateTime.now());
+		}
+		System.out.println("Time is "+getSimulationDateTimeString());
 	}
 	
 	public static void run() {
+		updateCoreModule();
+
 
 		while (getIsSimulationRunning()) 
 		{
