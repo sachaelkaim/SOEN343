@@ -7,6 +7,7 @@ import java.util.Iterator;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+@EnableScheduling
 public class SimulationMasterController{
 	//Static to be accessed anywhere
 	private static boolean isSimulationRunning;
@@ -25,6 +26,17 @@ public class SimulationMasterController{
 		layoutModel = new LayoutModuleModel();
 		
 		run();
+	}
+	
+	public static void run() {
+		setSimulationDateTime(LocalDateTime.now());
+		while (getIsSimulationRunning()) 
+		{
+			updateCoreModule();
+			updateHeatingModule();
+			updateSecurityModule();
+			updateLayoutModule();
+		}
 	}
 
 	public static boolean getIsSimulationRunning() {
@@ -69,16 +81,10 @@ public class SimulationMasterController{
 		System.out.println("Time is "+getSimulationDateTimeString());
 	}
 	
-	public static void run() {
-		updateCoreModule();
-
-
-		while (getIsSimulationRunning()) 
-		{
-			updateCoreModule();
-			updateHeatingModule();
-			updateSecurityModule();
-			updateLayoutModule();
+	public static void updateSimulationDateTime() {
+		if (CoreModuleModel.getSimulationDateTime() != null) {
+			CoreModuleModel.setSimulationDateTime(CoreModuleModel.getSimulationDateTime().plusSeconds(1));
+			System.out.println("Time is "+getSimulationDateTimeString());
 		}
 	}
 	
@@ -96,7 +102,6 @@ public class SimulationMasterController{
 	
 	public static void updateCoreModule() {
 		//Call CoreModuleModel or the controller?
-		setSimulationDateTime(LocalDateTime.now());
 	}
 	
 	public static void updateLayoutModule() {
