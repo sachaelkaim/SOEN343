@@ -10,7 +10,6 @@ const Dashboard = () => {
     <>
       <Container
         style={{
-          border: "1px solid black",
           borderRadius: "0.5rem",
           maxWidth: "90%",
           marginTop: "2%",

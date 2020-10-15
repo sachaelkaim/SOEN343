@@ -7,7 +7,7 @@ const HouseLayout = () => {
   const [layout, setLayout] = useState([]);
 
   useEffect(() => {
-    axios
+    axios 
       .get("http://localhost:8080/api/rooms")
       .then((res) => {
         console.log(res);
