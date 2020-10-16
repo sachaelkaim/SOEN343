@@ -11,8 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import soen343.backend.house.House;
-import soen343.backend.house.HouseService;
+import soen343.backend.room.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,16 +29,16 @@ public class BackEndApplication {
 	}
 
 	@Bean
-	CommandLineRunner runner(HouseService houseService) {
+	CommandLineRunner runner(RoomService roomService) {
 		return args -> {
 			// read JSON and load json
 			ObjectMapper mapper = new ObjectMapper();
-			TypeReference<List<House>> typeReference = new TypeReference<List<House>>() {
+			TypeReference<List<Room>> typeReference = new TypeReference<List<Room>>() {
 			};
 			InputStream inputStream = TypeReference.class.getResourceAsStream("/json/houseLayout.json");
 			try {
-				List<House> rooms = mapper.readValue(inputStream, typeReference);
-				houseService.save(rooms);
+				List<Room> rooms = mapper.readValue(inputStream, typeReference);
+				roomService.save(rooms);
 			} catch (IOException e) {
 				System.out.println("Unable to save house layout: " + e.getMessage());
 			}
