@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, DropdownButton, Dropdown } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { UserContext } from "../UserProvider";
@@ -9,32 +9,31 @@ const SHS = () => {
   const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState([]);
   const { currentUser, setCurrentUser } = useContext(UserContext);
-  const [userChosen, setUserChosen] = useState([])
+  const [userChosen, setUserChosen] = useState([]);
+  const [rooms, setRooms] = useState([]);
+  const [location, setLocation] = useState([]);
 
   // retrieve list of all profiles
   const getUsers = async () => {
     const response = await axios
       .get("http://localhost:8080/api/users")
       .catch((err) => console.log("Error", err));
-    console.log(response);
     if (response && response.data) setUsers(response.data);
   };
 
   useEffect(() => {
     getUsers();
+    getRooms();
   }, []);
 
   // get user login request info
   const logIn = async (e) => {
     e.preventDefault(); // prevent refresh on submit
     const id = formData.id;
-    console.log(id);
     const response = await axios
       .get(`http://localhost:8080/api/users/${id}`)
       .catch((err) => console.log("Error", err));
-    console.log(response);
     if (response && response.data) setCurrentUser(response.data);
-    console.log(response);
   };
 
   const handleChange = (e) => {
@@ -44,17 +43,17 @@ const SHS = () => {
   // add a profile
   const addUser = async () => {
     const response = await axios
-      .post("http://localhost:8080/api/users", {name: userChosen}, {
-        headers: {
-          'name': userChosen
+      .post(
+        "http://localhost:8080/api/users",
+        { name: userChosen },
+        {
+          headers: {
+            name: userChosen,
+          },
         }
-      })
+      )
       .catch((err) => console.log("Error", err));
     getUsers();
-  };
-
-  const handleChangeRadio = (e) => {
-    setUserChosen(e.value);
   };
 
   // delete a profile
@@ -62,8 +61,16 @@ const SHS = () => {
     const response = await axios
       .delete(`http://localhost:8080/api/users/${id}`)
       .catch((err) => console.log("Error", err));
-    console.log(id);
     if (response) getUsers();
+  };
+
+  // retrieve list of all rooms
+  const getRooms = async () => {
+    const response = await axios
+      .get("http://localhost:8080/api/rooms")
+      .catch((err) => console.log("Error", err));
+    console.log(response);
+    if (response && response.data) setRooms(response.data);
   };
 
   return (
@@ -119,59 +126,59 @@ const SHS = () => {
       </div>
       <br />
       <Form>
-        <div class="form-check form-check-inline">
+        <div className="form-check form-check-inline">
           <input
-            class="form-check-input"
+            className="form-check-input"
             type="radio"
             name="profile"
             value="parent"
-            onClick= {() => setUserChosen('parent')}
+            onClick={() => setUserChosen("parent")}
           />
-          <label class="form-check-label" for="inlineradio1">
-            parent
-          </label>
+          <label className="form-check-label">parent</label>
         </div>
-        <div class="form-check form-check-inline">
+        <div className="form-check form-check-inline">
           <input
-            class="form-check-input"
+            className="form-check-input"
             type="radio"
             name="profile"
             value="child"
-            onClick= {() => setUserChosen('child')}
+            onClick={() => setUserChosen("child")}
           />
-          <label class="form-check-label" for="inlineradio2">
-            child
-          </label>
+          <label className="form-check-label">child</label>
         </div>
-        <div class="form-check form-check-inline">
+        <div className="form-check form-check-inline">
           <input
-            class="form-check-input"
+            className="form-check-input"
             type="radio"
             name="profile"
             value="guest"
-            onClick= {() => setUserChosen('guest')}
+            onClick={() => setUserChosen("guest")}
           />
-          <label class="form-check-label" for="inlineradio3">
-            guest
-          </label>
+          <label className="form-check-label">guest</label>
         </div>
-        <div class="form-check form-check-inline">
+        <div className="form-check form-check-inline">
           <input
-            class="form-check-input"
+            className="form-check-input"
             type="radio"
             name="profile"
             value="stranger"
-            onClick= {() => setUserChosen('stranger')}
+            onClick={() => setUserChosen("stranger")}
           />
-          <label class="form-check-label" for="inlineradio3">
-            stranger
-          </label>
+          <label className="form-check-label">stranger</label>
         </div>
         <br />
       </Form>
       <Button variant="primary" size="sm" onClick={addUser}>
         Add Profile
       </Button>{" "}
+      <br /> <br />
+      <DropdownButton id="dropdown-basic-button" title="Set location" size="sm">
+        {rooms.map((item) => (
+          <div key={item.id}>
+            <Dropdown.Item value={item.name}>{item.name}</Dropdown.Item>
+          </div>
+        ))}
+      </DropdownButton>
     </>
   );
 };
