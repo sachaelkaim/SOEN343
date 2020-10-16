@@ -23,7 +23,7 @@ public class RoomController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/rooms/{id}")
-    public Optional<Room> getRoom(@PathVariable int id){
+    public Optional<Room> getRoom(@PathVariable String id){
         return roomService.getRoom(id);
     }
 
@@ -33,12 +33,12 @@ public class RoomController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/rooms/{id}")
-    public void editRoom(@RequestBody Room room, @PathVariable int id) {
+    public void editRoom(@RequestBody Room room, @PathVariable String id) {
         roomService.editRoom(id, room);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/rooms/{id}")
-    public void deleteRoom(@PathVariable int id) {
+    public void deleteRoom(@PathVariable String id) {
          roomService.deleteRoom(id);
     }
 }

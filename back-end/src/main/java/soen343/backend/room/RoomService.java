@@ -18,7 +18,7 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
-    public Optional<Room> getRoom(int id){
+    public Optional<Room> getRoom(String id){
         return roomRepository.findById(id);
     }
 
@@ -26,11 +26,11 @@ public class RoomService {
         roomRepository.save(room);
     }
 
-    public void editRoom(int id, Room room){
+    public void editRoom(String id, Room room){
         roomRepository.save(room);
     }
 
-    public void deleteRoom(int id){
+    public void deleteRoom(String id){
         roomRepository.deleteById(id);
     }
     
