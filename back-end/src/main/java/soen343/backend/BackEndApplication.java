@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import soen343.backend.house.House;
-import soen343.backend.house.HouseService;
+import soen343.backend.room.Room;
+import soen343.backend.room.RoomService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,18 +25,18 @@ public class BackEndApplication {
 	}
 
 	@Bean
-	CommandLineRunner runner(HouseService houseService) {
+	CommandLineRunner runner(RoomService roomService) {
 		return args -> {
 			// read JSON and load json
 			ObjectMapper mapper = new ObjectMapper();
-			TypeReference<List<House>> typeReference = new TypeReference<List<House>>() {
+			TypeReference<List<Room>> typeReference = new TypeReference<List<Room>>() {
 			};
 			InputStream inputStream = TypeReference.class.getResourceAsStream("/json/houseLayout.json");
 			try {
-				List<House> rooms = mapper.readValue(inputStream, typeReference);
-				houseService.save(rooms);
+				List<Room> rooms = mapper.readValue(inputStream, typeReference);
+				roomService.save(rooms);
 			} catch (IOException e) {
-				System.out.println("Unable to save house layout: " + e.getMessage());
+				System.out.println("Unable to save room layout: " + e.getMessage());
 			}
 		};
 	}
