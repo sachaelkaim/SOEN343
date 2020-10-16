@@ -4,13 +4,13 @@ import HouseLayout from "./HouseLayout";
 import Simulation from "./Simulation";
 import SHS from "./modules/SHS";
 
+
 // Dashboard contains the SHS/simulation profile/layout
 const Dashboard = () => {
   return (
     <>
       <Container
         style={{
-          border: "1px solid black",
           borderRadius: "0.5rem",
           maxWidth: "90%",
           marginTop: "2%",
