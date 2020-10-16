@@ -2,17 +2,37 @@
 [
     {
       "name": "Garage",
-      "windows": 0,
-      "lights": 1
+      "windowState": "CLOSED",
+      "doorState": "UNLOCKED", 
+      "lightOn": false,
+      "temperature": 23.00
     },
     {
       "name": "Kitchen",
-      "windows": 2,
-      "lights": 2
+      "windowState": "CLOSED",
+      "doorState": "UNLOCKED", 
+      "lightOn": false,
+      "temperature": 23.00
     },
     {
       "name": "Living Room",
-      "windows": 4,
-      "lights": 2
+      "windowState": "CLOSED",
+      "doorState": "UNLOCKED", 
+      "lightOn": false,
+      "temperature": 23.00
+    },
+    {
+      "name": "Bedroom 1",
+      "windowState": "CLOSED",
+      "doorState": "UNLOCKED", 
+      "lightOn": false,
+      "temperature": 23.00
+    },
+    {
+      "name": "Bedroom 2",
+      "windowState": "CLOSED",
+      "doorState": "UNLOCKED",
+      "lightOn": false,
+      "temperature": 23.00
     }
 ]
