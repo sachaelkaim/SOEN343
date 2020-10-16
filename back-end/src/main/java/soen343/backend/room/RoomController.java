@@ -22,9 +22,9 @@ public class RoomController {
         return roomService.getAllRooms();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/rooms/{id}")
-    public Optional<Room> getRoom(@PathVariable String id){
-        return roomService.getRoom(id);
+    @RequestMapping(method = RequestMethod.GET, value = "/rooms/{name}")
+    public Optional<Room> getRoom(@PathVariable String name){
+        return roomService.getRoom(name);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/rooms")
@@ -32,13 +32,13 @@ public class RoomController {
         roomService.addRoom(room);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/rooms/{id}")
-    public void editRoom(@RequestBody Room room, @PathVariable String id) {
-        roomService.editRoom(id, room);
+    @RequestMapping(method = RequestMethod.PUT, value = "/rooms/{name}")
+    public void editRoom(@RequestBody Room room, @PathVariable String name) {
+        roomService.editRoom(name, room);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/rooms/{id}")
-    public void deleteRoom(@PathVariable String id) {
-         roomService.deleteRoom(id);
+    @RequestMapping(method = RequestMethod.DELETE, value = "/rooms/{name}")
+    public void deleteRoom(@PathVariable String name) {
+         roomService.deleteRoom(name);
     }
 }
