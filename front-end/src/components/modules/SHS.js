@@ -1,31 +1,40 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import {UserContext} from '../UserProvider';
+
 
 // SHS module
 const SHS = () => {
-  const [profile, setProfile] = useState([]);
+  const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState([]);
-
+  const {currentUser, setCurrentUser} =  useContext(UserContext)
+ 
   // retrieve list of all profiles
-  const getprofiles = async () => {
+  const getUsers = async () => {
     const response = await axios
       .get("http://localhost:8080/api/users")
       .catch((err) => console.log("Error", err));
-    if (response && response.data) setProfile(response.data);
+      console.log(response);
+    if (response && response.data) setUsers(response.data);
   };
 
   useEffect(() => {
-    getprofiles();
+    getUsers();
   }, []);
 
    // get user login request info
-   const logIn = async () => {
-    const id = formData
+   const logIn = async (e) => {
+    e.preventDefault();  // prevent refresh on submit
+    const id = formData.id
+    console.log(id);
     const response = await axios
       .get(`http://localhost:8080/api/users/${id}`)
       .catch((err) => console.log("Error", err));
+      console.log(response);
+      if(response && response.data) setCurrentUser(response.data);
+      console.log(response);
     ;
   };
 
@@ -34,7 +43,7 @@ const SHS = () => {
   }
 
   // add a profile
-  const addProfile = async () => {
+  const addUser = async () => {
     const response = await axios
       .post("http://localhost:8080/api/users", {
         id: "4",
@@ -43,17 +52,17 @@ const SHS = () => {
         priority: "0",
       })
       .catch((err) => console.log("Error", err));
-      getprofiles();
+      getUsers();
   };
 
   // delete a profile
-  const deleteProfile = async (id) => {
+  const deleteUser = async (id) => {
     const response = await axios
       .delete(`http://localhost:8080/api/users/${id}`)
       .catch((err) => console.log("Error", err));
       console.log(id);
     if (response)
-      getprofiles();
+      getUsers();
   };
 
   
@@ -78,7 +87,7 @@ const SHS = () => {
           borderBottom: "1px solid black",
         }}
       >
-        {profile.map((item) => (
+        {users.map((item) => (
           <div key={item.id}>
             <span style={{ fontWeight: "600" }}>ID= </span>
             {item.id}
@@ -90,7 +99,7 @@ const SHS = () => {
             {item.priority}
             &nbsp;
             <Button variant="light" size="sm" style={{ fontSize: "10px" }} 
-           onClick={ () => deleteProfile(item.id)}
+           onClick={ () => deleteUser(item.id)}
             >
               Delete
             </Button>{" "}
@@ -148,10 +157,9 @@ const SHS = () => {
         </div>
         <br />
       </Form>
-      <Button variant="primary" size="sm" onClick={addProfile}>
+      <Button variant="primary" size="sm" onClick={addUser}>
         Add Profile
       </Button>{" "}
-     
     </>
   );
 };

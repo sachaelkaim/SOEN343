@@ -4,6 +4,7 @@ import HouseLayout from "./HouseLayout";
 import Simulation from "./Simulation";
 import SHS from "./modules/SHS";
 
+
 // Dashboard contains the SHS/simulation profile/layout
 const Dashboard = () => {
   return (
