@@ -15,17 +15,17 @@ public class UserService {
 
     @Bean
     public void addBaseUsers(){
-        userRepository.save(new User("1", "parent", "outside", "0"));
-        userRepository.save(new User("2", "child", "outside", "1"));
-        userRepository.save(new User("3", "guest", "outside", "2"));
-        userRepository.save(new User("4", "stranger", "outside", "3"));
+        userRepository.save(new User( "parent", "outside", "0"));
+        userRepository.save(new User( "child", "outside", "1"));
+        userRepository.save(new User( "guest", "outside", "2"));
+        userRepository.save(new User( "stranger", "outside", "3"));
     }
 
     public Iterable<User> getAllUsers(){
         return userRepository.findAll();
     }
 
-    public User getUser(String id){
+    public User getUser(Long id){
         return userRepository.findById(id).orElse(null);
     }
 
@@ -33,14 +33,28 @@ public class UserService {
         userRepository.save(user);
     }
 
-    // if the header is .. addparent
+    public void addParent(){
+        userRepository.save(new User( "parent", "outside", "0"));
+    }
 
+    public void addChildren(){
+        userRepository.save(new User( "child", "outside", "1"));
+    }
+
+
+    public void addGuest(){
+        userRepository.save(new User( "guest", "outside", "2"));
+    }
+
+    public void addStranger(){
+        userRepository.save(new User( "stranger", "outside", "3"));
+    }
 
     public void editUser(String id, User user){
         userRepository.save(user);
     }
 
-    public void deleteUser(String id){
+    public void deleteUser(Long id){
         userRepository.deleteById(id);
     }
 

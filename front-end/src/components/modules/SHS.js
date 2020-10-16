@@ -2,21 +2,21 @@ import React, { useContext } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {UserContext} from '../UserProvider';
-
+import { UserContext } from "../UserProvider";
 
 // SHS module
 const SHS = () => {
   const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState([]);
-  const {currentUser, setCurrentUser} =  useContext(UserContext)
- 
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const [userChosen, setUserChosen] = useState([])
+
   // retrieve list of all profiles
   const getUsers = async () => {
     const response = await axios
       .get("http://localhost:8080/api/users")
       .catch((err) => console.log("Error", err));
-      console.log(response);
+    console.log(response);
     if (response && response.data) setUsers(response.data);
   };
 
@@ -24,35 +24,37 @@ const SHS = () => {
     getUsers();
   }, []);
 
-   // get user login request info
-   const logIn = async (e) => {
-    e.preventDefault();  // prevent refresh on submit
-    const id = formData.id
+  // get user login request info
+  const logIn = async (e) => {
+    e.preventDefault(); // prevent refresh on submit
+    const id = formData.id;
     console.log(id);
     const response = await axios
       .get(`http://localhost:8080/api/users/${id}`)
       .catch((err) => console.log("Error", err));
-      console.log(response);
-      if(response && response.data) setCurrentUser(response.data);
-      console.log(response);
-    ;
+    console.log(response);
+    if (response && response.data) setCurrentUser(response.data);
+    console.log(response);
   };
 
   const handleChange = (e) => {
-      setFormData({...formData, [e.target.name]: e.target.value});
-  }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   // add a profile
   const addUser = async () => {
     const response = await axios
-      .post("http://localhost:8080/api/users", {
-        id: "4",
-        name: "parent",
-        location: "outside",
-        priority: "0",
+      .post("http://localhost:8080/api/users", {name: userChosen}, {
+        headers: {
+          'name': userChosen
+        }
       })
       .catch((err) => console.log("Error", err));
-      getUsers();
+    getUsers();
+  };
+
+  const handleChangeRadio = (e) => {
+    setUserChosen(e.value);
   };
 
   // delete a profile
@@ -60,18 +62,21 @@ const SHS = () => {
     const response = await axios
       .delete(`http://localhost:8080/api/users/${id}`)
       .catch((err) => console.log("Error", err));
-      console.log(id);
-    if (response)
-      getUsers();
+    console.log(id);
+    if (response) getUsers();
   };
 
-  
   return (
     <>
-
       <Form onSubmit={logIn}>
         <Form.Group controlId="formBasicPassword">
-          <input name="id" type="text" placeholder="Enter ID" style={{width:"20%"}} onChange={handleChange}/>
+          <input
+            name="id"
+            type="text"
+            placeholder="Enter ID"
+            style={{ width: "20%" }}
+            onChange={handleChange}
+          />
         </Form.Group>
         <Button variant="primary" type="submit">
           Log in
@@ -95,11 +100,14 @@ const SHS = () => {
             {item.name}
             <span style={{ fontWeight: "600" }}> Location=</span>{" "}
             {item.location}
-            <span style={{ fontWeight: "600" }}> Priority=</span>
-            {item.priority}
+            <span style={{ fontWeight: "600" }}> Privilege=</span>
+            {item.privilege}
             &nbsp;
-            <Button variant="light" size="sm" style={{ fontSize: "10px" }} 
-           onClick={ () => deleteUser(item.id)}
+            <Button
+              variant="light"
+              size="sm"
+              style={{ fontSize: "10px" }}
+              onClick={() => deleteUser(item.id)}
             >
               Delete
             </Button>{" "}
@@ -116,7 +124,8 @@ const SHS = () => {
             class="form-check-input"
             type="radio"
             name="profile"
-            value="option1"
+            value="parent"
+            onClick= {() => setUserChosen('parent')}
           />
           <label class="form-check-label" for="inlineradio1">
             parent
@@ -127,7 +136,8 @@ const SHS = () => {
             class="form-check-input"
             type="radio"
             name="profile"
-            value="option2"
+            value="child"
+            onClick= {() => setUserChosen('child')}
           />
           <label class="form-check-label" for="inlineradio2">
             child
@@ -138,7 +148,8 @@ const SHS = () => {
             class="form-check-input"
             type="radio"
             name="profile"
-            value="option3"
+            value="guest"
+            onClick= {() => setUserChosen('guest')}
           />
           <label class="form-check-label" for="inlineradio3">
             guest
@@ -149,7 +160,8 @@ const SHS = () => {
             class="form-check-input"
             type="radio"
             name="profile"
-            value="option3"
+            value="stranger"
+            onClick= {() => setUserChosen('stranger')}
           />
           <label class="form-check-label" for="inlineradio3">
             stranger

@@ -1,33 +1,36 @@
 package soen343.backend.user;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class User {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String name;
     private String location;
-    private String priority; // 0 parent, 1 child, 2 guest, 3 strangers
+    private String privilege; // 0 parent, 1 child, 2 guest, 3 strangers
 
     public User() {
     }
 
-    public User(String id, String name, String location, String priority) {
+    public User( String name, String location, String privilege) {
         super();
-        this.id = id;
+
         this.name = name;
         this.location = location;
-        this.priority = priority;
+        this.privilege = privilege;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -47,12 +50,12 @@ public class User {
         this.location = location;
     }
 
-    public String getPriority() {
-        return priority;
+    public String getPrivilege() {
+        return privilege;
     }
 
-    public void setPriority(String priority) {
-        this.priority = priority;
+    public void setPrivilege(String privilege) {
+        this.privilege = privilege;
     }
 
 }

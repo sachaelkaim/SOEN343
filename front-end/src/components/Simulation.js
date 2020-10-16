@@ -3,11 +3,11 @@ import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import { Button, Image, Container } from "react-bootstrap";
 import profileImage from "../images/profile.png";
 import SHS from "./modules/SHS";
-import {UserContext} from './UserProvider';
+import { UserContext } from "./UserProvider";
 
 // Simulation to turn on/off simulation, edit user, display time/date/location
 const Simulation = () => {
-  const {currentUser} =  useContext(UserContext)
+  const { currentUser } = useContext(UserContext);
 
   return (
     <>
@@ -22,7 +22,7 @@ const Simulation = () => {
       >
         <h4>Simulation</h4>
         <br />
-        <BootstrapSwitchButton checked={false} width={100}  />
+        <BootstrapSwitchButton checked={false} width={100} />
         <br />
         <br />
         <Button variant="secondary" size="sm">
@@ -42,25 +42,34 @@ const Simulation = () => {
         />
         <br />
         <br />
-        
+
         <div>
-      {currentUser
-        ? 
-        <div>
-          <div style={{ fontWeight: "600", textDecoration: "underline" }}>ID</div>
-         {currentUser.id}
-         <br/><br/>
-         <div style={{ fontWeight: "600", textDecoration: "underline"}}>User</div>
-         {currentUser.name}
-         <br/><br/>
-         <div style={{ fontWeight: "600" ,textDecoration: "underline"}}>Location</div>
-         {currentUser.location}
-         <br/><br/>
-         &nbsp;
-         </div>
-        : <div></div>
-      }
-    </div>
+          {currentUser ? (
+            <div>
+              <div style={{ fontWeight: "600", textDecoration: "underline" }}>
+                ID
+              </div>
+              {currentUser.id}
+              <br />
+              <br />
+              <div style={{ fontWeight: "600", textDecoration: "underline" }}>
+                User
+              </div>
+              {currentUser.name}
+              <br />
+              <br />
+              <div style={{ fontWeight: "600", textDecoration: "underline" }}>
+                Location
+              </div>
+              {currentUser.location}
+              <br />
+              <br />
+              &nbsp;
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
       </Container>
     </>
   );
