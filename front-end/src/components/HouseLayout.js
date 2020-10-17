@@ -6,6 +6,7 @@ import axios from "axios";
 // Fetch house layout
 const HouseLayout = () => {
   const [layout, setLayout] = useState([]);
+  const [room, setRoom] = useState([]);
 
   useEffect(() => {
     axios 
@@ -39,9 +40,44 @@ const HouseLayout = () => {
     getRooms();
   };
 
-  //update window of room
+  //foreach async
+  async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+  }
+
+
+  async function updateRooms(){
+    fetch('http://localhost:8080/api/rooms')
+.then(function(response){ return response.json(); })
+.then(function(data) {
+    const items = data;
+    console.log(items)
+    items.forEach(element => {
+      element["windowState"] = "edited"
+    });
+    console.log("new edited:")
+    console.log(items)
+})
+}
+
+  //update window of room (async version)
   const editRooms = async () => {
-    console.log(getRooms());
+    asyncForEach(new Array(getRooms().data), async (element)=>{
+      console.log(element)
+    });
+    // getRooms().data.foreach(element =>{
+    //   const response = await axios.put(`http://localhost:8080/api/rooms/${element.name}`,
+    //   {
+    //     "name": element.name,
+    //     "windowState": element.windowState,
+    //     "doorState": element.windowState,
+    //     "lightOn": true,
+    //     "temperature": 100.00
+    //   })
+    // });
+    console.log("HEY");
   };
 
   return (
@@ -57,7 +93,7 @@ const HouseLayout = () => {
           </li>
         </ul>
       ))}
-      <Button variant="primary" size="sm" onClick={editRooms}>
+      <Button variant="primary" size="sm" onClick={updateRooms}>
         Edit All Rooms
       </Button>{" "}
     </>
