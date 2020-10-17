@@ -39,6 +39,11 @@ const HouseLayout = () => {
     getRooms();
   };
 
+  //update window of room
+  const editRooms = async () => {
+    console.log(getRooms());
+  };
+
   return (
     <>
       {layout.map((item) => (
@@ -52,8 +57,8 @@ const HouseLayout = () => {
           </li>
         </ul>
       ))}
-      <Button variant="primary" size="sm" onClick={addRoom}>
-        Add Room
+      <Button variant="primary" size="sm" onClick={editRooms}>
+        Edit All Rooms
       </Button>{" "}
     </>
   );
