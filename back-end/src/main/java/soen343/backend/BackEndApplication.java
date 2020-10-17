@@ -16,6 +16,9 @@ import soen343.backend.room.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.TimeZone;
+
+import javax.annotation.PostConstruct;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @EnableScheduling
@@ -44,11 +47,16 @@ public class BackEndApplication {
 			}
 		};
 	}
-	
-	//@Scheduled(fixedRate = 1000)
-	//public static void updateSimulationDateTime() {
-	//	SimulationMasterController.updateSimulationDateTime();
-	//}
-	
-	
+
+	@PostConstruct
+	public void init() {
+		// Setting Spring Boot SetTimeZone
+		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+	}
+
+	// @Scheduled(fixedRate = 1000)
+	// public static void updateSimulationDateTime() {
+	// SimulationMasterController.updateSimulationDateTime();
+	// }
+
 }
