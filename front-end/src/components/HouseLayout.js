@@ -23,11 +23,11 @@ const HouseLayout = () => {
       {layout.map((item) => (
         <ul key={item.name}>
           <li>
-            Name: {item.name}
+            Name: {item.windowState}
             <br />
-            Windows: {item.windows}
+            Windows: {item.doorState}
             <br />
-            Lights:{item.lights}
+            Lights:{item.lightOn}
           </li>
         </ul>
       ))}

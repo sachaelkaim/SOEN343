@@ -11,8 +11,8 @@ const SHS = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const [userChosen, setUserChosen] = useState([]);
   const [rooms, setRooms] = useState([]);
-  const [location, setLocation] = useState([]);
-
+  const [newLocation, setNewLocation] = useState('');
+  
   // retrieve list of all profiles
   const getUsers = async () => {
     const response = await axios
@@ -72,6 +72,38 @@ const SHS = () => {
     console.log(response);
     if (response && response.data) setRooms(response.data);
   };
+
+  // change logged User Location
+  const changeUserLocation = async (e) => {
+    handleSelect(e);
+    const response = await axios
+      .put(`http://localhost:8080/api/users/${currentUser.id}` , { id: currentUser.id, name: currentUser.name, location: newLocation, privilege: currentUser.privilege })
+      .catch((err) => console.log("Error", err));
+   getUsers();
+   updateSimulationProfile();
+  };
+
+   // update simulation profile
+   const updateSimulationProfile = async () => {
+    const id = formData.id;
+    const response = await axios
+      .get(`http://localhost:8080/api/users/${id}`)
+      .catch((err) => console.log("Error", err));
+    if (response && response.data) setCurrentUser(response.data);
+  };
+
+  useEffect(() => {
+    console.log(newLocation)
+  }, [newLocation]);
+
+  const handleSelect=(e)=>{
+    console.log(e);
+    setNewLocation(e)
+    console.log(newLocation)
+   
+    
+    
+  }
 
   return (
     <>
@@ -172,13 +204,14 @@ const SHS = () => {
         Add Profile
       </Button>{" "}
       <br /> <br />
-      <DropdownButton id="dropdown-basic-button" title="Set location" size="sm">
+      <DropdownButton id="dropdown-basic-button" title="Set location" size="sm" onSelect={changeUserLocation}>
         {rooms.map((item) => (
           <div key={item.id}>
-            <Dropdown.Item value={item.name}>{item.name}</Dropdown.Item>
+            <Dropdown.Item eventKey={item.name} >{item.name}</Dropdown.Item>
           </div>
         ))}
       </DropdownButton>
+
     </>
   );
 };
