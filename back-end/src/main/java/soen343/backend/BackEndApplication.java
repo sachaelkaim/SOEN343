@@ -45,10 +45,10 @@ public class BackEndApplication {
 		};
 	}
 	
-	@Scheduled(fixedRate = 1000)
-	public static void updateSimulationDateTime() {
-		SimulationMasterController.updateSimulationDateTime();
-	}
+	//@Scheduled(fixedRate = 1000)
+	//public static void updateSimulationDateTime() {
+	//	SimulationMasterController.updateSimulationDateTime();
+	//}
 	
 	
 }

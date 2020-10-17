@@ -14,13 +14,18 @@ public class Room {
     private String name;
     private WindowState windowState;
     private DoorState doorState;
-    private boolean lightOn = true;
+    private boolean lightOn;
     private double temperature;
     
     
 
     public Room() {
 		super();
+		this.name = "Default Room";
+		this.windowState = WindowState.CLOSED;
+		this.doorState = DoorState.LOCKED;
+		this.lightOn = true;
+		this.temperature = 0.00;
 	}
 
 	public Room(int id, String name, WindowState windowState, DoorState doorState, boolean lightOn, double temperature) {
