@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import { Button, Image, Container } from "react-bootstrap";
 import profileImage from "../images/profile.png";
@@ -72,7 +72,11 @@ const Simulation = () => {
             <div></div>
           )}
         </div>
-        <div style={{fontWeight:"600"}}>Outside Temperature. <span style={{color:"blue"}}> {layout.temperature}</span></div>
+        <div style={{fontWeight:"600"}}>Outside Temperature. <span style={{color:"blue"}}> {layout.map((item) => (
+        <span key={item.name}>
+          <span style={{ fontSize:"14px", width:"100px", height:"100px",    textAlign: "center",}}>{item.name == "Outside" && item.temperature}</span>
+        </span>
+      ))} </span></div>
       </Container>
     </>
   );
