@@ -74,7 +74,7 @@ const Simulation = () => {
         </div>
         <div style={{fontWeight:"600"}}>Outside Temperature. <span style={{color:"blue"}}> {layout.map((item) => (
         <span key={item.name}>
-          <span style={{ fontSize:"14px", width:"100px", height:"100px",    textAlign: "center",}}>{item.name == "Outside" && item.temperature}</span>
+          <span style={{ fontSize:"14px", width:"100px", height:"100px",    textAlign: "center",}}>{item.name == "Outside" && item.temperature + "C"}</span>
         </span>
       ))} </span></div>
       </Container>

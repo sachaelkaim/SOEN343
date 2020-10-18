@@ -3,6 +3,7 @@ import { Button, Form, DropdownButton, Dropdown } from "react-bootstrap";
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { UserContext } from "../UserProvider";
+import { LayoutContext} from "../LayoutProvider";
 
 // SHS module
 const SHS = () => {
@@ -13,6 +14,7 @@ const SHS = () => {
   const [rooms, setRooms] = useState([]);
   const [newLocation, setNewLocation] = useState("");
   const [tempCurrent, setTempCurrent] = useState([]);
+  const {layout, setLayout} = useContext(LayoutContext);
 
   // retrieve list of all profiles
   const getUsers = async () => {
@@ -122,7 +124,7 @@ const SHS = () => {
             onChange={handleChange}
           />
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" size="sm" type="submit">
           Log in
         </Button>
       </Form>
@@ -222,6 +224,25 @@ const SHS = () => {
           </div>
         ))}
       </DropdownButton>
+      <br/>
+      <span style={{fontWeight:"600"}}>Outside Temperature</span>
+      <div>
+      <Form onSubmit={logIn}>
+        <Form.Group controlId="formBasicPassword" style={{display:"inline"}}>
+          <input
+            name="id"
+            type="number"
+            placeholder="Value"
+            style={{width:"20%"}}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        &nbsp;
+        <Button variant="primary" size="sm" type="submit" style={{display:"inline"}}>
+          Apply 
+        </Button>
+      </Form>
+      </div>
     </>
   );
 };
