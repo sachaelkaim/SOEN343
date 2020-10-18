@@ -3,6 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { UserContext } from "../UserProvider";
+import { RoomContext } from "./RoomProvider";
 
 // SHS module
 const SHS = () => {
