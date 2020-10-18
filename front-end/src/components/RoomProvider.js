@@ -2,7 +2,7 @@ import React, { useState, createContext } from "react";
 
 export const RoomContext = createContext();
 
-// this is how we will share the current logged in user with other components
+// this is how we will share the room info with other components
 const RoomProvider = (props) => {
   const [room, setRoom] = useState();
   

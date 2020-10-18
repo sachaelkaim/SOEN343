@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import axios from "axios";
+//import { RoomContext } from "./RoomProvider";
 
 // Fetch house layout
 const HouseLayout = () => {
   const [layout, setLayout] = useState([]);
-  const [room, setRoom] = useState([]);
+  //const [room, setRoom] = useState([]);
 
   useEffect(() => {
     axios 
@@ -81,11 +82,9 @@ const HouseLayout = () => {
   };
 
   //update Door(async version)
-  async function updateDoorState(name, currentState) {
-    console.log("from updateDoorState, the name and id are ")
-    const response = await axios
-      .put(`http://localhost:8080/api/rooms/${name}` , {doorState: "DoorState.LOCKED" })
-      .catch((err) => console.log("Error", err));
+  const updateDoorState =  async (name, currentState) =>{
+    // console.log("from updateDoorState, the name and id are ");
+    // getRooms();
   };
 
   return (

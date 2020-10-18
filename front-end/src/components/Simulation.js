@@ -4,12 +4,12 @@ import { Button, Image, Container } from "react-bootstrap";
 import profileImage from "../images/profile.png";
 import SHS from "./modules/SHS";
 import { UserContext } from "./UserProvider";
-import { RoomContext } from "./RoomProvider";
+//import { RoomContext } from "./RoomProvider";
 
 // Simulation to turn on/off simulation, edit user, display time/date/location
 const Simulation = () => {
   const { currentUser } = useContext(UserContext);
-  const { room } = useContext(RoomContext);
+  //const { room } = useContext(RoomContext);
 
   return (
     <>
