@@ -41,7 +41,6 @@ public class UserController {
         }
     }
 
-
     @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}")
     public void editUser(@RequestBody User user, @PathVariable String id) {
         userService.editUser(id, user);

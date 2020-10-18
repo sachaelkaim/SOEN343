@@ -86,7 +86,7 @@ const HouseLayout = () => {
     // console.log("from updateDoorState, the name and id are ");
     // getRooms();
   };
-
+  
   return (
     <>
       {layout.map((item) => (
