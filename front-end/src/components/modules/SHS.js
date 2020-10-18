@@ -8,7 +8,7 @@ import { UserContext } from "../UserProvider";
 const SHS = () => {
   const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState([]);
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const {currentUser, setCurrentUser} = useContext(UserContext);
   const [userChosen, setUserChosen] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [newLocation, setNewLocation] = useState("");
@@ -21,7 +21,6 @@ const SHS = () => {
       .get("http://localhost:8080/api/users")
       .catch((err) => console.log("Error", err));
     if (response && response.data) setUsers(response.data);
-    console.log(users);
   };
 
   useEffect(() => {
@@ -37,7 +36,6 @@ const SHS = () => {
       .get(`http://localhost:8080/api/users/${id}`)
       .catch((err) => console.log("Error", err));
     if (response && response.data) setCurrentUser(response.data);
-    console.log(currentUser);
     getUsers();
   };
 
@@ -74,7 +72,6 @@ const SHS = () => {
     const response = await axios
       .get("http://localhost:8080/api/rooms")
       .catch((err) => console.log("Error", err));
-    console.log(response);
     if (response && response.data) setRooms(response.data);
   };
 
@@ -89,8 +86,6 @@ const SHS = () => {
       return console.log("bad");
     }
     const putNewLocation = async () => {
-      console.log(newLocation);
-      console.log(tempCurrent);
       const response = await axios
         .put(`http://localhost:8080/api/users/${tempCurrent.id}`, {
           id: tempCurrent.id,
@@ -222,6 +217,7 @@ const SHS = () => {
       >
         {rooms.map((item) => (
           <div key={item.id}>
+            <Dropdown.Item eventKey={item.outside}>{item.outside}</Dropdown.Item>
             <Dropdown.Item eventKey={item.name}>{item.name}</Dropdown.Item>
           </div>
         ))}

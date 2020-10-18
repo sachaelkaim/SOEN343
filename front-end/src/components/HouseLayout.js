@@ -1,10 +1,12 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useContext } from "react";
+import { useEffect } from "react";
 import axios from "axios";
+import { LayoutContext } from "./LayoutProvider";
+
 
 // Fetch house layout
 const HouseLayout = () => {
-  const [layout, setLayout] = useState([]);
+  const {layout, setLayout} = useContext(LayoutContext);
 
   useEffect(() => {
     axios 
@@ -21,15 +23,9 @@ const HouseLayout = () => {
   return (
     <>
       {layout.map((item) => (
-        <ul key={item.name}>
-          <li>
-            Name: {item.windowState}
-            <br />
-            Windows: {item.doorState}
-            <br />
-            Lights:{item.lightOn}
-          </li>
-        </ul>
+        <div key={item.name}>
+          <div style={{border:"1px solid black", fontSize:"14px", width:"100px", height:"100px",    textAlign: "center",}}>{item.name}</div>
+        </div>
       ))}
     </>
   );

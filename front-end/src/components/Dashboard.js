@@ -34,7 +34,7 @@ const Dashboard = () => {
                 </div>
               </Col>
               <Col xs={12} md={12} lg={6}>
-                <h4
+                <div
                   style={{
                     border: "1px solid black",
                     height: "30rem",
@@ -42,7 +42,7 @@ const Dashboard = () => {
                   }}
                 >
                  <HouseLayout />
-                </h4>
+                </div>
               </Col>
             </Row>
             <Row>
@@ -54,7 +54,6 @@ const Dashboard = () => {
                     marginTop: "1rem",
                   }}
                 >
-                  Console
                 </h4>
               </Col>
             </Row>
