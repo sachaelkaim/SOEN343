@@ -1,6 +1,9 @@
 
 [
     {
+      "name": "Outside"
+    },
+    {
       "name": "Garage",
       "windowState": "CLOSED",
       "doorState": "UNLOCKED", 

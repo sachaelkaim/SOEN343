@@ -8,7 +8,7 @@ import { UserContext } from "./UserProvider";
 // Simulation to turn on/off simulation, edit user, display time/date/location
 const Simulation = () => {
   const { currentUser } = useContext(UserContext);
-
+  console.log(currentUser)
   return (
     <>
       <Container

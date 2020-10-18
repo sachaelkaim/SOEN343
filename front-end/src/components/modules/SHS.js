@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Button, Form, DropdownButton, Dropdown } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { UserContext } from "../UserProvider";
 
@@ -11,14 +11,17 @@ const SHS = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const [userChosen, setUserChosen] = useState([]);
   const [rooms, setRooms] = useState([]);
-  const [newLocation, setNewLocation] = useState('');
-  
+  const [newLocation, setNewLocation] = useState("");
+  const [tempCurrent, setTempCurrent] = useState([]);
+
   // retrieve list of all profiles
   const getUsers = async () => {
+    console.log("IM in get users");
     const response = await axios
       .get("http://localhost:8080/api/users")
       .catch((err) => console.log("Error", err));
     if (response && response.data) setUsers(response.data);
+    console.log(users);
   };
 
   useEffect(() => {
@@ -34,6 +37,8 @@ const SHS = () => {
       .get(`http://localhost:8080/api/users/${id}`)
       .catch((err) => console.log("Error", err));
     if (response && response.data) setCurrentUser(response.data);
+    console.log(currentUser);
+    getUsers();
   };
 
   const handleChange = (e) => {
@@ -73,37 +78,42 @@ const SHS = () => {
     if (response && response.data) setRooms(response.data);
   };
 
-  // change logged User Location
-  const changeUserLocation = async (e) => {
-    handleSelect(e);
-    const response = await axios
-      .put(`http://localhost:8080/api/users/${currentUser.id}` , { id: currentUser.id, name: currentUser.name, location: newLocation, privilege: currentUser.privilege })
-      .catch((err) => console.log("Error", err));
-   getUsers();
-   updateSimulationProfile();
+  const handleSelect = (e) => {
+    setNewLocation(e);
+    setTempCurrent(currentUser);
   };
 
-   // update simulation profile
-   const updateSimulationProfile = async () => {
+  // when selecting a new location from the dropdown, will trigger use effect
+  useEffect(() => {
+    if (tempCurrent == "") {
+      return console.log("bad");
+    }
+    const putNewLocation = async () => {
+      console.log(newLocation);
+      console.log(tempCurrent);
+      const response = await axios
+        .put(`http://localhost:8080/api/users/${tempCurrent.id}`, {
+          id: tempCurrent.id,
+          name: tempCurrent.name,
+          location: newLocation,
+          privilege: tempCurrent.privilege,
+        })
+        .catch((err) => console.log("Error", err));
+      Update();
+    };
+    putNewLocation();
+  }, [newLocation, tempCurrent]);
+
+  // update info after changing location
+  const Update = async () => {
     const id = formData.id;
     const response = await axios
       .get(`http://localhost:8080/api/users/${id}`)
       .catch((err) => console.log("Error", err));
     if (response && response.data) setCurrentUser(response.data);
+    console.log(currentUser);
+    getUsers();
   };
-
-  useEffect(() => {
-    console.log(newLocation)
-  }, [newLocation]);
-
-  const handleSelect=(e)=>{
-    console.log(e);
-    setNewLocation(e)
-    console.log(newLocation)
-   
-    
-    
-  }
 
   return (
     <>
@@ -204,14 +214,18 @@ const SHS = () => {
         Add Profile
       </Button>{" "}
       <br /> <br />
-      <DropdownButton id="dropdown-basic-button" title="Set location" size="sm" onSelect={changeUserLocation}>
+      <DropdownButton
+        id="dropdown-basic-button"
+        title="Set location"
+        size="sm"
+        onSelect={handleSelect}
+      >
         {rooms.map((item) => (
           <div key={item.id}>
-            <Dropdown.Item eventKey={item.name} >{item.name}</Dropdown.Item>
+            <Dropdown.Item eventKey={item.name}>{item.name}</Dropdown.Item>
           </div>
         ))}
       </DropdownButton>
-
     </>
   );
 };
