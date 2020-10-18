@@ -82,11 +82,14 @@ const HouseLayout = () => {
   };
 
   //update Door(async version)
-  const updateDoorState =  async (name, currentState) =>{
-    // console.log("from updateDoorState, the name and id are ");
+  const updateDoorState = async (roomName) => {
+    console.log();
+    const response = await axios
+      .put(`http://localhost:8080/api/users/${layout[roomName]}` , { name: layout[roomName].name, windowState: layout[roomName].windowState, doorState: "LOCKED", lightOn: layout[roomName].lightOn, temperature: 0.00 })
+      .catch((err) => console.log("Error", err)).then(console.log(`from updateDoorState, the name and id are ${roomName}`));
     // getRooms();
   };
-  
+
   return (
     <>
       {layout.map((item) => (
@@ -98,8 +101,8 @@ const HouseLayout = () => {
             <li>Lights:{item.lightOn}</li>
             <li>Temperature:{item.temperature}</li>
             <li>
-              <Button variant="primary" size="sm" onClick={updateDoorState(item.name, item.doorState)}>
-                Edit All Rooms
+              <Button variant="primary" size="sm" onClick={updateDoorState(item.name)}>
+                Edit doorState
               </Button>{" "}
             </li>
           </li>
