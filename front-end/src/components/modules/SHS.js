@@ -191,7 +191,10 @@ const SHS = () => {
       </div>
       <br />
       <Form>
-        <div style={{display:"inline"}}>
+      <Button variant="primary" size="sm" onClick={addUser}>
+        Add Profile
+      </Button>{" "}
+        <div>
         <div className="form-check form-check-inline">
           <input
             className="form-check-input"
@@ -232,9 +235,6 @@ const SHS = () => {
           />
           <label className="form-check-label">stranger</label>
         </div>
-        <Button variant="primary" size="sm" style={{display:"inline"}} onClick={addUser}>
-        Add Profile
-      </Button>{" "}
         </div>
       </Form>
       <br />

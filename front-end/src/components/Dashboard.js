@@ -32,12 +32,13 @@ const Dashboard = () => {
                   <SHS />
                 </div>
               </Col>
-              <Col xs={12} md={12} lg={6}>
+              <Col xs={12} md={12} lg={6} >
                 <div
                   style={{
                     border: "1px solid black",
                     height: "30rem",
                     marginTop: "3rem",
+                    overflowY: "scroll"
                   }}
                 >
                   <HouseLayout />
