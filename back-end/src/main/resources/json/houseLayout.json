@@ -1,7 +1,8 @@
 
 [
     {
-      "name": "Outside"
+      "name": "Outside",
+      "temperature": 23.00
     },
     {
       "name": "Garage",

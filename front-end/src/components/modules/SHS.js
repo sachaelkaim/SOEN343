@@ -3,6 +3,7 @@ import { Button, Form, DropdownButton, Dropdown } from "react-bootstrap";
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { UserContext } from "../UserProvider";
+import { LayoutContext } from "../LayoutProvider";
 
 // SHS module
 const SHS = () => {
@@ -10,9 +11,10 @@ const SHS = () => {
   const [formData, setFormData] = useState([]);
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const [userChosen, setUserChosen] = useState([]);
-  const [rooms, setRooms] = useState([]);
   const [newLocation, setNewLocation] = useState("");
   const [tempCurrent, setTempCurrent] = useState([]);
+  const { layout, setLayout } = useContext(LayoutContext);
+  const [newTemperature, setNewTemperature] = useState([]);
 
   // retrieve list of all profiles
   const getUsers = async () => {
@@ -21,7 +23,6 @@ const SHS = () => {
       .get("http://localhost:8080/api/users")
       .catch((err) => console.log("Error", err));
     if (response && response.data) setUsers(response.data);
-    console.log(users);
   };
 
   useEffect(() => {
@@ -37,10 +38,10 @@ const SHS = () => {
       .get(`http://localhost:8080/api/users/${id}`)
       .catch((err) => console.log("Error", err));
     if (response && response.data) setCurrentUser(response.data);
-    console.log(currentUser);
     getUsers();
   };
 
+  //login form handle change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -74,8 +75,8 @@ const SHS = () => {
     const response = await axios
       .get("http://localhost:8080/api/rooms")
       .catch((err) => console.log("Error", err));
-    console.log(response);
-    if (response && response.data) setRooms(response.data);
+    if (response && response.data) setLayout(response.data);
+    console.log(response.data);
   };
 
   const handleSelect = (e) => {
@@ -85,12 +86,10 @@ const SHS = () => {
 
   // when selecting a new location from the dropdown, will trigger use effect
   useEffect(() => {
-    if (tempCurrent == "") {
+    if (tempCurrent == undefined || tempCurrent == "") {
       return console.log("bad");
     }
     const putNewLocation = async () => {
-      console.log(newLocation);
-      console.log(tempCurrent);
       const response = await axios
         .put(`http://localhost:8080/api/users/${tempCurrent.id}`, {
           id: tempCurrent.id,
@@ -115,6 +114,25 @@ const SHS = () => {
     getUsers();
   };
 
+  // retrieve temperature info
+  const handleChange1 = (e) => {
+    setNewTemperature({ ...newTemperature, [e.target.name]: e.target.value });
+  };
+
+  // update temperature
+  const updateTemperature = async () => {
+    const response = await axios
+      .put("http://localhost:8080/api/rooms/Outside", {
+        name: "Outside",
+        WindowState: null,
+        DoorState: null,
+        LightOn: false,
+        temperature: newTemperature.id,
+      })
+      .catch((err) => console.log("Error", err));
+    getRooms();
+  };
+
   return (
     <>
       <Form onSubmit={logIn}>
@@ -127,7 +145,7 @@ const SHS = () => {
             onChange={handleChange}
           />
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" size="sm" type="submit">
           Log in
         </Button>
       </Form>
@@ -220,12 +238,40 @@ const SHS = () => {
         size="sm"
         onSelect={handleSelect}
       >
-        {rooms.map((item) => (
+        {layout.map((item) => (
           <div key={item.id}>
             <Dropdown.Item eventKey={item.name}>{item.name}</Dropdown.Item>
           </div>
         ))}
       </DropdownButton>
+      <br />
+      <span style={{ fontWeight: "600" }}>Outside Temperature</span>
+      <div>
+        <Form onSubmit={logIn}>
+          <Form.Group
+            controlId="formBasicPassword"
+            style={{ display: "inline" }}
+          >
+            <input
+              name="id"
+              type="number"
+              placeholder="Value"
+              style={{ width: "20%" }}
+              onChange={handleChange1}
+            />
+          </Form.Group>
+          &nbsp;
+          <Button
+            variant="primary"
+            size="sm"
+            type="submit"
+            style={{ display: "inline" }}
+            onClick={updateTemperature}
+          >
+            Apply
+          </Button>
+        </Form>
+      </div>
     </>
   );
 };

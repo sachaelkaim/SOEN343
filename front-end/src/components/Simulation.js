@@ -1,14 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import { Button, Image, Container } from "react-bootstrap";
 import profileImage from "../images/profile.png";
-import SHS from "./modules/SHS";
 import { UserContext } from "./UserProvider";
+import { LayoutContext} from "./LayoutProvider";
 
 // Simulation to turn on/off simulation, edit user, display time/date/location
 const Simulation = () => {
   const { currentUser } = useContext(UserContext);
-  console.log(currentUser)
+  const {layout, setLayout} = useContext(LayoutContext);
+
+
   return (
     <>
       <Container
@@ -70,6 +72,11 @@ const Simulation = () => {
             <div></div>
           )}
         </div>
+        <div style={{fontWeight:"600"}}>Outside Temperature. <span style={{color:"blue"}}> {layout.map((item) => (
+        <span key={item.name}>
+          <span style={{ fontSize:"14px", width:"100px", height:"100px",    textAlign: "center",}}>{item.name == "Outside" && item.temperature + "C"}</span>
+        </span>
+      ))} </span></div>
       </Container>
     </>
   );
