@@ -1,15 +1,17 @@
 import React, { useContext } from "react";
 import { Button, Form, DropdownButton, Dropdown } from "react-bootstrap";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { UserContext } from "../UserProvider";
 import { LayoutContext } from "../LayoutProvider";
+import { AllUsersContext } from "../AllUsersProvider";
 
 // SHS module
 const SHS = () => {
-  const [users, setUsers] = useState([]);
+
   const [formData, setFormData] = useState([]);
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { currentUser, setCurrentUser } = useContext(UserContext); // import userProvider usestate, you can call these in any file, and everything will update/render together.
+  const {users, setUsers} = useContext(AllUsersContext);
   const [userChosen, setUserChosen] = useState([]);
   const [newLocation, setNewLocation] = useState("");
   const [tempCurrent, setTempCurrent] = useState([]);
@@ -76,7 +78,6 @@ const SHS = () => {
       .get("http://localhost:8080/api/rooms")
       .catch((err) => console.log("Error", err));
     if (response && response.data) setLayout(response.data);
-    console.log(response.data);
   };
 
   const handleSelect = (e) => {
@@ -120,7 +121,8 @@ const SHS = () => {
   };
 
   // update temperature
-  const updateTemperature = async () => {
+  const updateTemperature = async (e) => {
+    e.preventDefault(); 
     const response = await axios
       .put("http://localhost:8080/api/rooms/Outside", {
         name: "Outside",
@@ -135,19 +137,26 @@ const SHS = () => {
 
   return (
     <>
-      <Form onSubmit={logIn}>
+    <div style={{textAlign:"center"}}>
+      <Form onSubmit={logIn} >
         <Form.Group controlId="formBasicPassword">
           <input
             name="id"
             type="text"
             placeholder="Enter ID"
-            style={{ width: "20%" }}
+            style={{ width: "20%", display: "inline", marginTop:"0px" }}
             onChange={handleChange}
           />
+         
         </Form.Group>
-        <Button variant="primary" size="sm" type="submit">
-          Log in
-        </Button>
+        <Button
+            variant="primary"
+            size=""
+            type="submit"
+           
+          >
+            Log in
+          </Button>
       </Form>
       <br />
       <div
@@ -160,14 +169,16 @@ const SHS = () => {
         }}
       >
         {users.map((item) => (
-          <div key={item.id}>
-            <span style={{ fontWeight: "600" }}>ID= </span>
-            {item.id}
-            <span style={{ fontWeight: "600" }}> Name= </span>
+          <div key={item.id} style={{fontSize:"17px", fontWeight:"600"}}>
+            <span style={{ fontWeight: "600", color:"blue", fontStyle:"italic" }}>ID {item.id}</span>
+            
+            <span> Name: </span>
             {item.name}
-            <span style={{ fontWeight: "600" }}> Location=</span>{" "}
+            &nbsp;
+            <span > Location:</span>{" "}
             {item.location}
-            <span style={{ fontWeight: "600" }}> Privilege=</span>
+            &nbsp;
+            <span s> Privilege:</span>
             {item.privilege}
             &nbsp;
             <Button
@@ -184,8 +195,11 @@ const SHS = () => {
           </div>
         ))}
       </div>
-      <br />
       <Form>
+      <Button variant="primary" size="sm" onClick={addUser}>
+        Add Profile
+      </Button>{" "}
+        <div style={{fontWeight:"500"}}>
         <div className="form-check form-check-inline">
           <input
             className="form-check-input"
@@ -226,12 +240,9 @@ const SHS = () => {
           />
           <label className="form-check-label">stranger</label>
         </div>
-        <br />
+        </div>
       </Form>
-      <Button variant="primary" size="sm" onClick={addUser}>
-        Add Profile
-      </Button>{" "}
-      <br /> <br />
+      <br />
       <DropdownButton
         id="dropdown-basic-button"
         title="Set location"
@@ -244,12 +255,11 @@ const SHS = () => {
           </div>
         ))}
       </DropdownButton>
-      <br />
+   
       <span style={{ fontWeight: "600" }}>Outside Temperature</span>
       <div>
-        <Form onSubmit={logIn}>
+        <Form>
           <Form.Group
-            controlId="formBasicPassword"
             style={{ display: "inline" }}
           >
             <input
@@ -271,6 +281,7 @@ const SHS = () => {
             Apply
           </Button>
         </Form>
+      </div>
       </div>
     </>
   );
