@@ -86,7 +86,7 @@ const SHS = () => {
 
   // when selecting a new location from the dropdown, will trigger use effect
   useEffect(() => {
-    if (tempCurrent == "") {
+    if (tempCurrent == undefined || tempCurrent == "") {
       return console.log("bad");
     }
     const putNewLocation = async () => {
