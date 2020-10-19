@@ -4,7 +4,6 @@ import HouseLayout from "./HouseLayout";
 import Simulation from "./Simulation";
 import SHS from "./modules/SHS";
 
-
 // Dashboard contains the SHS/simulation profile/layout
 const Dashboard = () => {
   return (
@@ -27,7 +26,7 @@ const Dashboard = () => {
                   style={{
                     border: "1px solid black",
                     height: "30rem",
-                    marginTop: "3rem"
+                    marginTop: "3rem",
                   }}
                 >
                   <SHS />
@@ -41,7 +40,7 @@ const Dashboard = () => {
                     marginTop: "3rem",
                   }}
                 >
-                 <HouseLayout />
+                  <HouseLayout />
                 </div>
               </Col>
             </Row>
@@ -53,8 +52,7 @@ const Dashboard = () => {
                     height: "11rem",
                     marginTop: "1rem",
                   }}
-                >
-                </h4>
+                ></h4>
               </Col>
             </Row>
           </Col>
