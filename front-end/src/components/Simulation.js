@@ -7,6 +7,7 @@ import {
   Modal,
   DropdownButton,
   Dropdown,
+  Navbar
 } from "react-bootstrap";
 import profileImage from "../images/profile.png";
 import { UserContext } from "./UserProvider";
@@ -70,8 +71,10 @@ const Simulation = () => {
           textAlign: "center",
         }}
       >
-        <h4>Simulation</h4>
-        <br />
+          <Navbar bg="light" >
+    <Navbar.Brand href="#home" style={{marginLeft:"20%",  color:'black', fontWeight:"600"}}>Smart Home Simulator</Navbar.Brand>
+  </Navbar>
+  <br/>
         <BootstrapSwitchButton checked={false} width={100} />
         <br />
         <br />

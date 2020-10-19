@@ -10,7 +10,7 @@ import { AllUsersContext } from "../AllUsersProvider";
 const SHS = () => {
 
   const [formData, setFormData] = useState([]);
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { currentUser, setCurrentUser } = useContext(UserContext); // import userProvider usestate, you can call these in any file, and everything will update/render together.
   const {users, setUsers} = useContext(AllUsersContext);
   const [userChosen, setUserChosen] = useState([]);
   const [newLocation, setNewLocation] = useState("");
@@ -78,7 +78,6 @@ const SHS = () => {
       .get("http://localhost:8080/api/rooms")
       .catch((err) => console.log("Error", err));
     if (response && response.data) setLayout(response.data);
-    console.log(response.data);
   };
 
   const handleSelect = (e) => {
@@ -138,66 +137,33 @@ const SHS = () => {
 
   return (
     <>
-      <Form onSubmit={logIn} style={{ display: "inline" }}>
+    <div style={{textAlign:"center"}}>
+      <Form onSubmit={logIn} >
         <Form.Group controlId="formBasicPassword">
           <input
             name="id"
             type="text"
             placeholder="Enter ID"
-            style={{ width: "20%", display: "inline" }}
+            style={{ width: "20%", display: "inline", marginTop:"30px" }}
             onChange={handleChange}
           />
-          &nbsp;
-          <Button
+         
+        </Form.Group>
+        <Button
             variant="primary"
-            size="sm"
+            size="md"
             type="submit"
-            style={{ display: "inline" }}
+           
           >
             Log in
           </Button>
-        </Form.Group>
       </Form>
-      <div
-        style={{
-          fontSize: "12px",
-          overflowY: "scroll",
-          height: "150px",
-          borderTop: "1px solid black",
-          borderBottom: "1px solid black",
-        }}
-      >
-        {users.map((item) => (
-          <div key={item.id} style={{fontSize:"15px"}}>
-            <span style={{ fontWeight: "600" }}>ID= </span>
-            {item.id}
-            <span style={{ fontWeight: "600" }}> Name= </span>
-            {item.name}
-            <span style={{ fontWeight: "600" }}> Location=</span>{" "}
-            {item.location}
-            <span style={{ fontWeight: "600" }}> Privilege=</span>
-            {item.privilege}
-            &nbsp;
-            <Button
-              variant="light"
-              size="sm"
-              style={{ fontSize: "10px" }}
-              onClick={() => deleteUser(item.id)}
-            >
-              Delete
-            </Button>{" "}
-            <Button variant="light" size="sm" style={{ fontSize: "10px" }}>
-              Edit
-            </Button>
-          </div>
-        ))}
-      </div>
       <br />
       <Form>
       <Button variant="primary" size="sm" onClick={addUser}>
         Add Profile
       </Button>{" "}
-        <div>
+        <div style={{fontWeight:"500"}}>
         <div className="form-check form-check-inline">
           <input
             className="form-check-input"
@@ -279,6 +245,43 @@ const SHS = () => {
             Apply
           </Button>
         </Form>
+      </div>
+      <div
+        style={{
+          fontSize: "12px",
+          overflowY: "scroll",
+          height: "150px",
+          borderTop: "1px solid black",
+          borderBottom: "1px solid black",
+        }}
+      >
+        {users.map((item) => (
+          <div key={item.id} style={{fontSize:"17px", fontWeight:"600"}}>
+            <span style={{ fontWeight: "600", color:"blue", fontStyle:"italic" }}>ID {item.id}</span>
+            
+            <span> Name: </span>
+            {item.name}
+            &nbsp;
+            <span > Location:</span>{" "}
+            {item.location}
+            &nbsp;
+            <span s> Privilege:</span>
+            {item.privilege}
+            &nbsp;
+            <Button
+              variant="light"
+              size="sm"
+              style={{ fontSize: "10px" }}
+              onClick={() => deleteUser(item.id)}
+            >
+              Delete
+            </Button>{" "}
+            <Button variant="light" size="sm" style={{ fontSize: "10px" }}>
+              Edit
+            </Button>
+          </div>
+        ))}
+      </div>
       </div>
     </>
   );

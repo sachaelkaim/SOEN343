@@ -12,10 +12,8 @@ const Dashboard = () => {
     <AllUsersProvider>
       <Container
         style={{
-          borderRadius: "0.5rem",
           maxWidth: "90%",
-          marginTop: "2%",
-
+          marginTop: "2%"
         }}
       >
         <Row>
