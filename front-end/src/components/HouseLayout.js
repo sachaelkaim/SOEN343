@@ -50,8 +50,8 @@ const HouseLayout = () => {
           </div>
              ))}
              <br/>
-            {room.name !== "Outside" && <img src={door}  style={{height:"12px", width:"50px", marginTop:"30px"}}></img>}
-            {room.name == "Outside" && <img src={door}  style={{height:"12px", width:"50px", marginTop:"30px", opacity:"0%"}}></img>}
+            {room.name !== "Outside" && <img src={door}  style={{height:"12px", width:"50px", marginTop:"28px"}}></img>}
+            {room.name == "Outside" && <img src={door}  style={{height:"12px", width:"50px", marginTop:"28px", opacity:"0%"}}></img>}
          
      
           </div>

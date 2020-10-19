@@ -1,47 +1,63 @@
 import React, { useContext, useEffect, useState } from "react";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
-import { Button, Image, Container, Modal } from "react-bootstrap";
+import {
+  Button,
+  Image,
+  Container,
+  Modal,
+  DropdownButton,
+  Dropdown,
+} from "react-bootstrap";
 import profileImage from "../images/profile.png";
 import { UserContext } from "./UserProvider";
 import { LayoutContext } from "./LayoutProvider";
-
-const EditModal = (props) => {
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Settings
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <h4>Place house inhabitants in specific rooms, or outside home</h4>
-        <p>
-          --------------
-        </p>
-      </Modal.Body>
-      <Modal.Body>
-        <h4>Block windows movement</h4>
-        <p>
-          ---------------
-        </p>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
-      </Modal.Footer>
-    </Modal>
-  );
-};
 
 // Simulation to turn on/off simulation, edit user, display time/date/location
 const Simulation = () => {
   const { currentUser } = useContext(UserContext);
   const { layout, setLayout } = useContext(LayoutContext);
   const [modalShow, setModalShow] = React.useState(false);
+
+  // edit popup
+  const EditModal = (props) => {
+    return (
+      <Modal
+        {...props}
+        size="md"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">Edit</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>Place house inhabitants in specific rooms, or outside home</h4>
+          <p>--------------</p>
+        </Modal.Body>
+        <Modal.Body>
+          <h4>Block windows movement</h4>
+          <DropdownButton
+            id="dropdown-basic-button"
+            title="Set location"
+            size="sm"
+          >
+            {layout.map((item) => (
+              <div key={item.id}>
+                {item.name !== "Outside" && (
+                  <Dropdown.Item eventKey={item.name}>
+                    {item.name} Window
+                  </Dropdown.Item>
+                )}
+              </div>
+            ))}
+          </DropdownButton>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.onHide}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  };
 
   return (
     <>
@@ -59,7 +75,11 @@ const Simulation = () => {
         <BootstrapSwitchButton checked={false} width={100} />
         <br />
         <br />
-        <Button variant="secondary" size="sm" onClick={() => setModalShow(true)}>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => setModalShow(true)}
+        >
           Edit
         </Button>
         <EditModal show={modalShow} onHide={() => setModalShow(false)} />

@@ -122,7 +122,8 @@ const SHS = () => {
   };
 
   // update temperature
-  const updateTemperature = async () => {
+  const updateTemperature = async (e) => {
+    e.preventDefault(); 
     const response = await axios
       .put("http://localhost:8080/api/rooms/Outside", {
         name: "Outside",
@@ -255,9 +256,8 @@ const SHS = () => {
       <br />
       <span style={{ fontWeight: "600" }}>Outside Temperature</span>
       <div>
-        <Form onSubmit={logIn}>
+        <Form>
           <Form.Group
-            controlId="formBasicPassword"
             style={{ display: "inline" }}
           >
             <input
