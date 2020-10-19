@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { LayoutContext } from "./LayoutProvider";
-import { Button, Form, DropdownButton, Dropdown } from "react-bootstrap";
 
 // Fetch house layout
 const HouseLayout = () => {

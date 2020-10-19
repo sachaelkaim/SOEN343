@@ -135,21 +135,26 @@ const SHS = () => {
 
   return (
     <>
-      <Form onSubmit={logIn}>
+      <Form onSubmit={logIn} style={{ display: "inline" }}>
         <Form.Group controlId="formBasicPassword">
           <input
             name="id"
             type="text"
             placeholder="Enter ID"
-            style={{ width: "20%" }}
+            style={{ width: "20%", display: "inline" }}
             onChange={handleChange}
           />
+          &nbsp;
+          <Button
+            variant="primary"
+            size="sm"
+            type="submit"
+            style={{ display: "inline" }}
+          >
+            Log in
+          </Button>
         </Form.Group>
-        <Button variant="primary" size="sm" type="submit">
-          Log in
-        </Button>
       </Form>
-      <br />
       <div
         style={{
           fontSize: "12px",
@@ -186,6 +191,7 @@ const SHS = () => {
       </div>
       <br />
       <Form>
+        <div style={{display:"inline"}}>
         <div className="form-check form-check-inline">
           <input
             className="form-check-input"
@@ -226,12 +232,12 @@ const SHS = () => {
           />
           <label className="form-check-label">stranger</label>
         </div>
-        <br />
-      </Form>
-      <Button variant="primary" size="sm" onClick={addUser}>
+        <Button variant="primary" size="sm" style={{display:"inline"}} onClick={addUser}>
         Add Profile
       </Button>{" "}
-      <br /> <br />
+        </div>
+      </Form>
+      <br />
       <DropdownButton
         id="dropdown-basic-button"
         title="Set location"

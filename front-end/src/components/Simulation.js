@@ -1,15 +1,47 @@
 import React, { useContext, useEffect, useState } from "react";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
-import { Button, Image, Container } from "react-bootstrap";
+import { Button, Image, Container, Modal } from "react-bootstrap";
 import profileImage from "../images/profile.png";
 import { UserContext } from "./UserProvider";
-import { LayoutContext} from "./LayoutProvider";
+import { LayoutContext } from "./LayoutProvider";
+
+const EditModal = (props) => {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Settings
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <h4>Place house inhabitants in specific rooms, or outside home</h4>
+        <p>
+          --------------
+        </p>
+      </Modal.Body>
+      <Modal.Body>
+        <h4>Block windows movement</h4>
+        <p>
+          ---------------
+        </p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
 
 // Simulation to turn on/off simulation, edit user, display time/date/location
 const Simulation = () => {
   const { currentUser } = useContext(UserContext);
-  const {layout, setLayout} = useContext(LayoutContext);
-
+  const { layout, setLayout } = useContext(LayoutContext);
+  const [modalShow, setModalShow] = React.useState(false);
 
   return (
     <>
@@ -27,9 +59,10 @@ const Simulation = () => {
         <BootstrapSwitchButton checked={false} width={100} />
         <br />
         <br />
-        <Button variant="secondary" size="sm">
+        <Button variant="secondary" size="sm" onClick={() => setModalShow(true)}>
           Edit
         </Button>
+        <EditModal show={modalShow} onHide={() => setModalShow(false)} />
         <br />
         <br />
         <Image
@@ -44,7 +77,6 @@ const Simulation = () => {
         />
         <br />
         <br />
-
         <div>
           {currentUser ? (
             <div>
@@ -72,11 +104,26 @@ const Simulation = () => {
             <div></div>
           )}
         </div>
-        <div style={{fontWeight:"600"}}>Outside Temperature. <span style={{color:"blue"}}> {layout.map((item) => (
-        <span key={item.name}>
-          <span style={{ fontSize:"14px", width:"100px", height:"100px",    textAlign: "center",}}>{item.name == "Outside" && item.temperature + "C"}</span>
-        </span>
-      ))} </span></div>
+        <div style={{ fontWeight: "600" }}>
+          Outside Temperature.{" "}
+          <span style={{ color: "blue" }}>
+            {" "}
+            {layout.map((item) => (
+              <span key={item.name}>
+                <span
+                  style={{
+                    fontSize: "14px",
+                    width: "100px",
+                    height: "100px",
+                    textAlign: "center",
+                  }}
+                >
+                  {item.name == "Outside" && item.temperature + "C"}
+                </span>
+              </span>
+            ))}{" "}
+          </span>
+        </div>
       </Container>
     </>
   );
