@@ -3,16 +3,19 @@ import { Container, Row, Col } from "react-bootstrap";
 import HouseLayout from "./HouseLayout";
 import Simulation from "./Simulation";
 import SHS from "./modules/SHS";
+import AllUsersProvider from "./AllUsersProvider";
 
 // Dashboard contains the SHS/simulation profile/layout
 const Dashboard = () => {
   return (
     <>
+    <AllUsersProvider>
       <Container
         style={{
           borderRadius: "0.5rem",
           maxWidth: "90%",
           marginTop: "2%",
+
         }}
       >
         <Row>
@@ -59,6 +62,7 @@ const Dashboard = () => {
           </Col>
         </Row>
       </Container>
+      </AllUsersProvider>
     </>
   );
 };

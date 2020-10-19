@@ -1,15 +1,17 @@
 import React, { useContext } from "react";
 import { Button, Form, DropdownButton, Dropdown } from "react-bootstrap";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { UserContext } from "../UserProvider";
 import { LayoutContext } from "../LayoutProvider";
+import { AllUsersContext } from "../AllUsersProvider";
 
 // SHS module
 const SHS = () => {
-  const [users, setUsers] = useState([]);
+
   const [formData, setFormData] = useState([]);
   const { currentUser, setCurrentUser } = useContext(UserContext);
+  const {users, setUsers} = useContext(AllUsersContext);
   const [userChosen, setUserChosen] = useState([]);
   const [newLocation, setNewLocation] = useState("");
   const [tempCurrent, setTempCurrent] = useState([]);
