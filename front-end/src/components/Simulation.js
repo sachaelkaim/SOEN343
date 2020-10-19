@@ -1,14 +1,25 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import { Button, Image, Container } from "react-bootstrap";
 import profileImage from "../images/profile.png";
 import SHS from "./modules/SHS";
 import { UserContext } from "./UserProvider";
+import axios from "axios"
 
 // Simulation to turn on/off simulation, edit user, display time/date/location
 const Simulation = () => {
+  const [toggle, setToggle] = useState(true);
   const { currentUser } = useContext(UserContext);
   console.log(currentUser)
+
+  const [state, setState] = useState();
+
+  const changeState = () =>{
+      toggle ? setToggle(false):setToggle(true);
+      axios.post('http://localhost:8080/api/state', {"on":toggle})
+          .then(response => setState(response.data.id));
+  }
+
   return (
     <>
       <Container
@@ -22,7 +33,7 @@ const Simulation = () => {
       >
         <h4>Simulation</h4>
         <br />
-        <BootstrapSwitchButton checked={false} width={100} />
+        <BootstrapSwitchButton checked={false} width={100} onChange={changeState} />
         <br />
         <br />
         <Button variant="secondary" size="sm">
