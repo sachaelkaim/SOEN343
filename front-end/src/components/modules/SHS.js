@@ -144,14 +144,14 @@ const SHS = () => {
             name="id"
             type="text"
             placeholder="Enter ID"
-            style={{ width: "20%", display: "inline", marginTop:"30px" }}
+            style={{ width: "20%", display: "inline", marginTop:"0px" }}
             onChange={handleChange}
           />
          
         </Form.Group>
         <Button
             variant="primary"
-            size="md"
+            size=""
             type="submit"
            
           >
@@ -159,6 +159,42 @@ const SHS = () => {
           </Button>
       </Form>
       <br />
+      <div
+        style={{
+          fontSize: "12px",
+          overflowY: "scroll",
+          height: "150px",
+          borderTop: "1px solid black",
+          borderBottom: "1px solid black",
+        }}
+      >
+        {users.map((item) => (
+          <div key={item.id} style={{fontSize:"17px", fontWeight:"600"}}>
+            <span style={{ fontWeight: "600", color:"blue", fontStyle:"italic" }}>ID {item.id}</span>
+            
+            <span> Name: </span>
+            {item.name}
+            &nbsp;
+            <span > Location:</span>{" "}
+            {item.location}
+            &nbsp;
+            <span s> Privilege:</span>
+            {item.privilege}
+            &nbsp;
+            <Button
+              variant="light"
+              size="sm"
+              style={{ fontSize: "10px" }}
+              onClick={() => deleteUser(item.id)}
+            >
+              Delete
+            </Button>{" "}
+            <Button variant="light" size="sm" style={{ fontSize: "10px" }}>
+              Edit
+            </Button>
+          </div>
+        ))}
+      </div>
       <Form>
       <Button variant="primary" size="sm" onClick={addUser}>
         Add Profile
@@ -219,7 +255,7 @@ const SHS = () => {
           </div>
         ))}
       </DropdownButton>
-      <br />
+   
       <span style={{ fontWeight: "600" }}>Outside Temperature</span>
       <div>
         <Form>
@@ -245,42 +281,6 @@ const SHS = () => {
             Apply
           </Button>
         </Form>
-      </div>
-      <div
-        style={{
-          fontSize: "12px",
-          overflowY: "scroll",
-          height: "150px",
-          borderTop: "1px solid black",
-          borderBottom: "1px solid black",
-        }}
-      >
-        {users.map((item) => (
-          <div key={item.id} style={{fontSize:"17px", fontWeight:"600"}}>
-            <span style={{ fontWeight: "600", color:"blue", fontStyle:"italic" }}>ID {item.id}</span>
-            
-            <span> Name: </span>
-            {item.name}
-            &nbsp;
-            <span > Location:</span>{" "}
-            {item.location}
-            &nbsp;
-            <span s> Privilege:</span>
-            {item.privilege}
-            &nbsp;
-            <Button
-              variant="light"
-              size="sm"
-              style={{ fontSize: "10px" }}
-              onClick={() => deleteUser(item.id)}
-            >
-              Delete
-            </Button>{" "}
-            <Button variant="light" size="sm" style={{ fontSize: "10px" }}>
-              Edit
-            </Button>
-          </div>
-        ))}
       </div>
       </div>
     </>

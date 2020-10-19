@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Tab, Tabs } from "react-bootstrap";
 import HouseLayout from "./HouseLayout";
 import Simulation from "./Simulation";
 import SHS from "./modules/SHS";
@@ -30,7 +30,22 @@ const Dashboard = () => {
                     marginTop: "3rem",
                   }}
                 >
-                  <SHS />
+                  <Tabs defaultActiveKey="profile" style={{fontWeight:"600"}}>
+  <Tab eventKey="SHS" title="SHS">
+  <SHS />
+  </Tab>
+  <Tab eventKey="SHC" title="SHC">
+
+  </Tab>
+  <Tab eventKey="SHP" title="SHP">
+
+  </Tab>
+  <Tab eventKey="SHH" title="SHH">
+
+  </Tab>
+  </Tabs>
+ 
+                
                 </div>
               </Col>
               <Col xs={12} md={12} lg={6} >
