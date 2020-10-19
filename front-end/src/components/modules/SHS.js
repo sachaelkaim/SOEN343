@@ -124,8 +124,8 @@ const SHS = () => {
     const response = await axios
       .put("http://localhost:8080/api/rooms/Outside", {
         name: "Outside",
-        WindowState: "CLOSED",
-        DoorState: "UNLOCKED",
+        WindowState: null,
+        DoorState: null,
         LightOn: false,
         temperature: newTemperature.id,
       })
