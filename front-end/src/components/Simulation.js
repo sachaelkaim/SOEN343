@@ -12,12 +12,23 @@ import {
 import profileImage from "../images/profile.png";
 import { UserContext } from "./UserProvider";
 import { LayoutContext } from "./LayoutProvider";
+import axios from "axios"
 
 // Simulation to turn on/off simulation, edit user, display time/date/location
 const Simulation = () => {
   const { currentUser } = useContext(UserContext);
   const { layout, setLayout } = useContext(LayoutContext);
   const [modalShow, setModalShow] = React.useState(false);
+  
+  const [toggle, setToggle] = useState(true);
+  const [state, setState] = useState();
+  
+  // tell the system if the system is on or off
+  const changeState = () =>{
+      toggle ? setToggle(false):setToggle(true);
+      axios.post('http://localhost:8080/api/state', {"on":toggle})
+          .then(response => setState(response.data.id));
+  }
 
   // edit popup
   const EditModal = (props) => {
@@ -75,7 +86,7 @@ const Simulation = () => {
     <Navbar.Brand href="#home" style={{marginLeft:"20%",  color:'black', fontWeight:"600"}}>Smart Home Simulator</Navbar.Brand>
   </Navbar>
   <br/>
-        <BootstrapSwitchButton checked={false} width={100} />
+        <BootstrapSwitchButton checked={false} width={100} onChange={changeState}/>
         <br />
         <br />
         <Button
