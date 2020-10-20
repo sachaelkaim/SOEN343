@@ -14,4 +14,8 @@ public class StateService {
 	public void updateState(State state) {
 		this.state.setOn(state.isOn());
 	}
+
+	public boolean getCurrentState() {
+		return state.isOn();
+	}
 }

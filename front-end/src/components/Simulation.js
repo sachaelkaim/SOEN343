@@ -15,7 +15,7 @@ import { UserContext } from "./UserProvider";
 import { LayoutContext } from "./LayoutProvider";
 import { AllUsersContext } from "./AllUsersProvider";
 import axios from "axios";
-import DateTimePicker from 'react-datetime-picker';
+import DateTimePicker from "react-datetime-picker";
 
 // Simulation to turn on/off simulation, edit user, display time/date/location
 const Simulation = () => {
@@ -33,11 +33,12 @@ const Simulation = () => {
 
   // tell the system if the system is on or off
   const changeState = () => {
-    toggle ? setToggle(false) : setToggle(true);
+    if (toggle == false) setToggle(true);
+    else setToggle(false);
     axios
       .post("http://localhost:8080/api/state", { on: toggle })
       .then((response) => setState(response.data.id));
-      console.log(true);
+    getRooms();
   };
 
   // update rooms after block, to display block
@@ -45,10 +46,13 @@ const Simulation = () => {
     const response = await axios
       .get("http://localhost:8080/api/rooms")
       .catch((err) => console.log("Error", err));
-    if (response && response.data) setLayout(response.data);
+    if (response) setLayout(response.data);
   };
 
   useEffect(() => {
+    if (blockLocation == "" || blockLocation == undefined) {
+      return console.log("sim is off");
+    }
     const blockRoomInformation = async () => {
       const response = await axios
         .get(`http://localhost:8080/api/rooms/${blockLocation}`)
@@ -60,6 +64,9 @@ const Simulation = () => {
 
   // triggers when blocklocation state changes
   useEffect(() => {
+    if (blockRoomInfo == "" || blockRoomInfo == undefined) {
+      return console.log("sim is off");
+    }
     const blockWindow = async () => {
       const response1 = await axios
         .put(`http://localhost:8080/api/rooms/${blockLocation}`, {
@@ -192,11 +199,7 @@ const Simulation = () => {
           Smart Home Simulator
         </div>
         <br />
-        <BootstrapSwitchButton
-          checked={false}
-          width={100}
-          onChange={changeState}
-        />
+        <BootstrapSwitchButton width={100} onChange={changeState} />
         <br />
         <br />
         <Button
@@ -268,16 +271,15 @@ const Simulation = () => {
               </span>
             ))}{" "}
           </span>
+          <div >
+            <br />
+            <DateTimePicker
+              onChange={onChange}
+              value={value}
+            
+            />
+          </div>
         </div>
-        <div>
-        <br/>
-        
-        
-      <DateTimePicker
-        onChange={onChange}
-        value={value}
-      />
-    </div>
       </Container>
     </>
   );
