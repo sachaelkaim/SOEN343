@@ -57,8 +57,6 @@ const getRooms = async () => {
  // triggers when blocklocation state changes
   useEffect(() => {
     const blockWindow = async () => {
-      console.log(blockLocation)
-      console.log(blockRoomInfo)
       const response1 = await axios
         .put(`http://localhost:8080/api/rooms/${blockLocation}`, {
           name: blockRoomInfo.name,
@@ -148,7 +146,7 @@ const getRooms = async () => {
           {layout.map((item) => (
             <div key={item.id}>
               {item.name !== "Outside" && (
-                <Dropdown.Item eventKey={item.name}>
+                <Dropdown.Item eventKey={item.name}   onClick={props.onHide}>
                   {item.name} Window
                 </Dropdown.Item>
               )}
@@ -174,9 +172,8 @@ const getRooms = async () => {
           textAlign: "center",
         }}
       >
-          <Navbar bg="light" >
-    <Navbar.Brand href="#home" style={{marginLeft:"20%",  color:'black', fontWeight:"600"}}>Smart Home Simulator</Navbar.Brand>
-  </Navbar>
+        <br/>
+    <div style={{textAlign: "center",  color:'black', fontWeight:"600", fontSize:"20px"}}>Smart Home Simulator</div>
   <br/>
         <BootstrapSwitchButton checked={false} width={100} onChange={changeState}/>
         <br />
