@@ -1,6 +1,4 @@
-import React, { useContext, useState } from "react";
-import { useEffect } from "react";
-import axios from "axios";
+import React, { useContext } from "react";
 import { LayoutContext } from "./LayoutProvider";
 import { AllUsersContext } from "./AllUsersProvider";
 import { Navbar } from "react-bootstrap";
@@ -9,7 +7,7 @@ import lightBulbOff from "../images/lightbulboff.png";
 import door from "../images/door.png";
 
 // Fetch house layout
-const HouseLayout = () => {
+const HouseLayout  = () => {
   const { layout, setLayout } = useContext(LayoutContext);
   const { users, setUsers } = useContext(AllUsersContext);
 
@@ -23,7 +21,7 @@ const HouseLayout = () => {
           House view
         </Navbar.Brand>
       </Navbar>
-      <div style={{ textAlign: "center", marginLeft: "1%", marginTop: "20px" }}>
+      <div style={{ textAlign: "center", marginLeft: "1%", marginTop: "20px"}}>
         {layout.map((room) => (
           <div
             key={room.name}
@@ -37,8 +35,8 @@ const HouseLayout = () => {
                 fontWeight: "600",
                 border: "1px solid black",
                 fontSize: "16px",
-                width: "150px",
-                height: "150px",
+                width: "250px",
+                height: "250px",
                 textAlign: "center",
               }}
             >
@@ -48,45 +46,43 @@ const HouseLayout = () => {
               {room.name !== "Outside" && (
                 <img
                   src={lightBulbOn}
-                  style={{ height: "35px", width: "35px" }}
+                  style={{ height: "50px", width: "50px" }}
                 ></img>
               )}
               {room.name == "Outside" && (
                 <img
                   src={lightBulbOn}
-                  style={{ height: "35px", width: "35px", opacity: "0%" }}
+                  style={{ height: "50px", width: "50px", opacity: "0%" }}
                 ></img>
               )}
-              <br /> 
+              <br/><br/>
+              <div style={{width:"250px", height:"50px"}}>
               {users.map((user) => (
-                <div key={user.id} style={{ display: "inline-block" }}>
-                  {user.location == room.name && (
+                <div key={user.id} style={{ display: "inline-block" }}>         
+                  {user.location === room.name && (
                     <span style={{ color: "black" }}>{user.id}, </span>
                   )}
                 </div>
               ))}
+              </div>
               <br />
               {room.name !== "Outside" && (
-               
                 <img
                   src={door}
-                  style={{ height: "12px", width: "50px", marginTop:"35px"}}
+                  style={{ height: "50px", width: "50px", marginTop:""}}
                 ></img>
-               
               )}
               {room.name == "Outside" && (
-              
                 <img
                   src={door}
                   style={{
-                    height: "12px",
+                    height: "50px",
                     width: "50px",
-                    marginTop: "15px",
+                    marginTop: "",
                     opacity: "0%",
-                    marginTop:"35px"
+                    marginTop:""
                   }}
                 ></img>
-              
               )}
             </div>
           </div>
