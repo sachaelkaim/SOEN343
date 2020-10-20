@@ -5,6 +5,9 @@ import { Navbar } from "react-bootstrap";
 import lightBulbOn from "../images/lightbulbon.png";
 import lightBulbOff from "../images/lightbulboff.png";
 import door from "../images/door.png";
+import block from "../images/block.png";
+import windowOpen from "../images/windowopen.png"
+import windowClose from "../images/windowclosed.png"
 
 // Fetch house layout
 const HouseLayout  = () => {
@@ -26,7 +29,7 @@ const HouseLayout  = () => {
           <div
             key={room.name}
             style={{
-              display: "inline-block",
+              display: "inline-block"
             }}
           >
             <div
@@ -36,38 +39,51 @@ const HouseLayout  = () => {
                 border: "1px solid black",
                 fontSize: "16px",
                 width: "250px",
-                height: "250px",
-                display: "inline-block",
+                height: "250px"     
               }}
             >
-              <span style={{display:"inline-block", border: "1px solid black", width:"200px"}}>
               {room.name}
               <br />
               <br />
+              <div style={{display:"table", width:"200px", marginLeft:"50px"}}>
               {room.name !== "Outside" && (
                 <img
                   src={lightBulbOn}
-                  style={{ height: "50px", width: "50px" }}
+                  style={{ height: "50px", width: "50px",  float: "left" }}
                 ></img>
               )}
               {room.name == "Outside" && (
                 <img
                   src={lightBulbOn}
-                  style={{ height: "50px", width: "50px", opacity: "0%" }}
+                  style={{ height: "50px", width: "50px", opacity: "0%" ,  float: "left"}}
                 ></img>
               )}
-              <br/><br/>
+            
               {room.windowState == "BLOCKED" && (
                 <img
-                  src={lightBulbOn}
-                  style={{ height: "50px", width: "50px", opacity: "100%" }}
+                  src={block}
+                  style={{ height: "50px", width: "50px", opacity: "100%" ,  float: "left"}}
                 ></img>
               )}
-              <br />
+             
+             {room.windowState == "OPEN" && (
+                <img
+                  src={windowOpen}
+                  style={{ height: "50px", width: "50px", opacity: "100%" ,  float: "left"}}
+                ></img>
+              )}
+
+               {room.windowState == "CLOSED" && (
+                <img
+                  src={windowClose}
+                  style={{ height: "50px", width: "50px", opacity: "100%" ,  float: "left"}}
+                ></img>
+              )}
+
               {room.name !== "Outside" && (
                 <img
                   src={door}
-                  style={{ height: "50px", width: "50px", marginTop:""}}
+                  style={{ height: "50px", width: "50px", marginTop:"",  float: "left"}}
                 ></img>
               )}
               {room.name == "Outside" && (
@@ -78,24 +94,32 @@ const HouseLayout  = () => {
                     width: "50px",
                     marginTop: "",
                     opacity: "0%",
-                    marginTop:""
+                    marginTop:"",
+                    float: "left"
                   }}
                 ></img>
               )}
-            </span>
+              <br/> 
             </div>
-            <div style={{width:"250px", height:"50px"}}>
+            <span>
+            <div style={{width:"250px", height:"150px", border:"1px solid black "}}>
               {users.map((user) => (
-                <div key={user.id} style={{ display: "inline-block" }}>         
+                <div key={user.id} style={{display:"inline-block"}}>         
                   {user.location === room.name && (
                     <span style={{ color: "black", fontSize:"20px" }}>{user.id}, </span>
                   )}
                 </div>
               ))}
+              
               </div>
+              
+              </span>
+            </div>
           </div>
         ))}
+        
       </div>
+      
     </>
   );
 };

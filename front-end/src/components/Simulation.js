@@ -68,9 +68,9 @@ const getRooms = async () => {
           temperature: blockRoomInfo.temperature
         })
         .catch((err) => console.log("Error", err));
+        getRooms();
     };
     blockWindow();
-    getRooms();
   }, [blockRoomInfo]);
 
    // Set data
