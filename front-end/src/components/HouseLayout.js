@@ -37,9 +37,10 @@ const HouseLayout  = () => {
                 fontSize: "16px",
                 width: "250px",
                 height: "250px",
-                textAlign: "center",
+                display: "inline-block",
               }}
             >
+              <span style={{display:"inline-block", border: "1px solid black", width:"200px"}}>
               {room.name}
               <br />
               <br />
@@ -56,15 +57,12 @@ const HouseLayout  = () => {
                 ></img>
               )}
               <br/><br/>
-              <div style={{width:"250px", height:"50px"}}>
-              {users.map((user) => (
-                <div key={user.id} style={{ display: "inline-block" }}>         
-                  {user.location === room.name && (
-                    <span style={{ color: "black" }}>{user.id}, </span>
-                  )}
-                </div>
-              ))}
-              </div>
+              {room.windowState == "BLOCKED" && (
+                <img
+                  src={lightBulbOn}
+                  style={{ height: "50px", width: "50px", opacity: "100%" }}
+                ></img>
+              )}
               <br />
               {room.name !== "Outside" && (
                 <img
@@ -84,7 +82,17 @@ const HouseLayout  = () => {
                   }}
                 ></img>
               )}
+            </span>
             </div>
+            <div style={{width:"250px", height:"50px"}}>
+              {users.map((user) => (
+                <div key={user.id} style={{ display: "inline-block" }}>         
+                  {user.location === room.name && (
+                    <span style={{ color: "black", fontSize:"20px" }}>{user.id}, </span>
+                  )}
+                </div>
+              ))}
+              </div>
           </div>
         ))}
       </div>
