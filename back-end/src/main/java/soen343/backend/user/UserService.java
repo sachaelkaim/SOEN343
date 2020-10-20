@@ -15,10 +15,10 @@ public class UserService {
 
     @Bean
     public void addBaseUsers(){
-        userRepository.save(new User( "parent", "outside", "0"));
-        userRepository.save(new User( "child", "outside", "1"));
-        userRepository.save(new User( "guest", "outside", "2"));
-        userRepository.save(new User( "stranger", "outside", "3"));
+        userRepository.save(new User( "parent", "Outside", "0"));
+        userRepository.save(new User( "child", "Outside", "1"));
+        userRepository.save(new User( "guest", "Outside", "2"));
+        userRepository.save(new User( "stranger", "Outside", "3"));
     }
 
     public Iterable<User> getAllUsers(){
@@ -34,20 +34,19 @@ public class UserService {
     }
 
     public void addParent(){
-        userRepository.save(new User( "parent", "outside", "0"));
+        userRepository.save(new User( "parent", "Outside", "0"));
     }
 
     public void addChildren(){
-        userRepository.save(new User( "child", "outside", "1"));
+        userRepository.save(new User( "child", "Outside", "1"));
     }
 
-
     public void addGuest(){
-        userRepository.save(new User( "guest", "outside", "2"));
+        userRepository.save(new User( "guest", "Outside", "2"));
     }
 
     public void addStranger(){
-        userRepository.save(new User( "stranger", "outside", "3"));
+        userRepository.save(new User( "stranger", "Outside", "3"));
     }
 
     public void editUser(String id, User user){

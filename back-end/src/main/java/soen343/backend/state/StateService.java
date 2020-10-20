@@ -6,8 +6,7 @@ import org.springframework.stereotype.Service;
 public class StateService {
 	
 	private State state = new State();
-	
-	
+
 	public State getState() {
 		return state;
 	}

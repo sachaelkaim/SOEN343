@@ -7,14 +7,12 @@ import javax.persistence.Id;
 
 @Entity
 public class Room {
-	enum WindowState {OPENED,CLOSED,BLOCKED,TRANSITIONING}
-	enum DoorState {LOCKED, UNLOCKED, ALERT}
 
     @Id
     private String name;
-    private WindowState windowState;
-    private DoorState doorState;
-    private boolean lightOn = true;
+    private String windowState;
+    private String doorState;
+	private boolean lightOn = true;
     private double temperature;
     
     
@@ -23,7 +21,7 @@ public class Room {
 		super();
 	}
 
-	public Room(int id, String name, WindowState windowState, DoorState doorState, boolean lightOn, double temperature) {
+	public Room(int id, String name, String windowState, String doorState, boolean lightOn, double temperature) {
 		super();
 		this.name = name;
 		this.windowState = windowState;
@@ -40,19 +38,19 @@ public class Room {
 		this.name = name;
 	}
 
-	public WindowState getWindowState() {
+	public String getWindowState() {
 		return windowState;
 	}
 
-	public void setWindowState(WindowState windowState) {
+	public void setWindowState(String windowState) {
 		this.windowState = windowState;
 	}
 
-	public DoorState getDoorState() {
+	public String getDoorState() {
 		return doorState;
 	}
 
-	public void setDoorState(DoorState doorState) {
+	public void setDoorState(String doorState) {
 		this.doorState = doorState;
 	}
 
@@ -63,7 +61,7 @@ public class Room {
 	public void setLightOn(boolean lightOn) {
 		this.lightOn = lightOn;
 	}
-	
+
 	public double getTemperature() {
 		return temperature;
 	}

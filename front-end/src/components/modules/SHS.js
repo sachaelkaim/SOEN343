@@ -179,6 +179,7 @@ const SHS = () => {
             {item.location}
             &nbsp;
             <span s> Privilege:</span>
+            &nbsp;
             {item.privilege}
             &nbsp;
             <Button
