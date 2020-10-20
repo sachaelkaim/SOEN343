@@ -30,6 +30,15 @@ const HouseLayout = () => {
     if (response && response.data) setLayout(response.data);
   };
 
+  //Retrieve Specific Room
+  const getRoom = async (roomName) => {
+    const response = await axios
+      .get(`http://localhost:8080/api/rooms/${roomName}`)
+      .catch((err) => console.log("Error", err));
+    console.log(response);
+    if (response && response.data) setLayout(response.data);
+  };
+
   //add a room
   const addRoom = async () => {
     const response = await axios
@@ -81,14 +90,26 @@ const HouseLayout = () => {
     console.log("HEY");
   };
 
-  //update Door(async version)
-  const updateDoorState = async (roomName) => {
-    console.log();
-    const response = await axios
-      .put(`http://localhost:8080/api/users/${layout[roomName]}` , { name: layout[roomName].name, windowState: layout[roomName].windowState, doorState: "LOCKED", lightOn: layout[roomName].lightOn, temperature: 0.00 })
-      .catch((err) => console.log("Error", err)).then(console.log(`from updateDoorState, the name and id are ${roomName}`));
-    // getRooms();
+  const [updateWindowState, setUpdateWindowState] = useState([]);
+
+  // check if we retrieved value 
+   const updateWindow = async () => {
+      console.log(updateWindowState);
+
+      // const response = await axios
+      // .put(`http://localhost:8080/api/users/${layout[updateWindowState]}` , { name: layout[updateWindowState].name, windowState: layout[updateWindowState].windowState, doorState: "LOCKED", lightOn: layout[updateWindowState].lightOn, temperature: 0.00 })
+      // .catch((err) => console.log("Error", err)).then(console.log(`from updateDoorState, the name and id are ${updateWindowState}`));
+    getRooms();
   };
+
+  //update Door(async version)
+  // async function updateDoorState(roomName){
+  //   console.log();
+    // const response = await axios
+    //   .put(`http://localhost:8080/api/users/${layout[roomName]}` , { name: layout[roomName].name, windowState: layout[roomName].windowState, doorState: "LOCKED", lightOn: layout[roomName].lightOn, temperature: 0.00 })
+    //   .catch((err) => console.log("Error", err)).then(console.log(`from updateDoorState, the name and id are ${roomName}`));
+    // getRooms();
+  // };
 
   return (
     <>
@@ -100,19 +121,35 @@ const HouseLayout = () => {
             <li>Door: {item.doorState}</li>
             <li>Lights:{item.lightOn}</li>
             <li>Temperature:{item.temperature}</li>
-            <li>
-              <Button variant="primary" size="sm" onClick={updateDoorState(item.name)}>
-                Edit doorState
-              </Button>{" "}
-            </li>
           </li>
         </ul>
+        
       ))}
       <Button variant="primary" size="sm" onClick={updateRooms}>
         Edit All Rooms
       </Button>{" "}
+      <Form>
+        {layout.map((item) => (
+          <div key={item.id}>
+            <div className="form-check form-check-inline">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="profile"
+                value={item.name}
+                onClick={() => setUpdateWindowState(item.name)}
+              />
+              <label className="form-check-label">{item.name}</label>
+            </div>
+          </div>
+        ))}
+      </Form>
+      <Button variant="primary" size="sm" onClick={updateWindow}>
+        Select an above room and click here to toggle the window!
+      </Button>{" "}
     </>
   );
 };
+
 
 export default HouseLayout;
