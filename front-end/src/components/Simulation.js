@@ -1,16 +1,25 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
-import { Button, Image, Container } from "react-bootstrap";
+import {
+  Button,
+  Image,
+  Container,
+  Modal,
+  DropdownButton,
+  Dropdown,
+  Navbar
+} from "react-bootstrap";
 import profileImage from "../images/profile.png";
-import SHS from "./modules/SHS";
 import { UserContext } from "./UserProvider";
+import { LayoutContext } from "./LayoutProvider";
 import axios from "axios"
 
 // Simulation to turn on/off simulation, edit user, display time/date/location
 const Simulation = () => {
   const [toggle, setToggle] = useState(true);
   const { currentUser } = useContext(UserContext);
-  console.log(currentUser)
+  const { layout, setLayout } = useContext(LayoutContext);
+  const [modalShow, setModalShow] = React.useState(false);
 
   const [state, setState] = useState();
 
@@ -19,6 +28,47 @@ const Simulation = () => {
       axios.post('http://localhost:8080/api/state', {"on":toggle})
           .then(response => setState(response.data.id));
   }
+
+  // edit popup
+  const EditModal = (props) => {
+    return (
+      <Modal
+        {...props}
+        size="md"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">Edit</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>Place house inhabitants in specific rooms, or outside home</h4>
+          <p>--------------</p>
+        </Modal.Body>
+        <Modal.Body>
+          <h4>Block windows movement</h4>
+          <DropdownButton
+            id="dropdown-basic-button"
+            title="Set location"
+            size="sm"
+          >
+            {layout.map((item) => (
+              <div key={item.id}>
+                {item.name !== "Outside" && (
+                  <Dropdown.Item eventKey={item.name}>
+                    {item.name} Window
+                  </Dropdown.Item>
+                )}
+              </div>
+            ))}
+          </DropdownButton>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.onHide}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  };
 
   return (
     <>
@@ -31,14 +81,21 @@ const Simulation = () => {
           textAlign: "center",
         }}
       >
-        <h4>Simulation</h4>
-        <br />
+          <Navbar bg="light" >
+    <Navbar.Brand href="#home" style={{marginLeft:"20%",  color:'black', fontWeight:"600"}}>Smart Home Simulator</Navbar.Brand>
+  </Navbar>
+  <br/>
         <BootstrapSwitchButton checked={false} width={100} onChange={changeState} />
         <br />
         <br />
-        <Button variant="secondary" size="sm">
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => setModalShow(true)}
+        >
           Edit
         </Button>
+        <EditModal show={modalShow} onHide={() => setModalShow(false)} />
         <br />
         <br />
         <Image
@@ -53,7 +110,6 @@ const Simulation = () => {
         />
         <br />
         <br />
-
         <div>
           {currentUser ? (
             <div>
@@ -80,6 +136,26 @@ const Simulation = () => {
           ) : (
             <div></div>
           )}
+        </div>
+        <div style={{ fontWeight: "600" }}>
+          Outside Temperature.{" "}
+          <span style={{ color: "blue" }}>
+            {" "}
+            {layout.map((item) => (
+              <span key={item.name}>
+                <span
+                  style={{
+                    fontSize: "14px",
+                    width: "100px",
+                    height: "100px",
+                    textAlign: "center",
+                  }}
+                >
+                  {item.name == "Outside" && item.temperature + "C"}
+                </span>
+              </span>
+            ))}{" "}
+          </span>
         </div>
       </Container>
     </>

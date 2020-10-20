@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("http://localhost:3000") //to unblock request to/from react
+@CrossOrigin("*") //to unblock request to/from react
 @RequestMapping("api/")
 public class RoomController {
 

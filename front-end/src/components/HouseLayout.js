@@ -1,36 +1,97 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
+import { LayoutContext } from "./LayoutProvider";
+import { AllUsersContext } from "./AllUsersProvider";
+import { Navbar } from "react-bootstrap";
+import lightBulbOn from "../images/lightbulbon.png";
+import lightBulbOff from "../images/lightbulboff.png";
+import door from "../images/door.png";
 
 // Fetch house layout
 const HouseLayout = () => {
-  const [layout, setLayout] = useState([]);
-
-  useEffect(() => {
-    axios 
-      .get("http://localhost:8080/api/rooms")
-      .then((res) => {
-        console.log(res);
-        setLayout(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  const { layout, setLayout } = useContext(LayoutContext);
+  const { users, setUsers } = useContext(AllUsersContext);
 
   return (
     <>
-      {layout.map((item) => (
-        <ul key={item.name}>
-          <li>
-            Name: {item.windowState}
-            <br />
-            Windows: {item.doorState}
-            <br />
-            Lights:{item.lightOn}
-          </li>
-        </ul>
-      ))}
+      <Navbar bg="light">
+        <Navbar.Brand
+          href="#home"
+          style={{ marginLeft: "40%", color: "black", fontWeight: "600" }}
+        >
+          House view
+        </Navbar.Brand>
+      </Navbar>
+      <div style={{ textAlign: "center", marginLeft: "1%", marginTop: "20px" }}>
+        {layout.map((room) => (
+          <div
+            key={room.name}
+            style={{
+              display: "inline-block",
+            }}
+          >
+            <div
+              style={{
+                fontStyle: "italic",
+                fontWeight: "600",
+                border: "1px solid black",
+                fontSize: "16px",
+                width: "150px",
+                height: "150px",
+                textAlign: "center",
+              }}
+            >
+              {room.name}
+              <br />
+              <br />
+              {room.name !== "Outside" && (
+                <img
+                  src={lightBulbOn}
+                  style={{ height: "35px", width: "35px" }}
+                ></img>
+              )}
+              {room.name == "Outside" && (
+                <img
+                  src={lightBulbOn}
+                  style={{ height: "35px", width: "35px", opacity: "0%" }}
+                ></img>
+              )}
+              <br /> 
+              {users.map((user) => (
+                <div key={user.id} style={{ display: "inline-block" }}>
+                  {user.location == room.name && (
+                    <span style={{ color: "black" }}>{user.id}, </span>
+                  )}
+                </div>
+              ))}
+              <br />
+              {room.name !== "Outside" && (
+               
+                <img
+                  src={door}
+                  style={{ height: "12px", width: "50px", marginTop:"35px"}}
+                ></img>
+               
+              )}
+              {room.name == "Outside" && (
+              
+                <img
+                  src={door}
+                  style={{
+                    height: "12px",
+                    width: "50px",
+                    marginTop: "15px",
+                    opacity: "0%",
+                    marginTop:"35px"
+                  }}
+                ></img>
+              
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
     </>
   );
 };

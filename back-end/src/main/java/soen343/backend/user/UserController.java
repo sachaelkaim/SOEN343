@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin("http://localhost:3000") //to unblock request to/from react
+@CrossOrigin("*") //to unblock request to/from react
 @RequestMapping("api/")
 public class UserController {
 
