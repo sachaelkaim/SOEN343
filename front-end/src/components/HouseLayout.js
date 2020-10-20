@@ -37,61 +37,61 @@ const HouseLayout  = () => {
                 fontStyle: "italic",
                 fontWeight: "600",
                 border: "1px solid black",
-                fontSize: "16px",
-                width: "250px",
-                height: "250px"     
+                fontSize: "18px",
+                width: "350px",
+                height: "350px"     
               }}
             >
               {room.name}
               <br />
               <br />
-              <div style={{display:"table", width:"200px", marginLeft:"50px"}}>
+              <div style={{display:"table", width:"200px", marginLeft:"80px"}}>
               {room.name !== "Outside" && (
                 <img
                   src={lightBulbOn}
-                  style={{ height: "50px", width: "50px",  float: "left" }}
+                  style={{ height: "60px", width: "60px",  float: "left" }}
                 ></img>
               )}
               {room.name == "Outside" && (
                 <img
                   src={lightBulbOn}
-                  style={{ height: "50px", width: "50px", opacity: "0%" ,  float: "left"}}
+                  style={{ height: "60px", width: "60px", opacity: "0%" ,  float: "left"}}
                 ></img>
               )}
             
               {room.windowState == "BLOCKED" && (
                 <img
                   src={block}
-                  style={{ height: "50px", width: "50px", opacity: "100%" ,  float: "left"}}
+                  style={{ height: "60px", width: "60px", opacity: "100%" ,  float: "left"}}
                 ></img>
               )}
              
              {room.windowState == "OPEN" && (
                 <img
                   src={windowOpen}
-                  style={{ height: "50px", width: "50px", opacity: "100%" ,  float: "left"}}
+                  style={{ height: "60px", width: "60px", opacity: "100%" ,  float: "left"}}
                 ></img>
               )}
 
                {room.windowState == "CLOSED" && (
                 <img
                   src={windowClose}
-                  style={{ height: "50px", width: "50px", opacity: "100%" ,  float: "left"}}
+                  style={{ height: "60px", width: "60px", opacity: "100%" ,  float: "left"}}
                 ></img>
               )}
 
               {room.name !== "Outside" && (
                 <img
                   src={door}
-                  style={{ height: "50px", width: "50px", marginTop:"",  float: "left"}}
+                  style={{ height: "60px", width: "60px", marginTop:"",  float: "left"}}
                 ></img>
               )}
               {room.name == "Outside" && (
                 <img
                   src={door}
                   style={{
-                    height: "50px",
-                    width: "50px",
+                    height: "60px",
+                    width: "60px",
                     marginTop: "",
                     opacity: "0%",
                     marginTop:"",
@@ -99,10 +99,11 @@ const HouseLayout  = () => {
                   }}
                 ></img>
               )}
-              <br/> 
+              <br/> <br/>
             </div>
             <span>
-            <div style={{width:"250px", height:"150px", border:"1px solid black "}}>
+            <br/> <br/>
+            <div style={{width:"350px", height:"210px"}}>
               {users.map((user) => (
                 <div key={user.id} style={{display:"inline-block"}}>         
                   {user.location === room.name && (
