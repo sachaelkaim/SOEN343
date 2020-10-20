@@ -1,25 +1,17 @@
-import React, { useContext } from "react";
-import { Button, Form } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
-//import { RoomContext } from "./RoomProvider";
+import { LayoutContext } from "./LayoutProvider";
+import { AllUsersContext } from "./AllUsersProvider";
+import { Navbar } from "react-bootstrap";
+import lightBulbOn from "../images/lightbulbon.png";
+import lightBulbOff from "../images/lightbulboff.png";
+import door from "../images/door.png";
 
 // Fetch house layout
 const HouseLayout = () => {
-  const [layout, setLayout] = useState([]);
-  //const [room, setRoom] = useState([]);
-
-  useEffect(() => {
-    axios 
-      .get("http://localhost:8080/api/rooms")
-      .then((res) => {
-        console.log(res);
-        setLayout(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  const { layout, setLayout } = useContext(LayoutContext);
+  const { users, setUsers } = useContext(AllUsersContext);
 
   // retrieve list of all rooms
   const getRooms = async () => {
@@ -113,40 +105,83 @@ const HouseLayout = () => {
 
   return (
     <>
-      {layout.map((item) => (
-        <ul key={item.name}>
-          <li>
-            <li>Name: {item.name}</li>
-            <li>Window: {item.windowState}</li>
-            <li>Door: {item.doorState}</li>
-            <li>Lights:{item.lightOn}</li>
-            <li>Temperature:{item.temperature}</li>
-          </li>
-        </ul>
-        
-      ))}
-      <Button variant="primary" size="sm" onClick={updateRooms}>
-        Edit All Rooms
-      </Button>{" "}
-      <Form>
-        {layout.map((item) => (
-          <div key={item.id}>
-            <div className="form-check form-check-inline">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="profile"
-                value={item.name}
-                onClick={() => setUpdateWindowState(item.name)}
-              />
-              <label className="form-check-label">{item.name}</label>
+      <Navbar bg="light">
+        <Navbar.Brand
+          href="#home"
+          style={{ marginLeft: "40%", color: "black", fontWeight: "600" }}
+        >
+          House view
+        </Navbar.Brand>
+      </Navbar>
+      <div style={{ textAlign: "center", marginLeft: "1%", marginTop: "20px" }}>
+        {layout.map((room) => (
+          <div
+            key={room.name}
+            style={{
+              display: "inline-block",
+            }}
+          >
+            <div
+              style={{
+                fontStyle: "italic",
+                fontWeight: "600",
+                border: "1px solid black",
+                fontSize: "16px",
+                width: "150px",
+                height: "150px",
+                textAlign: "center",
+              }}
+            >
+              {room.name}
+              <br />
+              <br />
+              {room.name !== "Outside" && (
+                <img
+                  src={lightBulbOn}
+                  style={{ height: "35px", width: "35px" }}
+                ></img>
+              )}
+              {room.name == "Outside" && (
+                <img
+                  src={lightBulbOn}
+                  style={{ height: "35px", width: "35px", opacity: "0%" }}
+                ></img>
+              )}
+              <br /> 
+              {users.map((user) => (
+                <div key={user.id} style={{ display: "inline-block" }}>
+                  {user.location == room.name && (
+                    <span style={{ color: "black" }}>{user.id}, </span>
+                  )}
+                </div>
+              ))}
+              <br />
+              {room.name !== "Outside" && (
+               
+                <img
+                  src={door}
+                  style={{ height: "12px", width: "50px", marginTop:"35px"}}
+                ></img>
+               
+              )}
+              {room.name == "Outside" && (
+              
+                <img
+                  src={door}
+                  style={{
+                    height: "12px",
+                    width: "50px",
+                    marginTop: "15px",
+                    opacity: "0%",
+                    marginTop:"35px"
+                  }}
+                ></img>
+              
+              )}
             </div>
           </div>
         ))}
-      </Form>
-      <Button variant="primary" size="sm" onClick={updateWindow}>
-        Select an above room and click here to toggle the window!
-      </Button>{" "}
+      </div>
     </>
   );
 };
