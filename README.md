@@ -1,4 +1,4 @@
-# **SOEN343**
+# **SOEN343 Team 6**
 ## **Objective**
 To develop a Smart Home Simulator
 ## **Technologies Used**
