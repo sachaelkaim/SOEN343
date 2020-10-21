@@ -3,7 +3,6 @@
 To develop a Smart Home Simulator
 ## **Technologies Used**
 ### **Front-End** ###
-* Boostrap
 * React
 ### **Back-End** ###
 * SprintBoot
@@ -15,9 +14,9 @@ To develop a Smart Home Simulator
 * Mohammad Rakimul Huq
 * Ahmed Haffoudah
 ## **Requirements**
-*Java JDk 8+
-*Maven
-*Node JS
+* Java JDk 8+
+* Maven
+* Node JS
 ## **Getting Started**
 Clone/download SOEN343 Project
 
