@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/users")
-    public void addParent(@RequestHeader(value = "name") String name){
+    public void addUser(@RequestHeader(value = "name") String name){
         if(name.equals("parent")){
             userService.addParent();
         }
