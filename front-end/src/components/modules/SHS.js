@@ -84,6 +84,7 @@ const SHS = () => {
 
   // triggers when currentuser sets a new location and updates location
   useEffect(() => {
+    console.log(newLocation)
     if (currentUser == undefined || currentUser == "") {
       return console.log("cannot");
     }
