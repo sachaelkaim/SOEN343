@@ -23,8 +23,8 @@ const Simulation = () => {
   const { layout, setLayout } = useContext(LayoutContext);
   const [toggle, setToggle] = useState(true);
   const [state, setState] = useState();
-  const [changeUserId, setchangeUserId] = useState("1");
-  const [changeUserLocation, setChangeUserLocation] = useState("Outside");
+  const [changeUserId, setchangeUserId] = useState("");
+  const [changeUserLocation, setChangeUserLocation] = useState("");
   const { users, setUsers } = useContext(AllUsersContext);
   const [blockLocation, setBlockLocation] = useState([]);
   const [value, onChange] = useState(new Date());
@@ -165,6 +165,7 @@ const Simulation = () => {
                     custom
                     onChange={(e) => setId(e.target.value)}
                   >
+                    <option>Select ID</option>
                     {users.map((allusers) => (
                       <option key={allusers.id} value={allusers.id}>
                         ID:{allusers.id}
@@ -178,6 +179,7 @@ const Simulation = () => {
                     custom
                     onChange={(e) => setLocation(e.target.value)}
                   >
+                    <option>Select location</option>
                     {layout.map((newlocation) => (
                       <option key={newlocation.id} value={newlocation.name}>
                         {newlocation.name}
