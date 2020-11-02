@@ -2,6 +2,7 @@ package soen343.backend.room;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import soen343.backend.user.User;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,8 +19,8 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
-    public Optional<Room> getRoom(String id){
-        return roomRepository.findById(id);
+    public Room getRoom(String id){
+        return roomRepository.findById(id).orElse(null);
     }
 
     public void addRoom(Room room){
