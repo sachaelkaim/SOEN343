@@ -44,8 +44,8 @@ const Simulation = () => {
     getRooms();
   };
 
-  //update profile and shs list
-  const Update = async () => {
+  //update profile 
+  const UpdateProfile = async () => {
     const response = await axios
       .get(`http://localhost:8080/api/users/${currentUser.id}`)
       .catch((err) => console.log("Error", err));
@@ -69,43 +69,29 @@ const Simulation = () => {
     if (response) setLayout(response.data);
   };
 
-  useEffect(() => {
-    if (blockLocation == "" || blockLocation == undefined) {
-      return console.log("sim is off");
-    }
-    const blockRoomInformation = async () => {
-      const response = await axios
-        .get(`http://localhost:8080/api/rooms/${blockLocation}`)
-        .catch((err) => console.log("Error", err));
-      setBlockRoomInfo(response.data);
-    };
-    blockRoomInformation();
-  }, [blockLocation]);
+   // handle block location
+   const handleSelect = (e) => {
+    setBlockLocation(e);
+  };
 
-  // triggers when blocklocation state changes
+  // triggers when blocklocation state changes to block a window
   useEffect(() => {
-    if (blockRoomInfo == "" || blockRoomInfo == undefined) {
-      return console.log("sim is off");
-    }
     const blockWindow = async () => {
       const response1 = await axios
-        .put(`http://localhost:8080/api/rooms/${blockLocation}`, {
-          name: blockRoomInfo.name,
-          windowState: "BLOCKED",
-          doorState: blockRoomInfo.doorState,
-          lightOn: blockRoomInfo.lightOn,
-          temperature: blockRoomInfo.temperature,
-        })
+        .put(`http://localhost:8080/api/rooms/blockLocation/`, 
+          { windowState: "BLOCKED", location: blockLocation },
+          {
+            headers: {
+              windowState: "BLOCKED",
+              location: blockLocation,
+            },
+          }
+        )
         .catch((err) => console.log("Error", err));
       getRooms();
     };
     blockWindow();
-  }, [blockRoomInfo]);
-
-  // handle block location
-  const handleSelect = (e) => {
-    setBlockLocation(e);
-  };
+  }, [blockLocation]);
 
   // set id
   const setId = (e) => {
@@ -134,7 +120,7 @@ const Simulation = () => {
       .catch((err) => console.log("Error", err));
       getUsers();
       if(currentUser !== undefined)
-      Update();
+      UpdateProfile();
   };
 
   return (
@@ -239,7 +225,7 @@ const Simulation = () => {
             </DropdownButton>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={handleClose}>
+            <Button variant="dark" onClick={handleClose}>
               Close
             </Button>
           </Modal.Footer>

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soen343.backend.state.StateService;
+import soen343.backend.user.User;
 
 import java.util.Optional;
 
@@ -37,7 +38,7 @@ public class RoomController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/rooms/{name}")
-    public Optional<Room> getRoom(@PathVariable String name){
+    public Room getRoom(@RequestHeader(value = "name") String name){
         return roomService.getRoom(name);
     }
 
@@ -54,5 +55,13 @@ public class RoomController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/rooms/{name}")
     public void deleteRoom(@PathVariable String name) {
          roomService.deleteRoom(name);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/rooms/blockLocation/")
+    public void blockWindow(@RequestHeader(value = "windowState") String windowState,
+                                   @RequestHeader(value = "location") String location){
+        Room tempRoom = roomService.getRoom(location);
+        tempRoom.setWindowState(windowState);
+        roomService.editRoom(location, tempRoom);
     }
 }
