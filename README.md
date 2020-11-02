@@ -14,7 +14,7 @@ To develop a Smart Home Simulator
 * Mohammad Rakimul Huq
 * Ahmed Haffoudah
 ## **Requirements**
-* Java JDk 8+
+* Java JDk 15
 * Maven
 * Node JS
 ## **Getting Started**
@@ -23,7 +23,6 @@ Clone/download SOEN343 Project
 Back-end
 1. Open intellij or sprint boot starter ide 
 2. file/import/Maven-existing maven projects/ and select the pom file
-3. Add junit to classpath (can be achieved by hovering the junit variables)
 3. Click on run 
 
 Front-end
