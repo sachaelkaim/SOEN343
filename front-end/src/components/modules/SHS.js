@@ -82,8 +82,8 @@ const SHS = () => {
     setNewLocation(e);
   };
 
-   // triggers when currentuser sets a new location and updates location
-   useEffect(() => {
+  // triggers when currentuser sets a new location and updates location
+  useEffect(() => {
     if (currentUser == undefined || currentUser == "") {
       return console.log("cannot");
     }
@@ -91,21 +91,20 @@ const SHS = () => {
       const response = await axios
         .put(
           `http://localhost:8080/api/users/changeLocation/${currentUser.id}`,
-          { id: currentUser.id, location: newLocation },
+          { location: newLocation },
           {
-            headers: {
-              id: currentUser.id,
+            data: {
               location: newLocation,
             },
           }
         )
         .catch((err) => console.log("Error", err));
-        getUsers();
+      getUsers();
       UpdateProfile();
     };
     putNewLocation();
   }, [newLocation]);
-  
+
   // update profile
   const UpdateProfile = async () => {
     const response = await axios

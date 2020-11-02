@@ -1,11 +1,13 @@
 package soen343.backend.room;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soen343.backend.state.StateService;
+import soen343.backend.user.User;
 
 @RestController
 @CrossOrigin("*") //to unblock request to/from react
@@ -55,10 +57,11 @@ public class RoomController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/rooms/blockLocation/")
-    public void blockWindow(@RequestHeader(value = "windowState") String windowState,
-                                   @RequestHeader(value = "location") String location){
+    public void blockWindow(@RequestBody ObjectNode objectNode){
+        String location = objectNode.get("location").asText();
         Room tempRoom = roomService.getRoom(location);
-        tempRoom.setWindowState(windowState);
+        tempRoom.setWindowState(objectNode.get("windowState").asText());
         roomService.editRoom(location, tempRoom);
     }
+
 }

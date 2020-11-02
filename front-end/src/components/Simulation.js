@@ -79,7 +79,7 @@ const Simulation = () => {
           `http://localhost:8080/api/rooms/blockLocation/`,
           { windowState: "BLOCKED", location: blockLocation },
           {
-            headers: {
+            data: {
               windowState: "BLOCKED",
               location: blockLocation,
             },
@@ -107,10 +107,9 @@ const Simulation = () => {
     const response = await axios
       .put(
         `http://localhost:8080/api/users/changeLocation/${changeUserId}`,
-        { id: changeUserId, location: changeUserLocation },
+        { location: changeUserLocation },
         {
-          headers: {
-            id: changeUserId,
+          data: {
             location: changeUserLocation,
           },
         }

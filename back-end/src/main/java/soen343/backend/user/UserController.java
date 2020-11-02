@@ -2,6 +2,7 @@ package soen343.backend.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @RestController
 @CrossOrigin("http://localhost:3000") //to unblock request to/from react
@@ -47,12 +48,11 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/users/changeLocation/{id}")
-    public void changeUserLocation(@RequestHeader(value = "id") String idNumber,
-                                   @RequestHeader(value = "location") String location,
-                                   @PathVariable Long id){
+    public void changeUserLocation(@PathVariable Long id,
+                                   @RequestBody ObjectNode objectNode){
         User tempUser = userService.getUser(id);
-        tempUser.setLocation(location);
-        userService.editUser(idNumber, tempUser);
+        tempUser.setLocation(objectNode.get("location").asText());
+        userService.editUser(String.valueOf(id), tempUser);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/users/{id}")
