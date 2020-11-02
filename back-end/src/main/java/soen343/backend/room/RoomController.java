@@ -6,9 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soen343.backend.state.StateService;
-import soen343.backend.user.User;
-
-import java.util.Optional;
 
 @RestController
 @CrossOrigin("*") //to unblock request to/from react

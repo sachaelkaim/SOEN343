@@ -27,9 +27,7 @@ const Simulation = () => {
   const [changeUserLocation, setChangeUserLocation] = useState("Outside");
   const { users, setUsers } = useContext(AllUsersContext);
   const [blockLocation, setBlockLocation] = useState([]);
-  const [blockRoomInfo, setBlockRoomInfo] = useState([]);
   const [value, onChange] = useState(new Date());
-
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -44,13 +42,12 @@ const Simulation = () => {
     getRooms();
   };
 
-  //update profile 
+  //update profile
   const UpdateProfile = async () => {
     const response = await axios
       .get(`http://localhost:8080/api/users/${currentUser.id}`)
       .catch((err) => console.log("Error", err));
     if (response && response.data) setCurrentUser(response.data);
-    console.log(currentUser);
   };
 
   // retrieve list of all profiles
@@ -69,8 +66,8 @@ const Simulation = () => {
     if (response) setLayout(response.data);
   };
 
-   // handle block location
-   const handleSelect = (e) => {
+  // handle block location
+  const handleSelect = (e) => {
     setBlockLocation(e);
   };
 
@@ -78,7 +75,8 @@ const Simulation = () => {
   useEffect(() => {
     const blockWindow = async () => {
       const response1 = await axios
-        .put(`http://localhost:8080/api/rooms/blockLocation/`, 
+        .put(
+          `http://localhost:8080/api/rooms/blockLocation/`,
           { windowState: "BLOCKED", location: blockLocation },
           {
             headers: {
@@ -118,9 +116,8 @@ const Simulation = () => {
         }
       )
       .catch((err) => console.log("Error", err));
-      getUsers();
-      if(currentUser !== undefined)
-      UpdateProfile();
+    getUsers();
+    if (currentUser !== undefined) UpdateProfile();
   };
 
   return (
@@ -170,7 +167,7 @@ const Simulation = () => {
                     onChange={(e) => setId(e.target.value)}
                   >
                     {users.map((allusers) => (
-                      <option key={allusers.id}  value={allusers.id}>
+                      <option key={allusers.id} value={allusers.id}>
                         ID:{allusers.id}
                       </option>
                     ))}
@@ -183,11 +180,7 @@ const Simulation = () => {
                     onChange={(e) => setLocation(e.target.value)}
                   >
                     {layout.map((newlocation) => (
-                      <option
-                        key={newlocation.id}
-                        
-                        value={newlocation.name}
-                      >
+                      <option key={newlocation.id} value={newlocation.name}>
                         {newlocation.name}
                       </option>
                     ))}

@@ -13,7 +13,6 @@ const SHS = () => {
   const { users, setUsers } = useContext(AllUsersContext);
   const [userChosen, setUserChosen] = useState([]);
   const [newLocation, setNewLocation] = useState("");
-  const [tempCurrent, setTempCurrent] = useState([]);
   const { layout, setLayout } = useContext(LayoutContext);
   const [newTemperature, setNewTemperature] = useState([]);
 
@@ -78,39 +77,41 @@ const SHS = () => {
     if (response && response.data) setLayout(response.data);
   };
 
+  // handle setting new currentuser location
   const handleSelect = (e) => {
     setNewLocation(e);
-    setTempCurrent(currentUser);
   };
 
-  // when selecting a new location from the dropdown, will trigger use effect
-  useEffect(() => {
-    if (tempCurrent == undefined || tempCurrent == "") {
-      return console.log("bad");
+   // triggers when currentuser sets a new location and updates location
+   useEffect(() => {
+    if (currentUser == undefined || currentUser == "") {
+      return console.log("cannot");
     }
     const putNewLocation = async () => {
       const response = await axios
-        .put(`http://localhost:8080/api/users/${tempCurrent.id}`, {
-          id: tempCurrent.id,
-          name: tempCurrent.name,
-          location: newLocation,
-          privilege: tempCurrent.privilege,
-        })
+        .put(
+          `http://localhost:8080/api/users/changeLocation/${currentUser.id}`,
+          { id: currentUser.id, location: newLocation },
+          {
+            headers: {
+              id: currentUser.id,
+              location: newLocation,
+            },
+          }
+        )
         .catch((err) => console.log("Error", err));
-      Update();
+        getUsers();
+      UpdateProfile();
     };
     putNewLocation();
-  }, [newLocation, tempCurrent]);
-
-  // update info after changing location
-  const Update = async () => {
-    const id = formData.id;
+  }, [newLocation]);
+  
+  // update profile
+  const UpdateProfile = async () => {
     const response = await axios
-      .get(`http://localhost:8080/api/users/${id}`)
+      .get(`http://localhost:8080/api/users/${currentUser.id}`)
       .catch((err) => console.log("Error", err));
     if (response && response.data) setCurrentUser(response.data);
-    console.log(currentUser);
-    getUsers();
   };
 
   // retrieve temperature info
@@ -118,8 +119,8 @@ const SHS = () => {
     setNewTemperature({ ...newTemperature, [e.target.name]: e.target.value });
   };
 
-  // update temperature
-  const updateTemperature = async (e) => {
+  // update outdoor temperature
+  const updateOutdoorTemperature = async (e) => {
     e.preventDefault();
     const response = await axios
       .put("http://localhost:8080/api/rooms/Outside", {
@@ -274,7 +275,7 @@ const SHS = () => {
               size="sm"
               type="submit"
               style={{ display: "inline" }}
-              onClick={updateTemperature}
+              onClick={updateOutdoorTemperature}
             >
               Apply
             </Button>
