@@ -46,6 +46,15 @@ public class UserController {
         userService.editUser(id, user);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/users/changeLocation/{id}")
+    public void changeUserLocation(@RequestHeader(value = "id") String idNumber,
+                                   @RequestHeader(value = "location") String location,
+                                   @PathVariable Long id){
+        User tempUser = userService.getUser(id);
+        tempUser.setLocation(location);
+        userService.editUser(idNumber, tempUser);
+    }
+
     @RequestMapping(method = RequestMethod.DELETE, value = "/users/{id}")
     public void deleteUser(@PathVariable Long id) {
          userService.deleteUser(id);

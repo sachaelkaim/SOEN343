@@ -19,17 +19,20 @@ import DateTimePicker from "react-datetime-picker";
 
 // Simulation to turn on/off simulation, edit user, display time/date/location
 const Simulation = () => {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const { layout, setLayout } = useContext(LayoutContext);
-  const [modalShow, setModalShow] = React.useState(false);
   const [toggle, setToggle] = useState(true);
   const [state, setState] = useState();
-  const [changeUserId, setchangeUserId] = useState([]);
-  const [changeUserLocation, setChangeUserLocation] = useState([]);
+  const [changeUserId, setchangeUserId] = useState("1");
+  const [changeUserLocation, setChangeUserLocation] = useState("Outside");
   const { users, setUsers } = useContext(AllUsersContext);
   const [blockLocation, setBlockLocation] = useState([]);
   const [blockRoomInfo, setBlockRoomInfo] = useState([]);
   const [value, onChange] = useState(new Date());
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   // tell the system if the system is on or off
   const changeState = () => {
@@ -39,6 +42,23 @@ const Simulation = () => {
       .post("http://localhost:8080/api/state", { on: toggle })
       .then((response) => setState(response.data.id));
     getRooms();
+  };
+
+  //update profile and shs list
+  const Update = async () => {
+    const response = await axios
+      .get(`http://localhost:8080/api/users/${currentUser.id}`)
+      .catch((err) => console.log("Error", err));
+    if (response && response.data) setCurrentUser(response.data);
+    console.log(currentUser);
+  };
+
+  // retrieve list of all profiles
+  const getUsers = async () => {
+    const response = await axios
+      .get("http://localhost:8080/api/users")
+      .catch((err) => console.log("Error", err));
+    if (response && response.data) setUsers(response.data);
   };
 
   // update rooms after block, to display block
@@ -82,98 +102,39 @@ const Simulation = () => {
     blockWindow();
   }, [blockRoomInfo]);
 
-  // Set data
-  const setData = (e) => {
-    console.log(e);
-    setChangeUserLocation(e);
-  };
-
+  // handle block location
   const handleSelect = (e) => {
-    console.log(e);
     setBlockLocation(e);
   };
 
-  // edit popup
-  const EditModal = (props) => {
-    return (
-      <Modal
-        {...props}
-        size="md"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">Edit</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <h4>Place house inhabitants</h4>
-          <Form>
-            <Form.Group>
-              <Form inline>
-                <Form.Label className="my-1 mr-2"></Form.Label>
-                <Form.Control
-                  as="select"
-                  className="my-1 mr-sm-2"
-                  id="selectBox"
-                  custom
-                  onChange={(e) => setData(e.target.value)}
-                >
-                  {users.map((allusers) => (
-                    <option key={allusers.id} value={allusers.id}>
-                      ID:{allusers.id}
-                    </option>
-                  ))}
-                </Form.Control>
-                <Form.Control
-                  as="select"
-                  className="my-1 mr-sm-2"
-                  id="selectBox1"
-                  custom
-                  onChange={(e) => setData(e.target.value)}
-                >
-                  {layout.map((newlocation) => (
-                    <option key={newlocation.id} value={newlocation.name}>
-                      {newlocation.name}
-                    </option>
-                  ))}
-                </Form.Control>
-                <Button
-                  type="submit"
-                  variant="primary"
-                  className="my-1"
-                  onClick={handleSelect}
-                >
-                  Submit
-                </Button>
-              </Form>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Body>
-          <h4>Block windows movement</h4>
-          <DropdownButton
-            id="dropdown-basic-button"
-            title="Set location"
-            size="md"
-            variant="primary"
-            onSelect={handleSelect}
-          >
-            {layout.map((item) => (
-              <div key={item.id}>
-                {item.name !== "Outside" && (
-                  <Dropdown.Item eventKey={item.name} onClick={props.onHide}>
-                    {item.name} Window
-                  </Dropdown.Item>
-                )}
-              </div>
-            ))}
-          </DropdownButton>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={props.onHide}>Close</Button>
-        </Modal.Footer>
-      </Modal>
-    );
+  // set id
+  const setId = (e) => {
+    setchangeUserId(e);
+  };
+
+  // set location
+  const setLocation = (e) => {
+    setChangeUserLocation(e);
+  };
+
+  // change user location
+  const handleChangeLocation = async (e) => {
+    e.preventDefault(); // prevent refresh on submit
+    const response = await axios
+      .put(
+        `http://localhost:8080/api/users/changeLocation/${changeUserId}`,
+        { id: changeUserId, location: changeUserLocation },
+        {
+          headers: {
+            id: changeUserId,
+            location: changeUserLocation,
+          },
+        }
+      )
+      .catch((err) => console.log("Error", err));
+      getUsers();
+      if(currentUser !== undefined)
+      Update();
   };
 
   return (
@@ -202,15 +163,87 @@ const Simulation = () => {
         <BootstrapSwitchButton width={100} onChange={changeState} />
         <br />
         <br />
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => setModalShow(true)}
-        >
+        <Button variant="dark" onClick={handleShow}>
           Edit
         </Button>
-        <EditModal show={modalShow} onHide={() => setModalShow(false)} />
-
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h4>Place house inhabitants</h4>
+            <Form>
+              <Form.Group>
+                <Form inline>
+                  <Form.Label className="my-1 mr-2"></Form.Label>
+                  <Form.Control
+                    as="select"
+                    className="my-1 mr-sm-2"
+                    id="selectBox"
+                    custom
+                    onChange={(e) => setId(e.target.value)}
+                  >
+                    {users.map((allusers) => (
+                      <option key={allusers.id}  value={allusers.id}>
+                        ID:{allusers.id}
+                      </option>
+                    ))}
+                  </Form.Control>
+                  <Form.Control
+                    as="select"
+                    className="my-1 mr-sm-2"
+                    id="selectBox1"
+                    custom
+                    onChange={(e) => setLocation(e.target.value)}
+                  >
+                    {layout.map((newlocation) => (
+                      <option
+                        key={newlocation.id}
+                        
+                        value={newlocation.name}
+                      >
+                        {newlocation.name}
+                      </option>
+                    ))}
+                  </Form.Control>
+                  <Button
+                    type="submit"
+                    variant="dark"
+                    className="my-1"
+                    onClick={handleChangeLocation}
+                  >
+                    Submit
+                  </Button>
+                </Form>
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Body>
+            <h4>Block windows movement</h4>
+            <DropdownButton
+              id="dropdown-basic-button"
+              title="Set location"
+              size="md"
+              variant="dark"
+              onSelect={handleSelect}
+            >
+              {layout.map((item) => (
+                <div key={item.id}>
+                  {item.name !== "Outside" && (
+                    <Dropdown.Item eventKey={item.name}>
+                      {item.name} Window
+                    </Dropdown.Item>
+                  )}
+                </div>
+              ))}
+            </DropdownButton>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={handleClose}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
         <br />
         <br />
         <Image
@@ -271,13 +304,9 @@ const Simulation = () => {
               </span>
             ))}{" "}
           </span>
-          <div >
+          <div>
             <br />
-            <DateTimePicker
-              onChange={onChange}
-              value={value}
-            
-            />
+            <DateTimePicker onChange={onChange} value={value} />
           </div>
         </div>
       </Container>
