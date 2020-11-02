@@ -103,7 +103,6 @@ const Simulation = () => {
 
   // change user location
   const handleChangeLocation = async (e) => {
-    console.log(changeUserLocation)
     e.preventDefault(); // prevent refresh on submit
     const response = await axios
       .put(
