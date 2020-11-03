@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 
 @Service
 public class UserService {
@@ -33,22 +31,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void addParent(){
-        userRepository.save(new User( "parent", "Outside", "0"));
-    }
-
-    public void addChildren(){
-        userRepository.save(new User( "child", "Outside", "1"));
-    }
-
-    public void addGuest(){
-        userRepository.save(new User( "guest", "Outside", "2"));
-    }
-
-    public void addStranger(){
-        userRepository.save(new User( "stranger", "Outside", "3"));
-    }
-
     public void editUser(String id, User user){
         userRepository.save(user);
     }
@@ -57,4 +39,24 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public void addUser(String userName){
+        if(userName.equals("parent")){
+            userRepository.save(new User( "parent", "Outside", "0"));
+        }
+        else if(userName.equals("child")){
+            userRepository.save(new User( "child", "Outside", "1"));
+        }
+        else if(userName.equals("guest")){
+            userRepository.save(new User( "guest", "Outside", "2"));
+        }
+        else{
+            userRepository.save(new User( "stranger", "Outside", "3"));
+        }
+    }
+
+    public void changeUserLocation(Long id, String location){
+        User changeLocation = userRepository.findById(id).orElse(null);
+        changeLocation.setLocation(location);
+        userRepository.save(changeLocation);
+    }
 }

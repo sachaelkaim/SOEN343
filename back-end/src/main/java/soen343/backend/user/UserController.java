@@ -28,18 +28,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/users")
     public void addUser(@RequestHeader(value = "name") String name){
-        if(name.equals("parent")){
-            userService.addParent();
-        }
-        else if(name.equals("child")){
-            userService.addChildren();
-        }
-        else if(name.equals("guest")){
-            userService.addGuest();
-        }
-        else{
-            userService.addStranger();
-        }
+       userService.addUser(name);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}")
@@ -47,16 +36,14 @@ public class UserController {
         userService.editUser(id, user);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/users/changeLocation/{id}")
-    public void changeUserLocation(@PathVariable Long id,
-                                   @RequestBody ObjectNode objectNode){
-        User tempUser = userService.getUser(id);
-        tempUser.setLocation(objectNode.get("location").asText());
-        userService.editUser(String.valueOf(id), tempUser);
-    }
-
     @RequestMapping(method = RequestMethod.DELETE, value = "/users/{id}")
     public void deleteUser(@PathVariable Long id) {
          userService.deleteUser(id);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/users/changeLocation/{id}")
+    public void changeUserLocation(@PathVariable Long id,
+                                   @RequestBody ObjectNode objectNode){
+        userService.changeUserLocation(id, objectNode.get("location").asText());
     }
 }
