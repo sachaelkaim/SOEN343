@@ -21,14 +21,14 @@ import DateTimePicker from "react-datetime-picker";
 const Simulation = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const { layout, setLayout } = useContext(LayoutContext);
-  const [ toggle, setToggle] = useState(true);
-  const [ state, setState] = useState();
-  const [ changeUserId, setchangeUserId] = useState("");
-  const [ changeUserLocation, setChangeUserLocation] = useState("");
+  const [toggle, setToggle] = useState(true);
+  const [state, setState] = useState();
+  const [changeUserId, setchangeUserId] = useState("Select ID");
+  const [changeUserLocation, setChangeUserLocation] = useState("");
   const { users, setUsers } = useContext(AllUsersContext);
-  const [ blockLocation, setBlockLocation] = useState([]);
-  const [ value, onChange] = useState(new Date());
-  const [ show, setShow] = useState(false);
+  const [blockLocation, setBlockLocation] = useState([]);
+  const [value, onChange] = useState(new Date());
+  const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -39,7 +39,7 @@ const Simulation = () => {
     axios
       .post("http://localhost:8080/api/state", { on: toggle })
       .then((response) => setState(response.data.id));
-      console.log(toggle)
+    console.log(toggle);
     getRooms();
   };
 
@@ -65,6 +65,7 @@ const Simulation = () => {
       .get("http://localhost:8080/api/rooms")
       .catch((err) => console.log("Error", err));
     if (response) setLayout(response.data);
+    console.log(layout)
   };
 
   // handle block location
@@ -104,6 +105,8 @@ const Simulation = () => {
 
   // change user location
   const handleChangeLocation = async (e) => {
+    console.log(changeUserId)
+    console.log(changeUserLocation)
     e.preventDefault(); // prevent refresh on submit
     const response = await axios
       .put(
