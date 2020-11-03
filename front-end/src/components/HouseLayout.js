@@ -129,7 +129,7 @@ const HouseLayout = () => {
                   {users.map((user) => (
                     <div key={user.id} style={{ display: "inline-block" }}>
                       {user.location === room.name && (
-                        <span style={{ color: "black", fontSize: "20px" }}>
+                        <span style={{ color: "#1E90FF", fontSize: "20px" }}>
                           {user.id},{" "}
                         </span>
                       )}

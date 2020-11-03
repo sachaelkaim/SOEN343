@@ -2,15 +2,17 @@ package soen343.backend.room;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import soen343.backend.user.User;
-
-import java.util.Arrays;
+import soen343.backend.state.StateService;
 import java.util.List;
-import java.util.Optional;
+
 
 
 @Service
 public class RoomService {
+
+    @Autowired
+    private StateService state;
+    Room s = new Room();
 
     @Autowired
     private RoomRepository roomRepository;
@@ -39,4 +41,10 @@ public class RoomService {
         roomRepository.saveAll(rooms);
     }
 
+    public boolean blockWindow(String location, String windowState){
+        Room blockedRoom = roomRepository.findById(location).orElse(null);
+        blockedRoom.setWindowState(windowState);
+        roomRepository.save(blockedRoom);
+        return true;
+    }
 }

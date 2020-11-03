@@ -38,28 +38,28 @@ public class UserServiceTest {
 	@Test
 	public void addParentTest() {
 		User user = new User("parent", "Outside", "0");
-		userService.addParent();
+		userService.addUser(user.getName());
 		assertEquals(user, userRepo.findById((long) 1));
 	}
 	
 	@Test
 	public void addChildTest() {
 		User user = new User("child", "Outside", "1");
-		userService.addChildren();
+		userService.addUser(user.getName());
 		assertEquals(user, userRepo.findById((long) 1));
 	}
 	
 	@Test
 	public void addGuestTest() {
 		User user = new User("guest", "Outside", "2");
-		userService.addGuest();
+		userService.addUser(user.getName());
 		assertEquals(user, userRepo.findById((long) 1));
 	}
 	
 	@Test
 	public void addStrangerTest() {
 		User user = new User("stranger", "Outside", "3");
-		userService.addStranger();
+		userService.addUser(user.getName());
 		assertEquals(user, userRepo.findById((long) 1));
 	}
 	

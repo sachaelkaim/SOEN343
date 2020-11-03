@@ -3,6 +3,7 @@ import { Container, Row, Col, Tab, Tabs } from "react-bootstrap";
 import HouseLayout from "./HouseLayout";
 import Simulation from "./Simulation";
 import SHS from "./modules/SHS";
+import SHC from "./modules/SHC";
 import AllUsersProvider from "./AllUsersProvider";
 
 // Dashboard contains the SHS/simulation profile/layout
@@ -13,7 +14,7 @@ const Dashboard = () => {
         <Container
           style={{
             maxWidth: "90%",
-            marginTop: "2%",
+            marginTop: "1%",
           }}
         >
           <Row>
@@ -26,7 +27,7 @@ const Dashboard = () => {
                   <div
                     style={{
                       border: "1px solid black",
-                      height: "30rem",
+                      height: "35rem",
                       marginTop: "3rem",
                     }}
                   >
@@ -37,7 +38,9 @@ const Dashboard = () => {
                       <Tab eventKey="SHS" title="SHS">
                         <SHS />
                       </Tab>
-                      <Tab eventKey="SHC" title="SHC"></Tab>
+                      <Tab eventKey="SHC" title="SHC">
+                        <SHC />
+                      </Tab>
                       <Tab eventKey="SHP" title="SHP"></Tab>
                       <Tab eventKey="SHH" title="SHH"></Tab>
                     </Tabs>
@@ -47,7 +50,7 @@ const Dashboard = () => {
                   <div
                     style={{
                       border: "1px solid black",
-                      height: "30rem",
+                      height: "35rem",
                       marginTop: "3rem",
                       overflowY: "scroll",
                     }}
