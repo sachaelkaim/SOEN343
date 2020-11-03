@@ -13,8 +13,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import soen343.backend.room.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
@@ -26,6 +28,32 @@ public class BackEndApplication {
 		SpringApplication.run(BackEndApplication.class, args);
 		sMC = new SimulationMasterController();
 		System.out.println("Simulation master controller running");
+		
+		ObjectMapper map =new ObjectMapper();
+		Staff staff=createStaff();
+		try 
+		{
+			map.writeValue(new File("c:\\test\\staff.jason"), staff);
+			
+			String jsonString=map.writeValueAsString(staff);
+			System.out.println(jsonString);
+			String jsonInString2=map.writerWithDefaultPrettyPrinter().writeValueAsString(staff);
+			System.out.println(jsonInString2);	
+		}catch(IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	private static Staff createStaff() 
+	{
+		Staff staff=new Staff();
+		staff.setName("Laurent");
+		staff.setAge(34);
+		staff.setPosition(new String[] {"Developper","CEO"});
+		staff.setSkills(Arrays.asList("java","python","node"));
+		return staff;
+		
 	}
 
 	@Bean
