@@ -120,15 +120,17 @@ const SHS = () => {
 
   // update outdoor temperature
   const updateOutdoorTemperature = async (e) => {
+    console.log(newTemperature.id)
     e.preventDefault();
     const response = await axios
-      .put("http://localhost:8080/api/rooms/Outside", {
-        name: "Outside",
-        WindowState: null,
-        DoorState: null,
-        LightOn: false,
-        temperature: newTemperature.id,
-      })
+      .put("http://localhost:8080/api/rooms/outdoorTemperature/", 
+      { temperature: newTemperature.id },
+      {
+        data: {
+          temperature: newTemperature.id
+        },
+      }
+      )
       .catch((err) => console.log("Error", err));
     getRooms();
   };

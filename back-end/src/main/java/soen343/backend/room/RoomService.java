@@ -48,11 +48,23 @@ public class RoomService {
     public void save(List<Room> rooms){
         roomRepository.saveAll(rooms);
     }
-
     public boolean blockWindow(String location, String windowState){
         Room blockedRoom = roomRepository.findById(location).orElse(null);
         blockedRoom.setWindowState(windowState);
         roomRepository.save(blockedRoom);
         return true;
     }
+
+    public boolean setOutdoorTemperature(double outdoorTemperature){
+        if(state.getCurrentState()){
+            System.out.println(outdoorTemperature);
+            Room outdoorTemp = roomRepository.findById("Outside").orElse(null);
+            outdoorTemp.setTemperature(outdoorTemperature);
+            roomRepository.save(outdoorTemp);
+            return true;
+        }
+        else
+            return false;
+    }
+
 }

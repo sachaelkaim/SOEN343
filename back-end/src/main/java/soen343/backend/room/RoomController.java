@@ -56,8 +56,8 @@ public class RoomController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/rooms/outdoorTemperature/")
     @ResponseStatus( HttpStatus.OK )
-    public void outdoorTemperature(@RequestBody ObjectNode objectNode){
-        roomService.blockWindow(objectNode.get("temperature").asText());
+    public void setOutdoorTemperature(@RequestBody ObjectNode objectNode){
+        roomService.setOutdoorTemperature(objectNode.get("temperature").asDouble());
     }
 
 }
