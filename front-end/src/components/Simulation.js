@@ -21,14 +21,14 @@ import DateTimePicker from "react-datetime-picker";
 const Simulation = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const { layout, setLayout } = useContext(LayoutContext);
-  const [toggle, setToggle] = useState(true);
-  const [state, setState] = useState();
-  const [changeUserId, setchangeUserId] = useState("");
-  const [changeUserLocation, setChangeUserLocation] = useState("");
+  const [ toggle, setToggle] = useState(true);
+  const [ state, setState] = useState();
+  const [ changeUserId, setchangeUserId] = useState("");
+  const [ changeUserLocation, setChangeUserLocation] = useState("");
   const { users, setUsers } = useContext(AllUsersContext);
-  const [blockLocation, setBlockLocation] = useState([]);
-  const [value, onChange] = useState(new Date());
-  const [show, setShow] = useState(false);
+  const [ blockLocation, setBlockLocation] = useState([]);
+  const [ value, onChange] = useState(new Date());
+  const [ show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -125,9 +125,9 @@ const Simulation = () => {
       <Container
         style={{
           border: "1px solid black",
-          height: "45rem",
+          height: "48rem",
           borderRadius: "1rem",
-          margin: "1rem",
+          marginTop: "2rem",
           textAlign: "center",
         }}
       >
@@ -268,7 +268,7 @@ const Simulation = () => {
         </div>
         <div style={{ fontWeight: "600" }}>
           Outside Temperature.{" "}
-          <span style={{ color: "blue" }}>
+          <span style={{ color: "#1E90FF" }}>
             {" "}
             {layout.map((item) => (
               <span key={item.name}>
