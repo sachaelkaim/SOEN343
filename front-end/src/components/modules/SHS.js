@@ -227,7 +227,7 @@ const SHS = () => {
           }}
         >
           {users.map((item) => (
-            <div key={item.id} style={{ fontSize: "15px", fontWeight: "600" }}>
+            <div key={item.id} style={{ fontSize: "15ypx", fontWeight: "600" }}>
               <span
                 style={{
                   fontWeight: "600",

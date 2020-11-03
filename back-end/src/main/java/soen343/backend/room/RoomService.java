@@ -1,8 +1,12 @@
 package soen343.backend.room;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soen343.backend.state.StateService;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -12,13 +16,17 @@ public class RoomService {
 
     @Autowired
     private StateService state;
-    Room s = new Room();
+    private List<Room> empty = new ArrayList<Room>();
 
     @Autowired
     private RoomRepository roomRepository;
 
     public Iterable<Room> getAllRooms(){
-        return roomRepository.findAll();
+        if(state.getCurrentState()) {
+            return roomRepository.findAll();
+        }
+        else
+            return (Iterable<Room>) empty;
     }
 
     public Room getRoom(String id){

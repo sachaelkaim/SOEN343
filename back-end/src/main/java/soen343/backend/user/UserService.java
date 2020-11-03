@@ -3,6 +3,11 @@ package soen343.backend.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import soen343.backend.room.Room;
+import soen343.backend.state.StateService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -54,9 +59,16 @@ public class UserService {
         }
     }
 
-    public void changeUserLocation(Long id, String location){
-        User changeLocation = userRepository.findById(id).orElse(null);
-        changeLocation.setLocation(location);
-        userRepository.save(changeLocation);
+    public boolean changeUserLocation(Long id, String location){
+        if(location.equals("Select location")){
+            return false;
+        }
+        else{
+            User changeLocation = userRepository.findById(id).orElse(null);
+            changeLocation.setLocation(location);
+            userRepository.save(changeLocation);
+            return true;
+        }
     }
+
 }
