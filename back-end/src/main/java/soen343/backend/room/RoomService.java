@@ -3,6 +3,8 @@ package soen343.backend.room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import soen343.backend.state.StateService;
+import soen343.backend.user.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,4 +65,13 @@ public class RoomService {
             return false;
     }
 
+    public void closeDoorsWindows(){
+        Iterable<Room> rooms = roomRepository.findAll();
+        while(rooms.iterator().hasNext()){
+            Room room = rooms.iterator().next();
+            room.setWindowState("CLOSED");
+            room.setDoorState("LOCKED");
+        }
+        roomRepository.saveAll(rooms);
+    }
 }

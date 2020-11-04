@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import soen343.backend.modules.SimulationMasterService;
 import soen343.backend.room.Room;
 
 @RunWith(SpringRunner.class)
@@ -21,8 +22,8 @@ public class SimulationContextTest {
 	@Test
 	public void setDateTimeTest() {
 		LocalDateTime simDateTime = LocalDateTime.of(2017, 2, 13, 15, 56);
-		SimulationMasterController.setSimulationDateTime(simDateTime);
-		assertEquals(simDateTime, SimulationMasterController.getSimulationDateTime());
+		SimulationMasterService.setSimulationDateTime(simDateTime);
+		assertEquals(simDateTime, SimulationMasterService.getSimulationDateTime());
 	}
 	
 	//Use case (11)
@@ -44,15 +45,15 @@ public class SimulationContextTest {
 	//Use case (5)
 	@Test
 	public void startSimulationTest() {
-		SimulationMasterController.setIsSimulationRunning(true);
-		assertEquals(true, SimulationMasterController.getIsSimulationRunning());
+		SimulationMasterService.setIsSimulationRunning(true);
+		assertEquals(true, SimulationMasterService.getIsSimulationRunning());
 	}
 		
 	//Use case (6)
 	@Test
 	public void stopSimulationTest() {
-		SimulationMasterController.setIsSimulationRunning(false);
-		assertEquals(false, SimulationMasterController.getIsSimulationRunning());
+		SimulationMasterService.setIsSimulationRunning(false);
+		assertEquals(false, SimulationMasterService.getIsSimulationRunning());
 	}	
 		
 	

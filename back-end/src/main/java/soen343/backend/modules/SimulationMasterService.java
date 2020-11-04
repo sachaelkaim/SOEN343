@@ -1,14 +1,14 @@
-package soen343.backend;
+package soen343.backend.modules;
 import java.time.LocalDateTime;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Iterator;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.stereotype.Service;
+import soen343.backend.room.RoomService;
+import soen343.backend.user.UserService;
+
+@Service
 @EnableScheduling
-public class SimulationMasterController{
+public class SimulationMasterService {
 	//Static to be accessed anywhere
 	private static boolean isSimulationRunning;
 	private static LocalDateTime simulationDateTime;
@@ -16,8 +16,10 @@ public class SimulationMasterController{
 	private static HeatingModuleModel heatingModel;
 	private static CoreModuleModel coreModel;
 	private static LayoutModuleModel layoutModel;
-	
-	SimulationMasterController() {
+	private UserService users;
+	private RoomService rooms;
+
+	public SimulationMasterService() {
 		setIsSimulationRunning(true);
 		
 		securityModel = new SecurityModuleModel();
@@ -44,7 +46,7 @@ public class SimulationMasterController{
 	}
 
 	public static void setIsSimulationRunning(boolean isSimulationRunning) {
-		SimulationMasterController.isSimulationRunning = isSimulationRunning;
+		SimulationMasterService.isSimulationRunning = isSimulationRunning;
 	}
 
 	public static SecurityModuleModel getSecurityModel() {
@@ -87,12 +89,24 @@ public class SimulationMasterController{
 			System.out.println("Time is "+getSimulationDateTimeString());
 		}
 	}
-	
+
+	public void setAwayMode(boolean awayMode){
+		if(awayMode == true){
+			if(users.allUsersOutside()){
+				rooms.closeDoorsWindows();
+				SecurityModuleModel.setAwayMode(true);
+			}
+		}
+		else{
+			SecurityModuleModel.setAwayMode(false);
+		}
+	}
+
 	public static void updateSecurityModule() {
 		//Call SecurityModuleModel or the controller?
 		while (SecurityModuleModel.isAwayMode())
 		{
-			//Check for intruders using sensors and motion detectors
+			System.out.println("im in updatesecuritymodule");
 		}
 	}
 	

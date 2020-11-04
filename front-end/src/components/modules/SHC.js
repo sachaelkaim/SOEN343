@@ -8,6 +8,7 @@ import {
     Form
 } from "react-bootstrap";
 
+// SHC module
 const SHC = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const { layout, setLayout } = useContext(LayoutContext);
@@ -31,7 +32,6 @@ const SHC = () => {
                     className="my-1 mr-sm-2"
                     id="selectBox1"
                     custom
-                  
                   >
                     <option>Select location</option>
                     {layout.map((newlocation) => (
@@ -41,6 +41,7 @@ const SHC = () => {
                     ))}
                   </Form.Control>
                   <Button
+                  size="ms"
                     type="submit"
                     variant="dark"
                     className="my-1"

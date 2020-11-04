@@ -120,7 +120,6 @@ const SHS = () => {
 
   // update outdoor temperature
   const updateOutdoorTemperature = async (e) => {
-    console.log(newTemperature.id)
     e.preventDefault();
     const response = await axios
       .put("http://localhost:8080/api/rooms/outdoorTemperature/", 
@@ -150,14 +149,13 @@ const SHS = () => {
               onChange={handleChange}
             />
           </Form.Group>
-          <Button variant="dark" size="sm" type="submit">
+          <Button variant="dark"  type="submit">
             Log in
           </Button>
           &nbsp;
           <DropdownButton
             id="dropdown-basic-button"
             title="Set location"
-            size="sm"
             onSelect={handleSelect}
             variant="dark"
             style={{ display: "inline" }}
@@ -172,7 +170,7 @@ const SHS = () => {
         <br />
 
         <Form>
-          <Button variant="dark" size="sm" onClick={addUser}>
+          <Button variant="dark" onClick={addUser}>
             Add Profile
           </Button>{" "}
           <div style={{ fontWeight: "500" }}>
@@ -279,7 +277,6 @@ const SHS = () => {
             &nbsp;
             <Button
               variant="dark"
-              size="sm"
               type="submit"
               style={{ display: "inline" }}
               onClick={updateOutdoorTemperature}

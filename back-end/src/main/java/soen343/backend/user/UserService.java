@@ -3,11 +3,6 @@ package soen343.backend.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-import soen343.backend.room.Room;
-import soen343.backend.state.StateService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Service
@@ -15,6 +10,7 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    private Iterable<User> users;
 
     @Bean
     public void addBaseUsers(){
@@ -69,6 +65,17 @@ public class UserService {
             userRepository.save(changeLocation);
             return true;
         }
+    }
+
+    public boolean allUsersOutside(){
+        Iterable<User> users = userRepository.findAll();
+        while(users.iterator().hasNext()){
+           User user = users.iterator().next();
+           if(!"Outside".equals(user.getLocation())){
+               return false;
+           }
+        }
+        return true;
     }
 
 }
