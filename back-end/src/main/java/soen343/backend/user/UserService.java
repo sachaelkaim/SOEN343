@@ -5,11 +5,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SequenceWriter;
 
 
 @Service
@@ -19,6 +27,7 @@ public class UserService {
     private UserRepository userRepository;
     
     private ObjectMapper mapper;
+    private File usersFile;
 
     @Bean
     public void addBaseUsers(){
@@ -29,16 +38,33 @@ public class UserService {
     	User stranger = new User( "stranger", "Outside", "3");
     	
         userRepository.save(parent);
-        userRepository.save(child);
-        userRepository.save(guest);
-        userRepository.save(stranger);
+        //userRepository.save(child);
+        //userRepository.save(guest);
+        //userRepository.save(stranger);
     	try 
     	{
-    		File usersFile = new File("./src/main/resources/json/users.json");
-    		 mapper.writeValue(usersFile,parent);
-    		 mapper.writeValue(usersFile,child);
-    		 mapper.writeValue(usersFile,guest);
-    		 mapper.writeValue(usersFile,stranger);
+    		usersFile = new File("./src/main/resources/json/users.json");
+    		String parentInfo = mapper.writeValueAsString(parent);
+    		String childInfo = mapper.writeValueAsString(child);
+    		List<String> lines = Files.readAllLines(usersFile.toPath());
+    		if (lines.size() == 0 ) {
+    			Files.write(usersFile.toPath(), Arrays.asList(parentInfo), StandardOpenOption.CREATE);
+    		} else {
+    			Files.write(usersFile.toPath(), Arrays.asList(parentInfo), StandardOpenOption.APPEND);
+    		}
+    		
+    		Files.write(usersFile.toPath(), Arrays.asList(childInfo), StandardOpenOption.APPEND);
+    		
+    		
+    		
+    		//FileWriter fileWriter = new FileWriter(usersFile, true);
+    		
+    		//SequenceWriter seqWriter = mapper.writer().writeValuesAsArray(fileWriter);
+    		//seqWriter.write(parent);
+    		//seqWriter.write(child);
+    		//seqWriter.write(guest);
+    		//seqWriter.write(stranger);
+    		//seqWriter.close();
     	} catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,6 +80,18 @@ public class UserService {
 
     public void addUser(User user){
         userRepository.save(user);
+        try 
+    	{
+    		usersFile = new File("./src/main/resources/json/users.json");
+    		FileWriter fileWriter = new FileWriter(usersFile, true);
+    		
+    		SequenceWriter seqWriter = mapper.writer().writeValuesAsArray(fileWriter);
+    		seqWriter.write(user);
+    		seqWriter.close();
+    	} catch (IOException e) {
+            e.printStackTrace();
+        }
+        
     }
 
     public void addParent(){
