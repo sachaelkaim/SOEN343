@@ -7,6 +7,7 @@ import soen343.backend.room.Room;
 import soen343.backend.state.StateService;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -71,4 +72,15 @@ public class UserService {
         }
     }
 
+    public boolean allUsersOutside(){
+        Iterable<User> users = userRepository.findAll();
+        Iterator<User> iter = users.iterator();
+        while(iter.hasNext()){
+            User user = iter.next();
+            if(!"Outside".equals(user.getLocation())){
+                return false;
+            }
+        }
+        return true;
+    }
 }

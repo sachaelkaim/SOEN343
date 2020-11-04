@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soen343.backend.state.StateService;
+import soen343.backend.user.User;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -65,6 +66,18 @@ public class RoomService {
         }
         else
             return false;
+    }
+
+    public void closeDoorsWindows(){
+        Iterable<Room> rooms = roomRepository.findAll();
+        Iterator<Room> iter = rooms.iterator();
+        System.out.println("im in close windows");
+        while(iter.hasNext()){
+            Room room = iter.next();
+            room.setWindowState("CLOSED");
+            room.setDoorState("LOCKED");
+        }
+        roomRepository.saveAll(rooms);
     }
 
 }

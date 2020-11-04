@@ -41,7 +41,8 @@ const HouseLayout = () => {
                 height: "350px",
               }}
             >
-              {room.name}
+              {room.name} <br/>
+              <div style={{fontSize:"15px"}}>temperature: {room.temperature}C</div>
               <br />
               <br />
               <div

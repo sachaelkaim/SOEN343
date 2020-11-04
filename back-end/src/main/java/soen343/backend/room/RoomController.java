@@ -48,13 +48,13 @@ public class RoomController {
         roomService.deleteRoom(name);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/rooms/blockLocation/")
+    @RequestMapping(method = RequestMethod.PUT, value = "/rooms/blockLocation")
     @ResponseStatus( HttpStatus.OK )
     public void blockWindow(@RequestBody ObjectNode objectNode){
         roomService.blockWindow(objectNode.get("location").asText(),objectNode.get("windowState").asText());
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/rooms/outdoorTemperature/")
+    @RequestMapping(method = RequestMethod.PUT, value = "/rooms/outdoorTemperature")
     @ResponseStatus( HttpStatus.OK )
     public void setOutdoorTemperature(@RequestBody ObjectNode objectNode){
         roomService.setOutdoorTemperature(objectNode.get("temperature").asDouble());

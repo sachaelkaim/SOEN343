@@ -123,7 +123,7 @@ const SHS = () => {
     console.log(newTemperature.id)
     e.preventDefault();
     const response = await axios
-      .put("http://localhost:8080/api/rooms/outdoorTemperature/", 
+      .put("http://localhost:8080/api/rooms/outdoorTemperature", 
       { temperature: newTemperature.id },
       {
         data: {
@@ -150,14 +150,13 @@ const SHS = () => {
               onChange={handleChange}
             />
           </Form.Group>
-          <Button variant="dark" size="sm" type="submit">
+          <Button variant="dark" type="submit">
             Log in
           </Button>
           &nbsp;
           <DropdownButton
             id="dropdown-basic-button"
             title="Set location"
-            size="sm"
             onSelect={handleSelect}
             variant="dark"
             style={{ display: "inline" }}
@@ -172,7 +171,7 @@ const SHS = () => {
         <br />
 
         <Form>
-          <Button variant="dark" size="sm" onClick={addUser}>
+          <Button variant="dark" onClick={addUser}>
             Add Profile
           </Button>{" "}
           <div style={{ fontWeight: "500" }}>
@@ -250,13 +249,12 @@ const SHS = () => {
               &nbsp;
               <Button
                 variant="light"
-                size="sm"
                 style={{ fontSize: "10px" }}
                 onClick={() => deleteUser(item.id)}
               >
                 Delete
               </Button>{" "}
-              <Button variant="light" size="sm" style={{ fontSize: "10px" }}>
+              <Button variant="light" style={{ fontSize: "10px" }}>
                 Edit
               </Button>
             </div>
@@ -279,7 +277,6 @@ const SHS = () => {
             &nbsp;
             <Button
               variant="dark"
-              size="sm"
               type="submit"
               style={{ display: "inline" }}
               onClick={updateOutdoorTemperature}

@@ -39,7 +39,6 @@ const Simulation = () => {
     axios
       .post("http://localhost:8080/api/state", { on: toggle })
       .then((response) => setState(response.data.id));
-    console.log(toggle);
     getRooms();
   };
 
@@ -65,7 +64,6 @@ const Simulation = () => {
       .get("http://localhost:8080/api/rooms")
       .catch((err) => console.log("Error", err));
     if (response) setLayout(response.data);
-    console.log(layout)
   };
 
   // handle block location
@@ -78,7 +76,7 @@ const Simulation = () => {
     const blockWindow = async () => {
       const response1 = await axios
         .put(
-          `http://localhost:8080/api/rooms/blockLocation/`,
+          `http://localhost:8080/api/rooms/blockLocation`,
           { windowState: "BLOCKED", location: blockLocation },
           {
             data: {
@@ -105,8 +103,6 @@ const Simulation = () => {
 
   // change user location
   const handleChangeLocation = async (e) => {
-    console.log(changeUserId)
-    console.log(changeUserLocation)
     e.preventDefault(); // prevent refresh on submit
     const response = await axios
       .put(
