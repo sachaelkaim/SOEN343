@@ -1,11 +1,8 @@
 package soen343.backend.room;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soen343.backend.state.StateService;
-import soen343.backend.user.User;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
