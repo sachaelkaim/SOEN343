@@ -22,11 +22,10 @@ const SHP = () => {
   };
 
    // send awaystate to backend
-   const changeState = () => {
+   const changeState = async () => {
     if (awayModeToggle == false) setawayModeToggle(true);
     else setawayModeToggle(false);
-    console.log(awayModeToggle)
-    axios
+    const response = await axios
       .post("http://localhost:8080/api/security/setAwayMode", 
       { awayMode: awayModeToggle },
       {
