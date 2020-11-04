@@ -1,12 +1,9 @@
 package soen343.backend.room;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soen343.backend.state.StateService;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -57,7 +54,6 @@ public class RoomService {
 
     public boolean setOutdoorTemperature(double outdoorTemperature){
         if(state.getCurrentState()){
-            System.out.println(outdoorTemperature);
             Room outdoorTemp = roomRepository.findById("Outside").orElse(null);
             outdoorTemp.setTemperature(outdoorTemperature);
             roomRepository.save(outdoorTemp);
