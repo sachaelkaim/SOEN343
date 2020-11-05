@@ -14,6 +14,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.*;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,15 +37,15 @@ public class UserService {
     	User child = new User( "child", "Outside", "1");
     	User guest = new User( "guest", "Outside", "2");
     	User stranger = new User( "stranger", "Outside", "3");
-    	List<User> initUsers = Arrays.asList(parent,child,guest,stranger);
     	
     	
-        //userRepository.save(parent);
-        //userRepository.save(child);
-        //userRepository.save(guest);
-        //userRepository.save(stranger);
+        /*userRepository.save(parent);
+        userRepository.save(child);
+        userRepository.save(guest);
+        userRepository.save(stranger);*/
     	try 
     	{
+    		List<User> initUsers = Arrays.asList(parent,child,guest,stranger);
     		usersFile = new File("./src/main/resources/json/users.json");
     		/*String parentInfo = mapper.writeValueAsString(parent);
     		String childInfo = mapper.writeValueAsString(child);*/
@@ -86,11 +87,12 @@ public class UserService {
         try 
     	{
     		usersFile = new File("./src/main/resources/json/users.json");
-    		FileWriter fileWriter = new FileWriter(usersFile, true);
-    		
-    		SequenceWriter seqWriter = mapper.writer().writeValuesAsArray(fileWriter);
-    		seqWriter.write(user);
-    		seqWriter.close();
+    		Iterable<User> previousUsersIter = userRepository.findAll();
+    		List<User> updatedUsers = StreamSupport
+    				  .stream(previousUsersIter.spliterator(), false)
+    				  .collect(Collectors.toList());
+    		updatedUsers.add(user);
+    		mapper.writeValue(usersFile, updatedUsers);
     	} catch (IOException e) {
             e.printStackTrace();
         }
@@ -98,19 +100,19 @@ public class UserService {
     }
 
     public void addParent(){
-        userRepository.save(new User( "parent", "Outside", "0"));
+        addUser(new User( "new parent", "Outside", "0"));
     }
 
     public void addChildren(){
-        userRepository.save(new User( "child", "Outside", "1"));
+        addUser(new User( "new child", "Outside", "1"));
     }
 
     public void addGuest(){
-        userRepository.save(new User( "guest", "Outside", "2"));
+        addUser(new User( "new guest", "Outside", "2"));
     }
 
     public void addStranger(){
-        userRepository.save(new User( "stranger", "Outside", "3"));
+        addUser(new User( "stranger", "Outside", "3"));
     }
 
     public void editUser(String id, User user){

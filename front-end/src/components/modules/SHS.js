@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Button, Form, DropdownButton, Dropdown } from "react-bootstrap";
+import { Modal } from 'react-bootstrap';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { UserContext } from "../UserProvider";
@@ -15,6 +16,13 @@ const SHS = () => {
   const [newLocation, setNewLocation] = useState("");
   const { layout, setLayout } = useContext(LayoutContext);
   const [newTemperature, setNewTemperature] = useState([]);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const handleCloseUserMenu = () => setShowUserMenu(false);
+  // const id=0;
+  const [userToEdit, setUserToEdit] = useState();
+  const [desiredName, setDesiredName] = useState();
+  const [desiredPrivilege, setDesiredPrivilege] = useState();
+  const [desiredLocation, setDesiredLocation] = useState();
 
   // retrieve list of all profiles
   const getUsers = async () => {
@@ -69,6 +77,17 @@ const SHS = () => {
     if (response) getUsers();
   };
 
+  //edit a profile
+  const editUser = async () => {
+    const response = await axios
+      .put(`http://localhost:8080/api/users/${userToEdit.id}`,
+      {
+        
+      })
+      .catch((err) => console.log("Error", err));
+    if (response) getUsers();
+  };
+
   // retrieve list of all rooms
   const getRooms = async () => {
     const response = await axios
@@ -80,6 +99,13 @@ const SHS = () => {
   // handle setting new currentuser location
   const handleSelect = (e) => {
     setNewLocation(e);
+  };
+
+  //Pass id to editing user menu
+  const handleShowUserMenu = async () => {
+    if (showUserMenu == false){
+      setShowUserMenu(true);
+    }
   };
 
   // triggers when currentuser sets a new location and updates location
@@ -188,9 +214,53 @@ const SHS = () => {
               >
                 Delete
               </Button>{" "}
-              <Button variant="light" size="sm" style={{ fontSize: "10px" }}>
+              <Button variant="light" size="sm" style={{ fontSize: "10px" }} onClick={handleShowUserMenu()}>
                 Edit
               </Button>
+          { <Modal show={showUserMenu} onHide={handleCloseUserMenu}>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h4>Change User Details</h4>
+            <Form>
+              <Form.Group>
+                <Form inline>
+                  <Form.Label className="my-1 mr-2"></Form.Label>
+                  <Form.Control
+                    as="text"
+                    onChange= {(e)=>setDesiredName(e.value)}
+                  >
+                  </Form.Control>
+                  <Form.Control
+                    as="select"
+                    className="my-1 mr-sm-2"
+                    id="selectBox"
+                    onChange = {(e) => setDesiredPrivilege(e.value)}
+                  >
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </Form.Control>
+                  <Button
+                    type="submit"
+                    variant="dark"
+                    className="my-1"
+                    onClick={editUser}
+                  >
+                    Submit
+                  </Button>
+                </Form>
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="dark" onClick={handleCloseUserMenu}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>}
             </div>
           ))}
         </div>
