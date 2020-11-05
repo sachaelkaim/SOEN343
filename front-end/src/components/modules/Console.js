@@ -8,7 +8,7 @@ import {
     Form
 } from "react-bootstrap";
 
-// SHC module
+// Console
 const Console = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const { layout, setLayout } = useContext(LayoutContext);
@@ -16,13 +16,15 @@ const Console = () => {
 
   const [seconds, setSeconds] = useState(0);
 
+  // set interval to fetch notifications
   useEffect(() => {
     const interval = setInterval(() => {
       setSeconds(seconds => seconds + 1);
-    }, 1000);
+    }, 500);
     return () => clearInterval(interval);
   }, []);
   
+  //call getnotifications to get notifications from backend
   useEffect(()=>{
     getNotifications()
   }, [seconds])
@@ -36,9 +38,16 @@ const Console = () => {
 
   return (
     <>
-         {notifications.map((newNotification) => (
-                      <div key={newNotification.id} >
-                        {newNotification.time}&nbsp;<span style={{color:"blue"}}>{newNotification.module}</span>&nbsp;{newNotification.message}
+         {notifications.map((newnotification) => (
+                      <div key={newnotification.id} >
+                        {newnotification.time}&nbsp;
+                        {newnotification.module == "SHS" && (
+                            <span style={{color:"#1E90FF"}}>{newnotification.module}</span>
+                        )}
+                         {newnotification.module == "SHP" && (
+                            <span style={{color:"green"}}>{newnotification.module}</span>
+                        )}
+                        &nbsp;{newnotification.message}
                       </div>
                     ))}
     </>

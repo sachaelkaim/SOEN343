@@ -14,7 +14,6 @@ public class SecurityController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/security/setAwayMode")
     public void setAwayMode(@RequestBody ObjectNode objectNode) {
-        System.out.println(objectNode.get("awayMode").asBoolean());
         simulationService.setAwayMode(objectNode.get("awayMode").asBoolean());
     }
 

@@ -3,12 +3,9 @@ package soen343.backend.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-import soen343.backend.room.Room;
-import soen343.backend.state.StateService;
-
-import java.util.ArrayList;
+import soen343.backend.console.Console;
+import soen343.backend.console.ConsoleService;
 import java.util.Iterator;
-import java.util.List;
 
 
 @Service
@@ -16,6 +13,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ConsoleService notifications;
 
     @Bean
     public void addBaseUsers(){
@@ -60,6 +60,12 @@ public class UserService {
         }
     }
 
+    public User login(Long id){
+        User loggedUser = userRepository.findById(id).orElse(null);
+        notifications.saveNotification(new Console("13:00","SHS","Logged in " + loggedUser.toString() + "."));
+        return loggedUser;
+    }
+
     public boolean changeUserLocation(Long id, String location){
         if(location.equals("Select location")){
             return false;
@@ -68,6 +74,7 @@ public class UserService {
             User changeLocation = userRepository.findById(id).orElse(null);
             changeLocation.setLocation(location);
             userRepository.save(changeLocation);
+            notifications.saveNotification(new Console("13:00","SHS","ID: " + changeLocation.getId() + " has moved to the " + changeLocation.getLocation() + "."));
             return true;
         }
     }

@@ -36,6 +36,7 @@ const SHP = () => {
       )
       .catch((err) => console.log("Error", err));
     getRooms();
+    getRooms();
   };
 
   return (

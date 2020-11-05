@@ -34,7 +34,7 @@ const SHS = () => {
     e.preventDefault(); // prevent refresh on submit
     const id = formData.id;
     const response = await axios
-      .get(`http://localhost:8080/api/users/${id}`)
+      .get(`http://localhost:8080/api/users/login/${id}`)
       .catch((err) => console.log("Error", err));
     if (response && response.data) setCurrentUser(response.data);
     getUsers();

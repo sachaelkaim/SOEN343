@@ -34,7 +34,7 @@ const Dashboard = () => {
                     }}
                   >
                     <Tabs
-                      defaultActiveKey="profile"
+                      defaultActiveKey="SHS"
                       style={{ fontWeight: "600" }}
                     >
                       <Tab eventKey="SHS" title="SHS">

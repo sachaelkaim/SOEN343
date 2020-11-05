@@ -2,6 +2,8 @@ package soen343.backend.room;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import soen343.backend.console.Console;
+import soen343.backend.console.ConsoleService;
 import soen343.backend.state.StateService;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,6 +20,9 @@ public class RoomService {
 
     @Autowired
     private RoomRepository roomRepository;
+
+    @Autowired
+    private ConsoleService notifications;
 
     public Iterable<Room> getAllRooms(){
         if(state.getCurrentState()) {
@@ -46,19 +51,21 @@ public class RoomService {
     public void save(List<Room> rooms){
         roomRepository.saveAll(rooms);
     }
+
     public boolean blockWindow(String location, String windowState){
         Room blockedRoom = roomRepository.findById(location).orElse(null);
         blockedRoom.setWindowState(windowState);
         roomRepository.save(blockedRoom);
+        notifications.saveNotification(new Console("13:00","SHS","Blocked window location: " + blockedRoom.getName() + "."));
         return true;
     }
 
     public boolean setOutdoorTemperature(double outdoorTemperature){
         if(state.getCurrentState()){
-            System.out.println(outdoorTemperature);
             Room outdoorTemp = roomRepository.findById("Outside").orElse(null);
             outdoorTemp.setTemperature(outdoorTemperature);
             roomRepository.save(outdoorTemp);
+            notifications.saveNotification(new Console("13:00","SHS","Set outdoor temperature to: " + outdoorTemp.getTemperature() + "C."));
             return true;
         }
         else
@@ -68,7 +75,6 @@ public class RoomService {
     public void closeDoorsWindows(){
         Iterable<Room> rooms = roomRepository.findAll();
         Iterator<Room> iter = rooms.iterator();
-        System.out.println("im in close windows");
         while(iter.hasNext()){
             Room room = iter.next();
             room.setWindowState("CLOSED");
@@ -76,5 +82,6 @@ public class RoomService {
         }
         roomRepository.saveAll(rooms);
     }
+
 
 }
