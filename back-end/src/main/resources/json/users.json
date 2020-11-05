@@ -1,1 +1,1 @@
-[{"id":1,"name":"parent","location":"Outside","privilege":"0"},{"id":1,"name":"parent","location":"Outside","privilege":"0"},{"id":1,"name":"parent","location":"Outside","privilege":"0"},{"id":1,"name":"parent","location":"Outside","privilege":"0"}]
+[{"id":null,"name":"parent","location":"Outside","privilege":"0"},{"id":null,"name":"child","location":"Outside","privilege":"1"},{"id":null,"name":"guest","location":"Outside","privilege":"2"},{"id":null,"name":"stranger","location":"Outside","privilege":"3"}]

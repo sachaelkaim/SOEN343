@@ -36,35 +36,38 @@ public class UserService {
     	User child = new User( "child", "Outside", "1");
     	User guest = new User( "guest", "Outside", "2");
     	User stranger = new User( "stranger", "Outside", "3");
+    	List<User> initUsers = Arrays.asList(parent,child,guest,stranger);
     	
-        userRepository.save(parent);
+    	
+        //userRepository.save(parent);
         //userRepository.save(child);
         //userRepository.save(guest);
         //userRepository.save(stranger);
     	try 
     	{
     		usersFile = new File("./src/main/resources/json/users.json");
-    		String parentInfo = mapper.writeValueAsString(parent);
-    		String childInfo = mapper.writeValueAsString(child);
+    		/*String parentInfo = mapper.writeValueAsString(parent);
+    		String childInfo = mapper.writeValueAsString(child);*/
     		List<String> lines = Files.readAllLines(usersFile.toPath());
     		if (lines.size() == 0 ) {
-    			Files.write(usersFile.toPath(), Arrays.asList(parentInfo), StandardOpenOption.CREATE);
+    			//Files.write(usersFile.toPath(), Arrays.asList(parentInfo), StandardOpenOption.CREATE);
+    			mapper.writeValue(usersFile, initUsers);
     		} else {
-    			Files.write(usersFile.toPath(), Arrays.asList(parentInfo), StandardOpenOption.APPEND);
+    			//Files.write(usersFile.toPath(), Arrays.asList(parentInfo), StandardOpenOption.APPEND);
     		}
     		
-    		Files.write(usersFile.toPath(), Arrays.asList(childInfo), StandardOpenOption.APPEND);
+    		//Files.write(usersFile.toPath(), Arrays.asList(childInfo), StandardOpenOption.APPEND);
     		
     		
     		
-    		//FileWriter fileWriter = new FileWriter(usersFile, true);
+    		/*FileWriter fileWriter = new FileWriter(usersFile, true);
     		
-    		//SequenceWriter seqWriter = mapper.writer().writeValuesAsArray(fileWriter);
-    		//seqWriter.write(parent);
-    		//seqWriter.write(child);
-    		//seqWriter.write(guest);
-    		//seqWriter.write(stranger);
-    		//seqWriter.close();
+    		SequenceWriter seqWriter = mapper.writer().writeValuesAsArray(fileWriter);
+    		seqWriter.write(parent);
+    		seqWriter.write(child);
+    		seqWriter.write(guest);
+    		seqWriter.write(stranger);
+    		seqWriter.close();*/
     	} catch (IOException e) {
             e.printStackTrace();
         }
