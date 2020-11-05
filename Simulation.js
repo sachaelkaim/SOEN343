@@ -48,7 +48,7 @@ const Simulation = () => {
     if (toggle == false) setToggle(true);
     else setToggle(false);
     axios
-      .post("http://localhost:8080/api/simulation", { on: toggle })
+      .post("http://localhost:8080/api/state", { on: toggle })
       .then((response) => setAutoMode(response.data.id));
     console.log(toggle);
     getRooms();
