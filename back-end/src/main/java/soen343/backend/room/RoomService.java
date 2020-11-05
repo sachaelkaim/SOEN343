@@ -90,4 +90,22 @@ public class RoomService {
         roomRepository.save(room);
     }
 
+    public void unlockLockDoor( String location, String doorLock ){
+        Room room =  roomRepository.findById(location).orElse(null);
+        room.setDoorState(doorLock);
+        roomRepository.save(room);
+    }
+
+    public boolean openCloseWindow( String location, String windowOpen ){
+        Room room =  roomRepository.findById(location).orElse(null);
+        if(room.getWindowState().equals("BLOCKED")){
+            notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",room.getName()+ ". Window is blocked!"));
+            return false;
+        }
+        else
+            room.setWindowState(windowOpen);
+            roomRepository.save(room);
+            return true;
+    }
+
 }

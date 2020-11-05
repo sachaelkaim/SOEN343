@@ -10,7 +10,7 @@ const SHC = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const { layout, setLayout } = useContext(LayoutContext);
   const [lightOn, setLightOn] = useState([]);
-  const [doorOpen, setDoorOpen] = useState([]);
+  const [doorLock, setdoorLock] = useState([]);
   const [windowOpen, setWindowOpen] = useState([]);
   const [location, setLocation] = useState([]);
   const [location1, setLocation1] = useState([]);
@@ -28,7 +28,8 @@ const SHC = () => {
     if (
       location == "Select location" ||
       location == undefined ||
-      currentUser == undefined
+      currentUser == undefined ||
+      lightOn == ""
     ) {
       return console.log("cannot process");
     }
@@ -40,11 +41,11 @@ const SHC = () => {
             userLocation: currentUser.location,
             privilege: currentUser.privilege,
             location: location,
-            lightOn: lightOn
+            lightOn: lightOn,
           },
           {
             data: {
-            userLocation: currentUser.location,
+              userLocation: currentUser.location,
               privilege: currentUser.privilege,
               location: location,
               lightOn: lightOn,
@@ -53,9 +54,78 @@ const SHC = () => {
         )
         .catch((err) => console.log("Error", err));
       getRooms();
+      setLightOn("");
     };
     lights();
   }, [lightOn]);
+
+  useEffect(() => {
+    if (
+      location1 == "Select location" ||
+      location1 == undefined ||
+      currentUser == undefined ||
+      doorLock == ""
+    ) {
+      return console.log("cannot process");
+    }
+    const doors = async () => {
+      const response = await axios
+        .put(
+          `http://localhost:8080/api/core/door`,
+          {
+            privilege: currentUser.privilege,
+            location: location1,
+            doorLock: doorLock,
+          },
+          {
+            data: {
+              privilege: currentUser.privilege,
+              location: location1,
+              doorLock: doorLock,
+            },
+          }
+        )
+        .catch((err) => console.log("Error", err));
+      getRooms();
+      setdoorLock("");
+    };
+    doors();
+  }, [doorLock]);
+
+  useEffect(() => {
+    if (
+      location1 == "Select location" ||
+      location1 == undefined ||
+      currentUser == undefined ||
+      windowOpen == ""
+    ) {
+      return console.log("cannot process");
+    }
+    const windows = async () => {
+      const response = await axios
+        .put(
+          `http://localhost:8080/api/core/window`,
+          {
+            userLocation: currentUser.location,
+            privilege: currentUser.privilege,
+            location: location2,
+            windowOpen: windowOpen,
+          },
+          {
+            data: {
+              userLocation: currentUser.location,
+              privilege: currentUser.privilege,
+              location: location2,
+              windowOpen: windowOpen,
+            },
+          }
+        )
+        .catch((err) => console.log("Error", err));
+      getRooms();
+      setWindowOpen("");
+    };
+    windows();
+  }, [windowOpen]);
 
   return (
     <>
@@ -103,6 +173,7 @@ const SHC = () => {
               className="my-1 mr-sm-2"
               id="selectBox1"
               custom
+              onChange={(e) => setLocation1(e.target.value)}
             >
               <option>Select location</option>
               {layout.map((newlocation) => (
@@ -111,12 +182,54 @@ const SHC = () => {
                 </option>
               ))}
             </Form.Control>
-            <Button size="ms" type="submit" variant="dark" className="my-1">
-              DoorOpen
+            <Button
+              variant="dark"
+              className="my-1"
+              onClick={() => setdoorLock("LOCKED")}
+            >
+              Lock Door
             </Button>
             &nbsp;
-            <Button type="submit" variant="dark" className="my-1">
-              DoorClosed
+            <Button
+              variant="dark"
+              className="my-1"
+              onClick={() => setdoorLock("UNLOCKED")}
+            >
+              Unlock Door
+            </Button>
+          </Form>
+        </Form.Group>
+        <Form.Group>
+          <Form inline>
+            <Form.Control
+              as="select"
+              className="my-1 mr-sm-2"
+              id="selectBox1"
+              custom
+              onChange={(e) => setLocation2(e.target.value)}
+            >
+              <option>Select location</option>
+              {layout.map((newlocation) => (
+                <option key={newlocation.id} value={newlocation.name}>
+                  {newlocation.name}
+                </option>
+              ))}
+            </Form.Control>
+            <Button
+              size="ms"
+              variant="dark"
+              className="my-1"
+              onClick={() => setWindowOpen("OPEN")}
+            >
+              Open Window
+            </Button>
+            &nbsp;
+            <Button
+              variant="dark"
+              className="my-1"
+              onClick={() => setWindowOpen("CLOSED")}
+            >
+              Close Window
             </Button>
           </Form>
         </Form.Group>

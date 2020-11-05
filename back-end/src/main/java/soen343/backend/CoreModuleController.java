@@ -26,4 +26,16 @@ public class CoreModuleController {
         simulationService.setLight(objectNode.get("userLocation").asText(),objectNode.get("privilege").asText(),objectNode.get("location").asText(),objectNode.get("lightOn").asBoolean());
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/core/door")
+    @ResponseStatus( HttpStatus.OK )
+    public void setDoor(@RequestBody ObjectNode objectNode){
+        simulationService.setDoor(objectNode.get("privilege").asText(),objectNode.get("location").asText(),objectNode.get("doorLock").asText());
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/core/window")
+    @ResponseStatus( HttpStatus.OK )
+    public void setWindow(@RequestBody ObjectNode objectNode){
+        simulationService.setWindow(objectNode.get("userLocation").asText(),objectNode.get("privilege").asText(),objectNode.get("location").asText(),objectNode.get("windowOpen").asText());
+    }
+
 }
