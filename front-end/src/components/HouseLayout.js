@@ -49,19 +49,24 @@ const HouseLayout = () => {
               <div
                 style={{ display: "table", width: "200px", marginLeft: "80px" }}
               >
-                {room.name !== "Outside" && (
+                  {room.lightOn == false && (
                   <img
-                    src={lightBulbOn}
-                    style={{ height: "60px", width: "60px", float: "left" }}
+                    src={lightBulbOff}
+                    style={{
+                      height: "60px",
+                      width: "60px",
+                      opacity: "100%",
+                      float: "left",
+                    }}
                   ></img>
                 )}
-                {room.name == "Outside" && (
+                 {room.lightOn == true && (
                   <img
                     src={lightBulbOn}
                     style={{
                       height: "60px",
                       width: "60px",
-                      opacity: "0%",
+                      opacity: "100%",
                       float: "left",
                     }}
                   ></img>
@@ -116,19 +121,6 @@ const HouseLayout = () => {
                     style={{
                       height: "60px",
                       width: "60px",
-                      marginTop: "",
-                      float: "left",
-                    }}
-                  ></img>
-                )}
-                {room.name == "Outside" && (
-                  <img
-                    src={doorOpen}
-                    style={{
-                      height: "60px",
-                      width: "60px",
-                      marginTop: "",
-                      opacity: "0%",
                       marginTop: "",
                       float: "left",
                     }}

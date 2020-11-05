@@ -15,7 +15,6 @@ import { UserContext } from "./UserProvider";
 import { LayoutContext } from "./LayoutProvider";
 import { AllUsersContext } from "./AllUsersProvider";
 import axios from "axios";
-import DateTimePicker from "react-datetime-picker";
 
 // Simulation to turn on/off simulation, edit user, display time/date/location
 const Simulation = () => {
@@ -31,7 +30,33 @@ const Simulation = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  /*
+  const [time, setTime] = useState([""]);
+  const [seconds, setSeconds] = useState(0);
 
+  // set interval to fetch time
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds((seconds) => seconds + 1);
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
+
+  //call getTime to get time from backend
+  useEffect(() => {
+    getTime();
+  }, [seconds]);
+
+  const getTime = async () => {
+    const response = await axios
+      .get("http://localhost:8080/api/core/dateAndTime")
+      .catch((err) => console.log("Error", err));
+      console.log("response" + response.data)
+    if (response) setTime(response.data);
+    console.log(time);
+    console.log(time)
+  };
+*/
   // tell the system if the system is on or off
   const changeState = () => {
     if (toggle == false) setToggle(true);
@@ -285,8 +310,7 @@ const Simulation = () => {
             ))}{" "}
           </span>
           <div>
-            <br />
-            <DateTimePicker onChange={onChange} value={value} />
+            
           </div>
         </div>
       </Container>
