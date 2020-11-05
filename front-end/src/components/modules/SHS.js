@@ -281,7 +281,7 @@ const SHS = () => {
               style={{ display: "inline" }}
               onClick={updateOutdoorTemperature}
             >
-              Apply
+              Submit
             </Button>
           </Form>
         </div>

@@ -3,6 +3,8 @@ package soen343.backend.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import soen343.backend.CoreModuleController;
+import soen343.backend.CoreModuleModel;
 import soen343.backend.console.Console;
 import soen343.backend.console.ConsoleService;
 import java.util.Iterator;
@@ -62,7 +64,7 @@ public class UserService {
 
     public User login(Long id){
         User loggedUser = userRepository.findById(id).orElse(null);
-        notifications.saveNotification(new Console("13:00","SHS","Logged in " + loggedUser.toString() + "."));
+        notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHS","Logged in User: ID " + loggedUser.getId() + " " + loggedUser.getName() + "."));
         return loggedUser;
     }
 
@@ -74,7 +76,7 @@ public class UserService {
             User changeLocation = userRepository.findById(id).orElse(null);
             changeLocation.setLocation(location);
             userRepository.save(changeLocation);
-            notifications.saveNotification(new Console("13:00","SHS","ID: " + changeLocation.getId() + " has moved to the " + changeLocation.getLocation() + "."));
+            notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHS","ID: " + changeLocation.getId() + " has moved to the " + changeLocation.getLocation() + "."));
             return true;
         }
     }
