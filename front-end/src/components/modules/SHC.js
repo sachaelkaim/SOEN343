@@ -3,7 +3,12 @@ import { UserContext } from "../UserProvider";
 import { LayoutContext } from "../LayoutProvider";
 import axios from "axios";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
+import {
+    Button,
+    Form
+} from "react-bootstrap";
 
+// SHC module
 const SHC = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const { layout, setLayout } = useContext(LayoutContext);
@@ -19,62 +24,49 @@ const SHC = () => {
     <>
       <h4 style={{ textAlign: "center" }}>Controls</h4>
       <br />
-      <h6 style={{ marginLeft: "230px" }}>
-        Light &nbsp;&nbsp;Window &nbsp;&nbsp;Door
-      </h6>
-      <div
-        style={{
-          fontWeight: "600",
-          fontSize: "17px",
-          borderTop: "1px solid black",
-          borderBottom: "1px solid black",
-        }}
-      >
-        {layout.map((item) => (
-          <div key={item.id} style={{ display: "inline" }}>
-            &nbsp;{" "}
-            <div style={{ display: "inline", position: "absolute" }}>
-              {item.name}
-            </div>{" "}
-            <div
-              style={{
-                paddingLeft: "210px",
-                display: "inline",
-                position: "relative",
-              }}
-            >
-              <BootstrapSwitchButton
-                checked={false}
-                size="xs"
-                onstyle="dark"
-                offstyle="light"
-                style="border"
-              />
-            </div>
-            &nbsp;{" "}
-            <div style={{ display: "inline" }}>
-              <BootstrapSwitchButton
-                checked={false}
-                size="xs"
-                onstyle="dark"
-                offstyle="light"
-                style="border"
-              />
-            </div>
-            &nbsp;{" "}
-            <div style={{ display: "inline" }}>
-              <BootstrapSwitchButton
-                checked={false}
-                size="xs"
-                onstyle="dark"
-                offstyle="light"
-                style="border"
-              />
-            </div>
-            <br />
-          </div>
-        ))}
-      </div>
+      <Form>
+              <Form.Group>
+                <Form inline>
+                  <Form.Control
+                    as="select"
+                    className="my-1 mr-sm-2"
+                    id="selectBox1"
+                    custom
+                  >
+                    <option>Select location</option>
+                    {layout.map((newlocation) => (
+                      <option key={newlocation.id} value={newlocation.name}>
+                        {newlocation.name}
+                      </option>
+                    ))}
+                  </Form.Control>
+                  <Button
+                  size="ms"
+                    type="submit"
+                    variant="dark"
+                    className="my-1"
+                  >
+                    Light
+                  </Button>
+                  &nbsp;
+                  <Button
+                    type="submit"
+                    variant="dark"
+                    className="my-1"
+                  >
+                    Door
+                  </Button>
+                  &nbsp;
+                  <Button
+                    type="submit"
+                    variant="dark"
+                    className="my-1"
+                  >
+                    Window
+                  </Button>
+                </Form>
+              </Form.Group>
+            </Form>
     </>
   );
 };

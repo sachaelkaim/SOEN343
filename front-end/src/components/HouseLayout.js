@@ -4,7 +4,8 @@ import { AllUsersContext } from "./AllUsersProvider";
 import { Navbar } from "react-bootstrap";
 import lightBulbOn from "../images/lightbulbon.png";
 import lightBulbOff from "../images/lightbulboff.png";
-import door from "../images/door.png";
+import doorOpen from "../images/door.png";
+import doorClosed from "../images/doorclosed.png";
 import block from "../images/block.png";
 import windowOpen from "../images/windowopen.png";
 import windowClose from "../images/windowclosed.png";
@@ -41,7 +42,8 @@ const HouseLayout = () => {
                 height: "350px",
               }}
             >
-              {room.name}
+              {room.name} <br/>
+              <div style={{fontSize:"15px"}}>temperature: {room.temperature}C</div>
               <br />
               <br />
               <div
@@ -97,9 +99,20 @@ const HouseLayout = () => {
                     }}
                   ></img>
                 )}
-                {room.name !== "Outside" && (
+                {room.doorState == "UNLOCKED" && (
                   <img
-                    src={door}
+                    src={doorOpen}
+                    style={{
+                      height: "60px",
+                      width: "60px",
+                      marginTop: "",
+                      float: "left",
+                    }}
+                  ></img>
+                )}
+                  {room.doorState == "LOCKED" && (
+                  <img
+                    src={doorClosed}
                     style={{
                       height: "60px",
                       width: "60px",
@@ -110,7 +123,7 @@ const HouseLayout = () => {
                 )}
                 {room.name == "Outside" && (
                   <img
-                    src={door}
+                    src={doorOpen}
                     style={{
                       height: "60px",
                       width: "60px",

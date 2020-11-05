@@ -35,6 +35,12 @@ public class UserController {
        userService.addUser(name);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/users/login/{id}")
+    @ResponseStatus( HttpStatus.OK )
+    public User login(@PathVariable Long id){
+        return userService.login(id);
+    }
+
     @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}")
     @ResponseStatus( HttpStatus.OK )
     public void editUser(@RequestBody User user, @PathVariable String id) {

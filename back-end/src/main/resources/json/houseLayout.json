@@ -38,5 +38,12 @@
       "doorState": "UNLOCKED",
       "lightOn": false,
       "temperature": 23.00
+    },
+    {
+    "name": "Backyard",
+    "windowState": "CLOSED",
+    "doorState": "UNLOCKED",
+    "lightOn": false,
+    "temperature": 23.00
     }
 ]
