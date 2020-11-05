@@ -19,10 +19,12 @@ const SHS = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const handleCloseUserMenu = () => setShowUserMenu(false);
   // const id=0;
-  const [userToEdit, setUserToEdit] = useState();
+  const[userToEdit, setUserToEdit] = useState([]);
+  const [idToEdit, setidToEdit] = useState();
   const [desiredName, setDesiredName] = useState();
   const [desiredPrivilege, setDesiredPrivilege] = useState();
   const [desiredLocation, setDesiredLocation] = useState();
+  const [userToEditFormData, setUserToEditFormData] = useState([]);
 
   // retrieve list of all profiles
   const getUsers = async () => {
@@ -77,17 +79,6 @@ const SHS = () => {
     if (response) getUsers();
   };
 
-  //edit a profile
-  const editUser = async () => {
-    const response = await axios
-      .put(`http://localhost:8080/api/users/${userToEdit.id}`,
-      {
-        
-      })
-      .catch((err) => console.log("Error", err));
-    if (response) getUsers();
-  };
-
   // retrieve list of all rooms
   const getRooms = async () => {
     const response = await axios
@@ -102,9 +93,37 @@ const SHS = () => {
   };
 
   //Pass id to editing user menu
-  const handleShowUserMenu = async () => {
+  const handleShowUserMenu = async (e,item) => {
+    e.preventDefault();
+    console.log(e);
+    console.log(item);
+    setUserToEdit(item);
+    setidToEdit(item.id);
+    // const data = userToEditFormData;
+    // console.log(data);
     if (showUserMenu == false){
       setShowUserMenu(true);
+    }
+  };
+
+  //edit a profile
+  const editUser = async (e) => {
+    e.preventDefault();
+    console.log(idToEdit);
+    console.log("Desired name is "+desiredName);
+    console.log("Current Name is "+userToEdit.name);
+    console.log(desiredName == userToEdit.name);
+    if (desiredName!= undefined && desiredName != userToEdit.name){
+      const response = await axios
+      .post(`http://localhost:8080/api/users/${idToEdit}`,
+      {
+        id: idToEdit,
+        name: desiredName,
+        location: userToEdit.location,
+        privilege: userToEdit.privilege
+      })
+      .catch((err) => console.log("Error", err));
+    if (response) getUsers();
     }
   };
 
@@ -214,8 +233,8 @@ const SHS = () => {
               >
                 Delete
               </Button>{" "}
-              <Button variant="light" size="sm" style={{ fontSize: "10px" }} onClick={handleShowUserMenu()}>
-                Edit
+              <Button variant="light" size="sm" style={{ fontSize: "10px" }} onClick={(e) => handleShowUserMenu(e,item)}>
+                Edit {item.id}
               </Button>
           { <Modal show={showUserMenu} onHide={handleCloseUserMenu}>
           <Modal.Header closeButton>
@@ -223,20 +242,19 @@ const SHS = () => {
           </Modal.Header>
           <Modal.Body>
             <h4>Change User Details</h4>
-            <Form>
+            <Form inline>
               <Form.Group>
-                <Form inline>
                   <Form.Label className="my-1 mr-2"></Form.Label>
                   <Form.Control
-                    as="text"
-                    onChange= {(e)=>setDesiredName(e.value)}
+                    as="textarea"
+                    placeholder="Enter new name"
+                    onChange= {(e) => setDesiredName(e.target.value)}
                   >
                   </Form.Control>
                   <Form.Control
                     as="select"
                     className="my-1 mr-sm-2"
-                    id="selectBox"
-                    onChange = {(e) => setDesiredPrivilege(e.value)}
+                    onChange = {(e) => setDesiredPrivilege(e.target.value)}
                   >
                     <option value="0">0</option>
                     <option value="1">1</option>
@@ -251,7 +269,6 @@ const SHS = () => {
                   >
                     Submit
                   </Button>
-                </Form>
               </Form.Group>
             </Form>
           </Modal.Body>
