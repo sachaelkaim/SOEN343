@@ -29,7 +29,7 @@ const SHC = () => {
       location == "Select location" ||
       location == undefined ||
       currentUser == undefined ||
-      lightOn == ""
+      lightOn == null
     ) {
       return console.log("cannot process");
     }
@@ -54,7 +54,7 @@ const SHC = () => {
         )
         .catch((err) => console.log("Error", err));
       getRooms();
-      setLightOn("");
+      setLightOn(null);
     };
     lights();
   }, [lightOn]);
@@ -94,8 +94,8 @@ const SHC = () => {
 
   useEffect(() => {
     if (
-      location1 == "Select location" ||
-      location1 == undefined ||
+      location2 == "Select location" ||
+      location2 == undefined ||
       currentUser == undefined ||
       windowOpen == ""
     ) {
