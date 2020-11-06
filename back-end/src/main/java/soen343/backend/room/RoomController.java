@@ -1,24 +1,15 @@
 package soen343.backend.room;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import soen343.backend.state.StateService;
-import soen343.backend.user.User;
+
 
 @RestController
 @CrossOrigin("*") //to unblock request to/from react
 @RequestMapping("api/")
 public class RoomController {
-
-    @Autowired
-    private StateService state;
-
-    @JsonSerialize
-    public class EmptyJsonResponse { }
 
     @Autowired
     private RoomService roomService;
@@ -28,40 +19,45 @@ public class RoomController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/rooms")
+    @ResponseStatus( HttpStatus.OK )
     public Iterable<Room> getAllRooms() {
-        if(state.getCurrentState()){ //if simulation is on, send house layout
-            return roomService.getAllRooms();
-        }
-        else
-            return (Iterable<Room>) new ResponseEntity(new EmptyJsonResponse(), HttpStatus.OK);
+        return roomService.getAllRooms();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/rooms/{name}")
+    @ResponseStatus( HttpStatus.OK )
     public Room getRoom(@RequestHeader(value = "name") String name){
         return roomService.getRoom(name);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/rooms")
+    @ResponseStatus( HttpStatus.OK )
     public void addRoom(@RequestBody Room room){
         roomService.addRoom(room);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/rooms/{name}")
+    @ResponseStatus( HttpStatus.OK )
     public void editRoom(@RequestBody Room room, @PathVariable String name) {
         roomService.editRoom(name, room);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/rooms/{name}")
+    @ResponseStatus( HttpStatus.OK )
     public void deleteRoom(@PathVariable String name) {
-         roomService.deleteRoom(name);
+        roomService.deleteRoom(name);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/rooms/blockLocation/")
+    @RequestMapping(method = RequestMethod.PUT, value = "/rooms/blockLocation")
+    @ResponseStatus( HttpStatus.OK )
     public void blockWindow(@RequestBody ObjectNode objectNode){
-        String location = objectNode.get("location").asText();
-        Room tempRoom = roomService.getRoom(location);
-        tempRoom.setWindowState(objectNode.get("windowState").asText());
-        roomService.editRoom(location, tempRoom);
+        roomService.blockWindow(objectNode.get("location").asText(),objectNode.get("windowState").asText());
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/rooms/outdoorTemperature")
+    @ResponseStatus( HttpStatus.OK )
+    public void setOutdoorTemperature(@RequestBody ObjectNode objectNode){
+        roomService.setOutdoorTemperature(objectNode.get("temperature").asDouble());
     }
 
 }

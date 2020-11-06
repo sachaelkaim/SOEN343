@@ -15,7 +15,6 @@ import { UserContext } from "./UserProvider";
 import { LayoutContext } from "./LayoutProvider";
 import { AllUsersContext } from "./AllUsersProvider";
 import axios from "axios";
-import DateTimePicker from "react-datetime-picker";
 
 // Simulation to turn on/off simulation, edit user, display time/date/location
 const Simulation = () => {
@@ -23,7 +22,7 @@ const Simulation = () => {
   const { layout, setLayout } = useContext(LayoutContext);
   const [toggle, setToggle] = useState(true);
   const [state, setState] = useState();
-  const [changeUserId, setchangeUserId] = useState("");
+  const [changeUserId, setchangeUserId] = useState("Select ID");
   const [changeUserLocation, setChangeUserLocation] = useState("");
   const { users, setUsers } = useContext(AllUsersContext);
   const [blockLocation, setBlockLocation] = useState([]);
@@ -31,7 +30,33 @@ const Simulation = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  /*
+  const [time, setTime] = useState([""]);
+  const [seconds, setSeconds] = useState(0);
 
+  // set interval to fetch time
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds((seconds) => seconds + 1);
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
+
+  //call getTime to get time from backend
+  useEffect(() => {
+    getTime();
+  }, [seconds]);
+
+  const getTime = async () => {
+    const response = await axios
+      .get("http://localhost:8080/api/core/dateAndTime")
+      .catch((err) => console.log("Error", err));
+      console.log("response" + response.data)
+    if (response) setTime(response.data);
+    console.log(time);
+    console.log(time)
+  };
+*/
   // tell the system if the system is on or off
   const changeState = () => {
     if (toggle == false) setToggle(true);
@@ -76,7 +101,7 @@ const Simulation = () => {
     const blockWindow = async () => {
       const response1 = await axios
         .put(
-          `http://localhost:8080/api/rooms/blockLocation/`,
+          `http://localhost:8080/api/rooms/blockLocation`,
           { windowState: "BLOCKED", location: blockLocation },
           {
             data: {
@@ -124,9 +149,9 @@ const Simulation = () => {
       <Container
         style={{
           border: "1px solid black",
-          height: "45rem",
+          height: "48rem",
           borderRadius: "1rem",
-          margin: "1rem",
+          marginTop: "2rem",
           textAlign: "center",
         }}
       >
@@ -267,7 +292,7 @@ const Simulation = () => {
         </div>
         <div style={{ fontWeight: "600" }}>
           Outside Temperature.{" "}
-          <span style={{ color: "blue" }}>
+          <span style={{ color: "#1E90FF" }}>
             {" "}
             {layout.map((item) => (
               <span key={item.name}>
@@ -285,8 +310,7 @@ const Simulation = () => {
             ))}{" "}
           </span>
           <div>
-            <br />
-            <DateTimePicker onChange={onChange} value={value} />
+            
           </div>
         </div>
       </Container>

@@ -1,9 +1,15 @@
 package soen343.backend;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 
 public class CoreModuleModel {
+
 	//Static to be accessed anywhere
 	private static LocalDateTime simulationDateTime;
 	private static String date;
@@ -23,7 +29,7 @@ public class CoreModuleModel {
 	{
 		CoreModuleModel.simulationDateTime = simulationDateTime;
 		setDate(simulationDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
-		setTime(simulationDateTime.format(DateTimeFormatter.ISO_LOCAL_TIME));
+		setTime(LocalTime.now().truncatedTo(ChronoUnit.SECONDS).format(DateTimeFormatter.ISO_LOCAL_TIME));
 	}
 
 	public static String getDate() {

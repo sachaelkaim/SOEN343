@@ -44,7 +44,7 @@ const SHS = () => {
     e.preventDefault(); // prevent refresh on submit
     const id = formData.id;
     const response = await axios
-      .get(`http://localhost:8080/api/users/${id}`)
+      .get(`http://localhost:8080/api/users/login/${id}`)
       .catch((err) => console.log("Error", err));
     if (response && response.data) setCurrentUser(response.data);
     getUsers();
@@ -113,9 +113,14 @@ const SHS = () => {
     console.log("Desired name is "+desiredName);
     console.log("Current Name is "+userToEdit.name);
     console.log(desiredName == userToEdit.name);
-    if (desiredName!= undefined && desiredName != userToEdit.name){
-      const response = await axios
-      .post(`http://localhost:8080/api/users/${idToEdit}`,
+    if (desiredName == undefined){
+      setDesiredName(userToEdit.name);
+    }
+    if (desiredPrivilege == undefined){
+      setDesiredPrivilege(userToEdit.privilege);
+    }
+    const response = await axios
+      .put(`http://localhost:8080/api/users/${idToEdit}`,
       {
         id: idToEdit,
         name: desiredName,
@@ -124,7 +129,6 @@ const SHS = () => {
       })
       .catch((err) => console.log("Error", err));
     if (response) getUsers();
-    }
   };
 
   // triggers when currentuser sets a new location and updates location
@@ -165,21 +169,25 @@ const SHS = () => {
 
   // update outdoor temperature
   const updateOutdoorTemperature = async (e) => {
+    console.log(newTemperature.id)
     e.preventDefault();
     const response = await axios
-      .put("http://localhost:8080/api/rooms/Outside", {
-        name: "Outside",
-        WindowState: null,
-        DoorState: null,
-        LightOn: false,
-        temperature: newTemperature.id,
-      })
+      .put("http://localhost:8080/api/rooms/outdoorTemperature", 
+      { temperature: newTemperature.id },
+      {
+        data: {
+          temperature: newTemperature.id
+        },
+      }
+      )
       .catch((err) => console.log("Error", err));
     getRooms();
   };
 
   return (
     <>
+      <h4 style={{ textAlign: "center" }}>Simulator</h4>
+      <br />
       <div style={{ textAlign: "center" }}>
         <Form onSubmit={logIn}>
           <Form.Group controlId="formBasicPassword">
@@ -191,9 +199,23 @@ const SHS = () => {
               onChange={handleChange}
             />
           </Form.Group>
-          <Button variant="dark" size="" type="submit">
+          <Button variant="dark" type="submit">
             Log in
           </Button>
+          &nbsp;
+          <DropdownButton
+            id="dropdown-basic-button"
+            title="Set location"
+            onSelect={handleSelect}
+            variant="dark"
+            style={{ display: "inline" }}
+          >
+            {layout.map((item) => (
+              <div key={item.id}>
+                <Dropdown.Item eventKey={item.name}>{item.name}</Dropdown.Item>
+              </div>
+            ))}
+          </DropdownButton>
         </Form>
         <br />
         <div
@@ -282,7 +304,7 @@ const SHS = () => {
           ))}
         </div>
         <Form>
-          <Button variant="dark" size="sm" onClick={addUser}>
+          <Button variant="dark" onClick={addUser}>
             Add Profile
           </Button>{" "}
           <div style={{ fontWeight: "500" }}>
@@ -329,20 +351,7 @@ const SHS = () => {
           </div>
         </Form>
         <br />
-        <DropdownButton
-          id="dropdown-basic-button"
-          title="Set location"
-          size="sm"
-          onSelect={handleSelect}
-          variant="dark"
-        >
-          {layout.map((item) => (
-            <div key={item.id}>
-              <Dropdown.Item eventKey={item.name}>{item.name}</Dropdown.Item>
-            </div>
-          ))}
-        </DropdownButton>
-
+        <br />
         <span style={{ fontWeight: "600" }}>Outside Temperature</span>
         <div>
           <Form>
@@ -358,12 +367,11 @@ const SHS = () => {
             &nbsp;
             <Button
               variant="dark"
-              size="sm"
               type="submit"
               style={{ display: "inline" }}
               onClick={updateOutdoorTemperature}
             >
-              Apply
+              Submit
             </Button>
           </Form>
         </div>

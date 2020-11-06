@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
 
 @EnableScheduling
 public class SimulationMasterController{
@@ -16,7 +18,9 @@ public class SimulationMasterController{
 	private static HeatingModuleModel heatingModel;
 	private static CoreModuleModel coreModel;
 	private static LayoutModuleModel layoutModel;
-	
+
+
+
 	SimulationMasterController() {
 		setIsSimulationRunning(true);
 		
@@ -87,12 +91,12 @@ public class SimulationMasterController{
 			System.out.println("Time is "+getSimulationDateTimeString());
 		}
 	}
-	
+
 	public static void updateSecurityModule() {
 		//Call SecurityModuleModel or the controller?
 		while (SecurityModuleModel.isAwayMode())
 		{
-			//Check for intruders using sensors and motion detectors
+			System.out.println("im in updatesecuritymodule");
 		}
 	}
 	
