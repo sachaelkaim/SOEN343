@@ -104,7 +104,6 @@ public class UserService {
     	} catch (IOException e) {
             e.printStackTrace();
         }
-        
     }
 
     public void addParent(){
@@ -150,20 +149,49 @@ public class UserService {
 
     public void deleteUser(Long id){
         userRepository.deleteById(id);
+        Iterable<User> updatedUsersIter = userRepository.findAll();
+		List<User> updatedUsers = StreamSupport
+				  .stream(updatedUsersIter.spliterator(), false)
+				  .collect(Collectors.toList());
+		try 
+    	{
+    		usersFile = new File("./src/main/resources/json/users.json");
+    		mapper.writeValue(usersFile, updatedUsers);
+    	} catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addUser(String userName){
-        if(userName.equals("parent")){
-            userRepository.save(new User( "parent", "Outside", "0"));
+        User user;
+    	if(userName.equals("parent")){
+    		user = new User( "parent", "Outside", "0");
+            userRepository.save(user);
         }
         else if(userName.equals("child")){
-            userRepository.save(new User( "child", "Outside", "1"));
+        	user = new User( "child", "Outside", "1");
+            userRepository.save(user);
         }
         else if(userName.equals("guest")){
-            userRepository.save(new User( "guest", "Outside", "2"));
+        	user = new User( "guest", "Outside", "2");
+            userRepository.save(user);
         }
         else{
-            userRepository.save(new User( "stranger", "Outside", "3"));
+        	user = new User( "stranger", "Outside", "3");
+            userRepository.save(user);
+        }
+    	Iterable<User> previousUsersIter = userRepository.findAll();
+		List<User> previousUsers = StreamSupport
+				  .stream(previousUsersIter.spliterator(), false)
+				  .collect(Collectors.toList());
+		previousUsers.add(user);
+		
+		try 
+    	{
+    		usersFile = new File("./src/main/resources/json/users.json");
+    		mapper.writeValue(usersFile, previousUsers);
+    	} catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

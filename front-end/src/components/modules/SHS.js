@@ -109,10 +109,7 @@ const SHS = () => {
   //edit a profile
   const editUser = async (e) => {
     e.preventDefault();
-    console.log(idToEdit);
-    console.log("Desired name is "+desiredName);
-    console.log("Current Name is "+userToEdit.name);
-    console.log(desiredName == userToEdit.name);
+    console.log(userToEdit);
     if (desiredName == undefined){
       setDesiredName(userToEdit.name);
     }
