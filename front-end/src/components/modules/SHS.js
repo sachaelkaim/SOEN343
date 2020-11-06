@@ -122,10 +122,13 @@ const SHS = () => {
         id: idToEdit,
         name: desiredName,
         location: userToEdit.location,
-        privilege: userToEdit.privilege
+        privilege: desiredPrivilege
       })
       .catch((err) => console.log("Error", err));
-    if (response) getUsers();
+    if (response)
+      getUsers();
+    if (response && idToEdit == currentUser.id)
+      UpdateProfile();
   };
 
   // triggers when currentuser sets a new location and updates location
