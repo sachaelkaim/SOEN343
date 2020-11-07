@@ -130,14 +130,19 @@ public class SimulationService {
 
     /* SHP FEATURES*/
 
-    public void setAwayMode(boolean awayMode){
+    public void setAwayMode(boolean awayMode, String userPrivilege){
         intruderPresent = false;
         if(state.getCurrentState())
             if(awayMode){
                 if(users.allUsersOutside()){
-                    rooms.closeDoorsWindows();
-                    notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHP","Away mode is set."));
-                    securityModel.setAwayMode(true);
+                    if(userPrivilege.equals("2") || userPrivilege.equals("3")){
+                        notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHP","Away mode cannot be set by Stranger/Guest"));
+                    }
+                    else{
+                        rooms.closeDoorsWindows();
+                        notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHP","Away mode is set."));
+                        securityModel.setAwayMode(true);
+                    }
                 }
                 else{
                     notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHP","Away mode cannot be set. All users are not outside."));
@@ -154,7 +159,7 @@ public class SimulationService {
         if (state.getCurrentState()) {
             if (securityModel.isAwayMode() && !intruderPresent) {
                 if (!users.allUsersOutside()) {
-                    notifications.saveNotification(new Console(CoreModuleModel.getTime(), "SHP", "There are intruders..."));
+                    notifications.saveNotification(new Console(CoreModuleModel.getTime(), "SHC", "There are intruders..."));
                     intruderPresent = true;
                 }
             }

@@ -78,8 +78,11 @@ public class RoomService {
         Iterator<Room> iter = rooms.iterator();
         while(iter.hasNext()){
             Room room = iter.next();
-            room.setWindowState("CLOSED");
-            room.setDoorState("LOCKED");
+            if(!"Outside".equals(room.getName()) && !"Backyard".equals(room.getName())){
+                System.out.print(room.getName());
+                room.setWindowState("CLOSED");
+                room.setDoorState("LOCKED");
+            }
         }
         roomRepository.saveAll(rooms);
     }

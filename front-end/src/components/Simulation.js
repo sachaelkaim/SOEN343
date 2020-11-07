@@ -234,7 +234,7 @@ const Simulation = () => {
             >
               {layout.map((item) => (
                 <div key={item.id}>
-                  {item.name !== "Outside" && (
+                  {item.name !== "Outside" && item.name !== "Backyard" &&(
                     <Dropdown.Item eventKey={item.name}>
                       {item.name} Window
                     </Dropdown.Item>
