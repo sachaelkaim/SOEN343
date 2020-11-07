@@ -274,6 +274,7 @@ const SHS = () => {
               &nbsp;
               {item.privilege}
               &nbsp;
+              <div>Permissions:({getPermissions(item.privilege,item.location)})</div>
               <Button
                 variant="light"
                 size="sm"
@@ -377,52 +378,8 @@ const SHS = () => {
             </div>
           </div>
         </Form>
-        <br />
-        <div
-          style={{
-            fontSize: "12px",
-            overflowY: "scroll",
-            height: "150px",
-            borderTop: "1px solid black",
-            borderBottom: "1px solid black",
-          }}
-        >
-          {users.map((item) => (
-            <div key={item.id} style={{ fontSize: "15ypx", fontWeight: "600" }}>
-              <span
-                style={{
-                  fontWeight: "600",
-                  color: "#1E90FF",
-                  fontStyle: "italic",
-                }}
-              >
-                ID {item.id}
-              </span>
-              <span> Name: </span>
-              {item.name}
-              &nbsp;
-              <span> Location:</span> {item.location}
-              &nbsp;
-              <span s> Privilege:</span>
-              &nbsp;
-              {item.privilege}
-              &nbsp;
-              <div>Permissions:({getPermissions(item.privilege,item.location)})</div>
-              <Button
-                variant="light"
-                style={{ fontSize: "10px" }}
-                onClick={() => deleteUser(item.id)}
-              >
-                Delete
-              </Button>{" "}
-              <Button variant="light" style={{ fontSize: "10px" }}>
-                Edit
-              </Button>
-            </div>
-          ))}
-        </div>
-
-        <br />
+        <br/>
+        <br/>
         <span style={{ fontWeight: "600" }}>Outside Temperature</span>
         <div>
           <Form>
