@@ -23,7 +23,7 @@ const SHC = () => {
     if (response) setLayout(response.data);
   };
 
-  //
+  // change light state
   useEffect(() => {
     if (
       location == "Select location" ||
@@ -59,6 +59,7 @@ const SHC = () => {
     lights();
   }, [lightOn]);
 
+  // change door state
   useEffect(() => {
     if (
       location1 == "Select location" ||
@@ -92,6 +93,7 @@ const SHC = () => {
     doors();
   }, [doorLock]);
 
+  // change window state
   useEffect(() => {
     if (
       location2 == "Select location" ||
