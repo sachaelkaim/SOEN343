@@ -104,7 +104,7 @@ const HouseLayout = () => {
                     }}
                   ></img>
                 )}
-                {room.doorState == "UNLOCKED" && (
+                {room.doorState == "UNLOCKED" &&(
                   <img
                     src={doorOpen}
                     style={{

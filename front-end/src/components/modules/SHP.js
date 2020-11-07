@@ -23,14 +23,20 @@ const SHP = () => {
 
    // send awaystate to backend
    const changeState = async () => {
+    if (
+      currentUser == undefined 
+    ) {
+      return console.log("cannot process");
+    }
     if (awayModeToggle == false) setawayModeToggle(true);
     else setawayModeToggle(false);
     const response = await axios
       .post("http://localhost:8080/api/security/setAwayMode", 
-      { awayMode: awayModeToggle },
+      { awayMode: awayModeToggle, userPrivilege: currentUser.privilege },
       {
         data: {
-            awayMode: awayModeToggle
+            awayMode: awayModeToggle,
+            userPrivilege: currentUser.privilege
         },
       }
       )
