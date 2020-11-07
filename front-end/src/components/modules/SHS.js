@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Button, Form, DropdownButton, Dropdown } from "react-bootstrap";
+import { Modal } from 'react-bootstrap';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { UserContext } from "../UserProvider";
@@ -15,6 +16,15 @@ const SHS = () => {
   const [newLocation, setNewLocation] = useState("");
   const { layout, setLayout } = useContext(LayoutContext);
   const [newTemperature, setNewTemperature] = useState([]);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const handleCloseUserMenu = () => setShowUserMenu(false);
+  // const id=0;
+  const[userToEdit, setUserToEdit] = useState([]);
+  const [idToEdit, setidToEdit] = useState();
+  const [desiredName, setDesiredName] = useState();
+  const [desiredPrivilege, setDesiredPrivilege] = useState();
+  const [desiredLocation, setDesiredLocation] = useState();
+  const [userToEditFormData, setUserToEditFormData] = useState([]);
 
   // retrieve list of all profiles
   const getUsers = async () => {
@@ -34,7 +44,7 @@ const SHS = () => {
     e.preventDefault(); // prevent refresh on submit
     const id = formData.id;
     const response = await axios
-      .get(`http://localhost:8080/api/users/${id}`)
+      .get(`http://localhost:8080/api/users/login/${id}`)
       .catch((err) => console.log("Error", err));
     if (response && response.data) setCurrentUser(response.data);
     getUsers();
@@ -82,6 +92,45 @@ const SHS = () => {
     setNewLocation(e);
   };
 
+  //Pass id to editing user menu
+  const handleShowUserMenu = async (e,item) => {
+    e.preventDefault();
+    console.log(e);
+    console.log(item);
+    setUserToEdit(item);
+    setidToEdit(item.id);
+    // const data = userToEditFormData;
+    // console.log(data);
+    if (showUserMenu == false){
+      setShowUserMenu(true);
+    }
+  };
+
+  //edit a profile
+  const editUser = async (e) => {
+    e.preventDefault();
+    console.log(userToEdit);
+    if (desiredName == undefined){
+      setDesiredName(userToEdit.name);
+    }
+    if (desiredPrivilege == undefined){
+      setDesiredPrivilege(userToEdit.privilege);
+    }
+    const response = await axios
+      .put(`http://localhost:8080/api/users/${idToEdit}`,
+      {
+        id: idToEdit,
+        name: desiredName,
+        location: userToEdit.location,
+        privilege: desiredPrivilege
+      })
+      .catch((err) => console.log("Error", err));
+    if (response)
+      getUsers();
+    if (response && idToEdit == currentUser.id)
+      UpdateProfile();
+  };
+
   // triggers when currentuser sets a new location and updates location
   useEffect(() => {
     if (currentUser == undefined || currentUser == "") {
@@ -123,7 +172,7 @@ const SHS = () => {
     console.log(newTemperature.id)
     e.preventDefault();
     const response = await axios
-      .put("http://localhost:8080/api/rooms/outdoorTemperature/", 
+      .put("http://localhost:8080/api/rooms/outdoorTemperature", 
       { temperature: newTemperature.id },
       {
         data: {
@@ -150,14 +199,13 @@ const SHS = () => {
               onChange={handleChange}
             />
           </Form.Group>
-          <Button variant="dark" size="sm" type="submit">
+          <Button variant="dark" type="submit">
             Log in
           </Button>
           &nbsp;
           <DropdownButton
             id="dropdown-basic-button"
             title="Set location"
-            size="sm"
             onSelect={handleSelect}
             variant="dark"
             style={{ display: "inline" }}
@@ -170,9 +218,93 @@ const SHS = () => {
           </DropdownButton>
         </Form>
         <br />
-
+        <div
+          style={{
+            fontSize: "12px",
+            overflowY: "scroll",
+            height: "150px",
+            borderTop: "1px solid black",
+            borderBottom: "1px solid black",
+          }}
+        >
+          {users.map((item) => (
+            <div key={item.id} style={{ fontSize: "17px", fontWeight: "600" }}>
+              <span
+                style={{
+                  fontWeight: "600",
+                  color: "blue",
+                  fontStyle: "italic",
+                }}
+              >
+                ID {item.id}
+              </span>
+              <span> Name: </span>
+              {item.name}
+              &nbsp;
+              <span> Location:</span> {item.location}
+              &nbsp;
+              <span s> Privilege:</span>
+              &nbsp;
+              {item.privilege}
+              &nbsp;
+              <Button
+                variant="light"
+                size="sm"
+                style={{ fontSize: "10px" }}
+                onClick={() => deleteUser(item.id)}
+              >
+                Delete
+              </Button>{" "}
+              <Button variant="light" size="sm" style={{ fontSize: "10px" }} onClick={(e) => handleShowUserMenu(e,item)}>
+                Edit {item.id}
+              </Button>
+          { <Modal show={showUserMenu} onHide={handleCloseUserMenu}>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h4>Change User Details</h4>
+            <Form inline>
+              <Form.Group>
+                  <Form.Label className="my-1 mr-2"></Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    placeholder="Enter new name"
+                    onChange= {(e) => setDesiredName(e.target.value)}
+                  >
+                  </Form.Control>
+                  <Form.Control
+                    as="select"
+                    className="my-1 mr-sm-2"
+                    onChange = {(e) => setDesiredPrivilege(e.target.value)}
+                  >
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </Form.Control>
+                  <Button
+                    type="submit"
+                    variant="dark"
+                    className="my-1"
+                    onClick={editUser}
+                  >
+                    Submit
+                  </Button>
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="dark" onClick={handleCloseUserMenu}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>}
+            </div>
+          ))}
+        </div>
         <Form>
-          <Button variant="dark" size="sm" onClick={addUser}>
+          <Button variant="dark" onClick={addUser}>
             Add Profile
           </Button>{" "}
           <div style={{ fontWeight: "500" }}>
@@ -219,50 +351,6 @@ const SHS = () => {
           </div>
         </Form>
         <br />
-        <div
-          style={{
-            fontSize: "12px",
-            overflowY: "scroll",
-            height: "150px",
-            borderTop: "1px solid black",
-            borderBottom: "1px solid black",
-          }}
-        >
-          {users.map((item) => (
-            <div key={item.id} style={{ fontSize: "15ypx", fontWeight: "600" }}>
-              <span
-                style={{
-                  fontWeight: "600",
-                  color: "#1E90FF",
-                  fontStyle: "italic",
-                }}
-              >
-                ID {item.id}
-              </span>
-              <span> Name: </span>
-              {item.name}
-              &nbsp;
-              <span> Location:</span> {item.location}
-              &nbsp;
-              <span s> Privilege:</span>
-              &nbsp;
-              {item.privilege}
-              &nbsp;
-              <Button
-                variant="light"
-                size="sm"
-                style={{ fontSize: "10px" }}
-                onClick={() => deleteUser(item.id)}
-              >
-                Delete
-              </Button>{" "}
-              <Button variant="light" size="sm" style={{ fontSize: "10px" }}>
-                Edit
-              </Button>
-            </div>
-          ))}
-        </div>
-
         <br />
         <span style={{ fontWeight: "600" }}>Outside Temperature</span>
         <div>
@@ -279,12 +367,11 @@ const SHS = () => {
             &nbsp;
             <Button
               variant="dark"
-              size="sm"
               type="submit"
               style={{ display: "inline" }}
               onClick={updateOutdoorTemperature}
             >
-              Apply
+              Submit
             </Button>
           </Form>
         </div>

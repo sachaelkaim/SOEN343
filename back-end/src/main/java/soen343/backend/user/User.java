@@ -20,7 +20,6 @@ public class User {
 
     public User( String name, String location, String privilege) {
         super();
-
         this.name = name;
         this.location = location;
         this.privilege = privilege;
@@ -58,4 +57,13 @@ public class User {
         this.privilege = privilege;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                ", privilege='" + privilege + '\'' +
+                '}';
+    }
 }

@@ -4,6 +4,8 @@ import HouseLayout from "./HouseLayout";
 import Simulation from "./Simulation";
 import SHS from "./modules/SHS";
 import SHC from "./modules/SHC";
+import SHP from "./modules/SHP";
+import Console from "./modules/Console";
 import AllUsersProvider from "./AllUsersProvider";
 
 // Dashboard contains the SHS/simulation profile/layout
@@ -32,7 +34,7 @@ const Dashboard = () => {
                     }}
                   >
                     <Tabs
-                      defaultActiveKey="profile"
+                      defaultActiveKey="SHS"
                       style={{ fontWeight: "600" }}
                     >
                       <Tab eventKey="SHS" title="SHS">
@@ -41,7 +43,9 @@ const Dashboard = () => {
                       <Tab eventKey="SHC" title="SHC">
                         <SHC />
                       </Tab>
-                      <Tab eventKey="SHP" title="SHP"></Tab>
+                      <Tab eventKey="SHP" title="SHP">
+                        <SHP />
+                      </Tab>
                       <Tab eventKey="SHH" title="SHH"></Tab>
                     </Tabs>
                   </div>
@@ -61,13 +65,16 @@ const Dashboard = () => {
               </Row>
               <Row>
                 <Col xs={12} md={12} lg={12}>
-                  <h4
+                  <div
                     style={{
                       border: "1px solid black",
                       height: "11rem",
                       marginTop: "1rem",
+                      overflowY: "scroll",
                     }}
-                  ></h4>
+                  >
+                    <Console />
+                  </div>
                 </Col>
               </Row>
             </Col>
