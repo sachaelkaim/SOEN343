@@ -2,6 +2,9 @@
 [
     {
       "name": "Outside",
+      "windowState": "CLOSED",
+      "doorState": "UNLOCKED",
+      "lightOn": false,
       "temperature": 23.00
     },
     {
