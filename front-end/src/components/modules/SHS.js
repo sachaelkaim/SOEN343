@@ -133,7 +133,7 @@ const SHS = () => {
     else{
       if(location=="Outside")
       {
-        return "permissions is revoked"
+        return "All permissions are revoked"
       }
       if(privilege==1)
         return Permissions[privilege].join(",");
