@@ -79,7 +79,6 @@ public class RoomService {
         while(iter.hasNext()){
             Room room = iter.next();
             if(!"Outside".equals(room.getName()) && !"Backyard".equals(room.getName())){
-                System.out.print(room.getName());
                 room.setWindowState("CLOSED");
                 room.setDoorState("LOCKED");
             }

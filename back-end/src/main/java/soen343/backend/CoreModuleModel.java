@@ -14,10 +14,10 @@ public class CoreModuleModel {
 	private static LocalDateTime simulationDateTime;
 	private static String date;
 	private static String time;
+	private static boolean AutoMode;
 
 	public CoreModuleModel() 
 	{
-		CoreModuleModel.simulationDateTime = LocalDateTime.now();
 	}
 
 	public static LocalDateTime getSimulationDateTime() 
@@ -46,5 +46,13 @@ public class CoreModuleModel {
 
 	public static void setTime(String time) {
 		CoreModuleModel.time = time;
+	}
+
+	public static boolean isAutoMode() {
+		return AutoMode;
+	}
+
+	public static void setAutoMode(boolean autoMode) {
+		AutoMode = autoMode;
 	}
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import soen343.backend.state.StateService;
 
 @RestController
 @CrossOrigin("http://localhost:3000") //to unblock request to/from react
@@ -14,10 +15,17 @@ public class CoreModuleController {
     @Autowired
     private SimulationService simulationService;
 
+    @Autowired
+    private StateService state;
+
     @RequestMapping(method = RequestMethod.GET, value = "/core/dateAndTime")
     @ResponseStatus( HttpStatus.OK )
-    public void getDateAndTime() {
-        simulationService.getDateAndTime();
+    public String getDateAndTime(){
+        if(state.getCurrentState()){
+            return CoreModuleModel.getDate() + " " + CoreModuleModel.getTime();
+        }
+        else
+            return "Not available";
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/core/light")
@@ -36,6 +44,12 @@ public class CoreModuleController {
     @ResponseStatus( HttpStatus.OK )
     public void setWindow(@RequestBody ObjectNode objectNode){
         simulationService.setWindow(objectNode.get("userLocation").asText(),objectNode.get("privilege").asText(),objectNode.get("location").asText(),objectNode.get("windowOpen").asText());
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/core/setAutoMode")
+    @ResponseStatus( HttpStatus.OK )
+    public void setAutoMode(@RequestBody ObjectNode objectNode){
+        simulationService.setAutoMode(objectNode.get("autoMode").asBoolean());
     }
 
 }

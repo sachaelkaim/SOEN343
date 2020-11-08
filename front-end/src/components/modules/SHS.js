@@ -159,6 +159,7 @@ const SHS = () => {
         .catch((err) => console.log("Error", err));
       getUsers();
       UpdateProfile();
+      getRooms();
     };
     putNewLocation();
   }, [newLocation]);

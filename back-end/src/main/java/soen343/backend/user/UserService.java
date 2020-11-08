@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SequenceWriter;
 import soen343.backend.CoreModuleController;
 import soen343.backend.CoreModuleModel;
+import soen343.backend.SimulationService;
 import soen343.backend.console.Console;
 import soen343.backend.console.ConsoleService;
 import java.util.Iterator;
@@ -31,7 +32,10 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-    
+
+    @Autowired
+    private SimulationService simulationService;
+
     private ObjectMapper mapper;
     private File usersFile;
 
@@ -210,6 +214,7 @@ public class UserService {
             changeLocation.setLocation(location);
             userRepository.save(changeLocation);
             notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHS","ID: " + changeLocation.getId() + " has moved to the " + changeLocation.getLocation() + "."));
+            simulationService.autoMode(); // CHECK  AUTO MODE WHILE USER CHANGING LOCATIONS
             return true;
         }
     }
