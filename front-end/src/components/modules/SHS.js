@@ -7,6 +7,13 @@ import { UserContext } from "../UserProvider";
 import { LayoutContext } from "../LayoutProvider";
 import { AllUsersContext } from "../AllUsersProvider";
 
+//Permissions
+const Permissions={
+  0:["open/close windows","unlock doors","open/close garage"," turn on/off lights"],
+  1:["turn on/off lights","open/close windows"],
+  2:["turn on/off lights","open/close windows"],
+  3:["All permissions are revoked"]
+}
 // SHS module
 const SHS = () => {
   const [formData, setFormData] = useState([]);
@@ -167,6 +174,25 @@ const SHS = () => {
     setNewTemperature({ ...newTemperature, [e.target.name]: e.target.value });
   };
 
+  // update permissions
+  const getPermissions=(privilege,location)=>{
+
+    if(privilege==0)
+      return Permissions[privilege].join(",");
+    else{
+      if(location=="Outside")
+      {
+        return "All permissions are revoked"
+      }
+      if(privilege==1)
+        return Permissions[privilege].join(",");
+      if(privilege==2)
+        return Permissions[privilege].join(",");
+      if(privilege==3)
+        return Permissions[privilege].join(",");
+    }  
+  }
+
   // update outdoor temperature
   const updateOutdoorTemperature = async (e) => {
     console.log(newTemperature.id)
@@ -183,6 +209,7 @@ const SHS = () => {
       .catch((err) => console.log("Error", err));
     getRooms();
   };
+
 
   return (
     <>
@@ -247,6 +274,7 @@ const SHS = () => {
               &nbsp;
               {item.privilege}
               &nbsp;
+              <div>Permissions:({getPermissions(item.privilege,item.location)})</div>
               <Button
                 variant="light"
                 size="sm"
@@ -350,8 +378,8 @@ const SHS = () => {
             </div>
           </div>
         </Form>
-        <br />
-        <br />
+        <br/>
+        <br/>
         <span style={{ fontWeight: "600" }}>Outside Temperature</span>
         <div>
           <Form>
