@@ -201,7 +201,7 @@ public class UserService {
 
     public User login(Long id){
         User loggedUser = userRepository.findById(id).orElse(null);
-        notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHS","Logged in User: ID " + loggedUser.getId() + " " + loggedUser.getName() + "."));
+        notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHS","Logged in User: ID " + loggedUser.getId() + " " + loggedUser.getName() + "."));
         return loggedUser;
     }
 
@@ -213,7 +213,7 @@ public class UserService {
             User changeLocation = userRepository.findById(id).orElse(null);
             changeLocation.setLocation(location);
             userRepository.save(changeLocation);
-            notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHS","ID: " + changeLocation.getId() + " has moved to the " + changeLocation.getLocation() + "."));
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHS","ID: " + changeLocation.getId() + " has moved to the " + changeLocation.getLocation() + "."));
             simulationService.autoMode(); // CHECK  AUTO MODE WHILE USER CHANGING LOCATIONS
             return true;
         }

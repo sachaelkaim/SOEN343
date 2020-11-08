@@ -21,12 +21,9 @@ import java.util.List;
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @EnableScheduling
 public class BackEndApplication {
-	public static SimulationMasterController sMC;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BackEndApplication.class, args);
-		sMC = new SimulationMasterController();
-		System.out.println("Simulation master controller running");
 	}
 
 	@Bean
@@ -62,11 +59,5 @@ public class BackEndApplication {
 			}
 		};
 	}
-	
-	//@Scheduled(fixedRate = 1000)
-	//public static void updateSimulationDateTime() {
-	//	SimulationMasterController.updateSimulationDateTime();
-	//}
-	
-	
+
 }

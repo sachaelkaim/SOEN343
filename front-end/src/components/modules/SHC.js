@@ -262,7 +262,7 @@ const SHC = () => {
         </Form.Group>
       </Form>
       <h6>Set AutoMode</h6>
-      <BootstrapSwitchButton checked={autoMode} width={100} onChange={changeState} />
+      <BootstrapSwitchButton width={100} onChange={changeState} />
     </>
   );
 };

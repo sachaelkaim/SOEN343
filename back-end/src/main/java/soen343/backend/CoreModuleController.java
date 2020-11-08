@@ -22,10 +22,17 @@ public class CoreModuleController {
     @ResponseStatus( HttpStatus.OK )
     public String getDateAndTime(){
         if(state.getCurrentState()){
-            return CoreModuleModel.getDate() + " " + CoreModuleModel.getTime();
+            return CoreModuleModel.dateTime;
         }
         else
             return "Not available";
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/core/timeSpeed")
+    @ResponseStatus( HttpStatus.OK )
+    public void timeSpeed(@RequestBody ObjectNode objectNode){
+        System.out.print(objectNode.get("timeSpeed").asInt());
+        CoreModuleModel.setTimeSpeed(objectNode.get("timeSpeed").asInt());
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/core/light")

@@ -11,10 +11,10 @@ import java.time.temporal.ChronoUnit;
 public class CoreModuleModel {
 
 	//Static to be accessed anywhere
-	private static LocalDateTime simulationDateTime;
-	private static String date;
-	private static String time;
+	public static LocalDateTime simulationDateTime;
 	private static boolean AutoMode;
+	public static String dateTime;
+	public static int timeSpeed = 1;
 
 	public CoreModuleModel() 
 	{
@@ -27,25 +27,8 @@ public class CoreModuleModel {
 
 	public static void setSimulationDateTime(LocalDateTime simulationDateTime) 
 	{
-		CoreModuleModel.simulationDateTime = simulationDateTime;
-		setDate(simulationDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
-		setTime(LocalTime.now().truncatedTo(ChronoUnit.SECONDS).format(DateTimeFormatter.ISO_LOCAL_TIME));
-	}
-
-	public static String getDate() {
-		return date;
-	}
-
-	public static void setDate(String date) {
-		CoreModuleModel.date = date;
-	}
-
-	public static String getTime() {
-		return time;
-	}
-
-	public static void setTime(String time) {
-		CoreModuleModel.time = time;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		dateTime = simulationDateTime.format(formatter);
 	}
 
 	public static boolean isAutoMode() {
@@ -54,5 +37,13 @@ public class CoreModuleModel {
 
 	public static void setAutoMode(boolean autoMode) {
 		AutoMode = autoMode;
+	}
+
+	public static int getTimeSpeed() {
+		return timeSpeed;
+	}
+
+	public static void setTimeSpeed(int timeSpeed) {
+		CoreModuleModel.timeSpeed = timeSpeed;
 	}
 }
