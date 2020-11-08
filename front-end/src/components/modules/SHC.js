@@ -144,8 +144,9 @@ const SHC = () => {
         }
         )
         .catch((err) => console.log("Error", err));
-      getRooms();
-      getRooms();
+        if(response){
+          getRooms();
+        }
     };
 
   return (
@@ -261,7 +262,7 @@ const SHC = () => {
         </Form.Group>
       </Form>
       <h6>Set AutoMode</h6>
-      <BootstrapSwitchButton width={100} onChange={changeState} />
+      <BootstrapSwitchButton checked={autoMode} width={100} onChange={changeState} />
     </>
   );
 };

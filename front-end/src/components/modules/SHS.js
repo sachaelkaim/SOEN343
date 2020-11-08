@@ -29,8 +29,6 @@ const SHS = () => {
   const [idToEdit, setidToEdit] = useState();
   const [desiredName, setDesiredName] = useState();
   const [desiredPrivilege, setDesiredPrivilege] = useState("0");
-  const [desiredLocation, setDesiredLocation] = useState();
-  const [userToEditFormData, setUserToEditFormData] = useState([]);
 
   // retrieve list of all profiles
   const getUsers = async () => {
@@ -142,7 +140,7 @@ const SHS = () => {
 
   // triggers when currentuser sets a new location and updates location
   useEffect(() => {
-    if (currentUser == undefined || currentUser == "") {
+    if (currentUser == undefined || currentUser == "" || newLocation == "") {
       return console.log("cannot");
     }
     const putNewLocation = async () => {
@@ -160,6 +158,7 @@ const SHS = () => {
       getUsers();
       UpdateProfile();
       getRooms();
+      setNewLocation("");
     };
     putNewLocation();
   }, [newLocation]);

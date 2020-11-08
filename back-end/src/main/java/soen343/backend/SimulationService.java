@@ -141,13 +141,15 @@ public class SimulationService {
 
     public void setAutoMode(boolean autoMode){
         CoreModuleModel.setAutoMode(autoMode);
-        if(autoMode){
-            notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",  "Auto Mode is on."));
-            autoMode();
-        }
+        if(state.getCurrentState()){
+            if(autoMode){
+                notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",  "Auto Mode is on."));
+                autoMode();
+            }
 
-        else
-            notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",  "Auto Mode is off."));
+            else
+                notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",  "Auto Mode is off."));
+        }
     }
 
     public void autoMode(){

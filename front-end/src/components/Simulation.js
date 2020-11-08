@@ -55,19 +55,18 @@ const Simulation = () => {
       setTime(response.data);
     } 
   };
-
-  useEffect(() => {
-    console.log(time);
-  }, [time]);
   
   // tell the system if the system is on or off
-  const changeState = () => {
+  const changeState =  () => {
     if (toggle == false) setToggle(true);
     else setToggle(false);
-    axios
+    const response =  axios
       .post("http://localhost:8080/api/state", { on: toggle })
       .then((response) => setState(response.data.id));
-    getRooms();
+      if(response){
+        getRooms();
+      }
+      getRooms();
   };
 
   //update profile
@@ -143,9 +142,10 @@ const Simulation = () => {
         }
       )
       .catch((err) => console.log("Error", err));
-    getUsers();
-    getRooms();
-    getRooms();
+      if(response){
+        getUsers();
+        getRooms();
+      }
     if (currentUser !== undefined) UpdateProfile();
   };
 
