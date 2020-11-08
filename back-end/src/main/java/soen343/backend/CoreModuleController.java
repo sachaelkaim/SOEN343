@@ -31,6 +31,7 @@ public class CoreModuleController {
     @RequestMapping(method = RequestMethod.POST, value = "/core/timeSpeed")
     @ResponseStatus( HttpStatus.OK )
     public void timeSpeed(@RequestBody ObjectNode objectNode){
+        System.out.print(objectNode.get("timeSpeed").asInt());
         CoreModuleModel.setTimeSpeed(objectNode.get("timeSpeed").asInt());
     }
 

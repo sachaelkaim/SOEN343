@@ -29,6 +29,7 @@ const SHS = () => {
   const [idToEdit, setidToEdit] = useState();
   const [desiredName, setDesiredName] = useState();
   const [desiredPrivilege, setDesiredPrivilege] = useState("0");
+  const [timeSpeed, setTimeSpeed] = useState();
 
   // retrieve list of all profiles
   const getUsers = async () => {
@@ -197,7 +198,6 @@ const SHS = () => {
 
   // update outdoor temperature
   const updateOutdoorTemperature = async (e) => {
-    console.log(newTemperature.id)
     e.preventDefault();
     const response = await axios
       .put("http://localhost:8080/api/rooms/outdoorTemperature", 
@@ -213,6 +213,26 @@ const SHS = () => {
   };
 
 
+    // retrieve temperature info
+    const handleChange2 = (e) => {
+      setTimeSpeed({ ...timeSpeed, [e.target.name]: e.target.value });
+    };
+
+  const updateTimeSpeed = async (e) => {
+    console.log(timeSpeed);
+    e.preventDefault();
+    const response = await axios
+      .post("http://localhost:8080/api/core/timeSpeed", 
+      { timeSpeed: timeSpeed.id },
+      {
+        data: {
+          timeSpeed: timeSpeed.id
+        },
+      }
+      )
+      .catch((err) => console.log("Error", err));
+  }
+  
   return (
     <>
       <h4 style={{ textAlign: "center" }}>Simulator</h4>
@@ -381,16 +401,15 @@ const SHS = () => {
           </div>
         </Form>
         <br/>
-        <br/>
-        <span style={{ fontWeight: "600" }}>Outside Temperature</span>
         <div>
           <Form>
             <Form.Group style={{ display: "inline" }}>
+            <span style={{ fontWeight: "600" }}>Outside Temperature</span>&nbsp;
               <input
                 name="id"
                 type="number"
                 placeholder="Value"
-                style={{ width: "20%" }}
+                style={{ width: "10%" }}
                 onChange={handleChange1}
               />
             </Form.Group>
@@ -400,6 +419,30 @@ const SHS = () => {
               type="submit"
               style={{ display: "inline" }}
               onClick={updateOutdoorTemperature}
+            >
+              Submit
+            </Button>
+          </Form>
+        </div>
+        <br/>
+        <div>
+          <Form>
+            <Form.Group style={{ display: "inline" }}>
+            <span style={{ fontWeight: "600" }}>Time Speed</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input
+                name="id"
+                type="number"
+                placeholder="Value"
+                style={{ width: "10%" }}
+                onChange={handleChange2}
+              />
+            </Form.Group>
+            &nbsp;
+            <Button
+              variant="dark"
+              type="submit"
+              style={{ display: "inline" }}
+              onClick={updateTimeSpeed}
             >
               Submit
             </Button>
