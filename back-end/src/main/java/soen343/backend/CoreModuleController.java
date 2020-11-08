@@ -22,7 +22,7 @@ public class CoreModuleController {
     @ResponseStatus( HttpStatus.OK )
     public String getDateAndTime(){
         if(state.getCurrentState()){
-            return CoreModuleModel.getDate() + " " + CoreModuleModel.getTime();
+            return CoreModuleModel.dateTime;
         }
         else
             return "Not available";

@@ -57,7 +57,7 @@ public class RoomService {
         Room blockedRoom = roomRepository.findById(location).orElse(null);
         blockedRoom.setWindowState(windowState);
         roomRepository.save(blockedRoom);
-        notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHS","Blocked window location: " + blockedRoom.getName() + "."));
+        notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHS","Blocked window location: " + blockedRoom.getName() + "."));
         return true;
     }
 
@@ -66,7 +66,7 @@ public class RoomService {
             Room outdoorTemp = roomRepository.findById("Outside").orElse(null);
             outdoorTemp.setTemperature(outdoorTemperature);
             roomRepository.save(outdoorTemp);
-            notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHS","Set outdoor temperature to: " + outdoorTemp.getTemperature() + "C."));
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHS","Set outdoor temperature to: " + outdoorTemp.getTemperature() + "C."));
             return true;
         }
         else
@@ -101,7 +101,7 @@ public class RoomService {
     public boolean openCloseWindow( String location, String windowOpen ){
         Room room =  roomRepository.findById(location).orElse(null);
         if(room.getWindowState().equals("BLOCKED")){
-            notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",room.getName()+ ". Window is blocked!"));
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",room.getName()+ ". Window is blocked!"));
             return false;
         }
         else

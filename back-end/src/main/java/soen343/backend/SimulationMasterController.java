@@ -33,7 +33,7 @@ public class SimulationMasterController{
 	}
 	
 	public static void run() {
-		setSimulationDateTime(LocalDateTime.now());
+
 		while (getIsSimulationRunning()) 
 		{
 			updateCoreModule();
@@ -70,27 +70,7 @@ public class SimulationMasterController{
 	public static LocalDateTime getSimulationDateTime() {
 		return CoreModuleModel.getSimulationDateTime();
 	}
-	
-	public static String getSimulationDateTimeString() 
-	{
-		return CoreModuleModel.getDate() + " " + CoreModuleModel.getTime();
-	}
-	
-	public static void setSimulationDateTime(LocalDateTime simulationDateTime) {
-		if (simulationDateTime != null) {
-			CoreModuleModel.setSimulationDateTime(simulationDateTime);
-		} else {
-			CoreModuleModel.setSimulationDateTime(LocalDateTime.now());
-		}
-		System.out.println("Time is "+getSimulationDateTimeString());
-	}
-	
-	public static void updateSimulationDateTime() {
-		if (CoreModuleModel.getSimulationDateTime() != null) {
-			CoreModuleModel.setSimulationDateTime(CoreModuleModel.getSimulationDateTime().plusSeconds(1));
-			System.out.println("Time is "+getSimulationDateTimeString());
-		}
-	}
+
 
 	public static void updateSecurityModule() {
 		//Call SecurityModuleModel or the controller?

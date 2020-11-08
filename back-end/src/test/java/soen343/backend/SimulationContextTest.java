@@ -17,13 +17,13 @@ import soen343.backend.room.Room;
 public class SimulationContextTest {
 	
 	
-	//Use case (2) and (7)
+	/*Use case (2) and (7)
 	@Test
 	public void setDateTimeTest() {
 		LocalDateTime simDateTime = LocalDateTime.of(2017, 2, 13, 15, 56);
 		SimulationMasterController.setSimulationDateTime(simDateTime);
 		assertEquals(simDateTime, SimulationMasterController.getSimulationDateTime());
-	}
+	}*/
 	
 	//Use case (11)
 	@Test

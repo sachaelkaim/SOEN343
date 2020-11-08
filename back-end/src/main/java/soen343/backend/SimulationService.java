@@ -15,13 +15,13 @@ import soen343.backend.user.User;
 import soen343.backend.user.UserRepository;
 import soen343.backend.user.UserService;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Iterator;
 
 @EnableScheduling
 @Service
 public class SimulationService {
 
-    private static LocalDateTime simulationDateTime;
     private static CoreModuleModel coreModel;
     private static SecurityModuleModel securityModel;
     boolean intruderPresent = false;
@@ -48,16 +48,17 @@ public class SimulationService {
 
     @Bean
     public void startDateAndTime(){
-        coreModel.setSimulationDateTime(LocalDateTime.now());
+        //simulationDateTime = LocalDateTime.of(2014, 6, 30, 12, 00);
+        CoreModuleModel.simulationDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        CoreModuleModel.setSimulationDateTime(CoreModuleModel.simulationDateTime);
     }
 
     @Scheduled(fixedRate=500)
     public void dateAndTime() {
         if(state.getCurrentState()) {
-            CoreModuleModel.setSimulationDateTime(CoreModuleModel.getSimulationDateTime().plusSeconds(1));
+            CoreModuleModel.simulationDateTime = CoreModuleModel.simulationDateTime.plusSeconds(1);
+            CoreModuleModel.setSimulationDateTime(CoreModuleModel.simulationDateTime);
         }
-        else
-            CoreModuleModel.setTime(CoreModuleModel.getTime());
     }
 
     /* SHC FEATURES*/
@@ -67,27 +68,27 @@ public class SimulationService {
             if(privilege.equals("0")){
                 rooms.onOffLight(location,lightOn);
                 if(lightOn == true)
-                    notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + " light is on."));
+                    notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + " light is on."));
                 else
-                    notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + " light is off."));
+                    notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + " light is off."));
             }
             if(privilege.equals("1") || privilege.equals("2")){
                 if(userLocation.equals("Outside")){
-                    notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + ". Guest/Child does not have permission."));
+                    notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + ". Guest/Child does not have permission."));
                 }
                 else if(userLocation.equals(location)){
                     rooms.onOffLight(location,lightOn);
                     if(lightOn == true){
-                        notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + " light is on."));
+                        notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + " light is on."));
                     }
                     else
-                        notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + " light is off."));
+                        notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + " light is off."));
                 }
                 else
-                    notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + ". Guest/Child does not have permission."));
+                    notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + ". Guest/Child does not have permission."));
             }
             if(privilege.equals("3")){
-                notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + ". Stranger does not have permission."));
+                notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + ". Stranger does not have permission."));
             }
         }
     }
@@ -97,12 +98,12 @@ public class SimulationService {
             if(privilege.equals("0")){
                 rooms.unlockLockDoor(location,doorLock);
                 if(doorLock.equals("UNLOCKED"))
-                    notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + " door is unlocked."));
+                    notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + " door is unlocked."));
                 else
-                    notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + " door is locked."));
+                    notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + " door is locked."));
             }
             else
-                notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + ". Stranger/Guest/Child does not have permission."));
+                notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + ". Stranger/Guest/Child does not have permission."));
         }
     }
 
@@ -112,29 +113,29 @@ public class SimulationService {
                 boolean notBlocked = rooms.openCloseWindow(location,windowOpen);
                 if(notBlocked){
                     if(windowOpen.equals("OPEN"))
-                        notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + " light is on."));
+                        notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + " light is on."));
                     else
-                        notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + " light is off."));
+                        notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + " light is off."));
                 }
             }
             if(privilege.equals("1") || privilege.equals("2")){
                 if(userLocation.equals("Outside")){
-                    notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + ". Guest/Child does not have permission."));
+                    notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + ". Guest/Child does not have permission."));
                 }
                 else if(userLocation.equals(location)){
                     boolean notBlocked = rooms.openCloseWindow(location,windowOpen);
                     if(notBlocked){
                         if(windowOpen.equals("OPEN"))
-                            notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + " light is on."));
+                            notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + " light is on."));
                         else
-                            notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + " light is off."));
+                            notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + " light is off."));
                     }
                 }
                 else
-                    notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + ". Guest/Child does not have permission."));
+                    notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + ". Guest/Child does not have permission."));
             }
             if(privilege.equals("3")){
-                notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",location + ". Stranger does not have permission."));
+                notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + ". Stranger does not have permission."));
             }
         }
     }
@@ -143,12 +144,11 @@ public class SimulationService {
         CoreModuleModel.setAutoMode(autoMode);
         if(state.getCurrentState()){
             if(autoMode){
-                notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",  "Auto Mode is on."));
+                notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",  "Auto Mode is on."));
                 autoMode();
             }
-
             else
-                notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",  "Auto Mode is off."));
+                notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",  "Auto Mode is off."));
         }
     }
 
@@ -165,6 +165,7 @@ public class SimulationService {
                     if(user.getLocation().equals(room.getName())){
                         room.setLightOn(true);
                         roomRepository.save(room);
+                        notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",  room.getName() + " light is on."));
                     }
                 }
             }
@@ -183,6 +184,7 @@ public class SimulationService {
                 if(i == 0){
                     room.setLightOn(false);
                     roomRepository.save(room);
+                    notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",  room.getName() + " light is off."));
                 }
             }
         }
@@ -196,21 +198,21 @@ public class SimulationService {
             if(awayMode){
                 if(users.allUsersOutside()){
                     if(userPrivilege.equals("2") || userPrivilege.equals("3")){
-                        notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHP","Away mode cannot be set by Stranger/Guest"));
+                        notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHP","Away mode cannot be set by Stranger/Guest"));
                     }
                     else{
                         rooms.closeDoorsWindows();
-                        notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHP","Away mode is on."));
+                        notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHP","Away mode is on."));
                         securityModel.setAwayMode(true);
                     }
                 }
                 else{
-                    notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHP","Away mode cannot be set. All users are not outside."));
+                    notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHP","Away mode cannot be set. All users are not outside."));
                 }
             }
             else{
                 securityModel.setAwayMode(false);
-                notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHP","Away mode is off."));
+                notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHP","Away mode is off."));
             }
     }
 
@@ -220,7 +222,7 @@ public class SimulationService {
         if (state.getCurrentState()) {
             if (securityModel.isAwayMode() && !intruderPresent) {
                 if (!users.allUsersOutside()) {
-                    notifications.saveNotification(new Console(CoreModuleModel.getTime(), "SHC", "There are intruders..."));
+                    notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHC", "There are intruders..."));
                     intruderPresent = true;
                 }
             }
