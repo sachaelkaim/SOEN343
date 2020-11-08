@@ -213,13 +213,13 @@ const SHC = () => {
               <option>Select location</option>
               {layout.map((newlocation) => (
                 <>
-                 {newlocation.name !== "Outside" && newlocation.name !== "Backyard" &&(
-                <option key={newlocation.id} value={newlocation.name}>
-                  {newlocation.name}
-                
-                </option>
-                 )}
-                 </>
+                  {newlocation.name !== "Outside" &&
+                    newlocation.name !== "Backyard" && (
+                      <option key={newlocation.id} value={newlocation.name}>
+                        {newlocation.name}
+                      </option>
+                    )}
+                </>
               ))}
             </Form.Control>
             <Button
