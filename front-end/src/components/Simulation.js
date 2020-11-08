@@ -30,7 +30,7 @@ const Simulation = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  /*
+  
   const [time, setTime] = useState([""]);
   const [seconds, setSeconds] = useState(0);
 
@@ -38,7 +38,7 @@ const Simulation = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setSeconds((seconds) => seconds + 1);
-    }, 500);
+    }, 250);
     return () => clearInterval(interval);
   }, []);
 
@@ -51,20 +51,22 @@ const Simulation = () => {
     const response = await axios
       .get("http://localhost:8080/api/core/dateAndTime")
       .catch((err) => console.log("Error", err));
-      console.log("response" + response.data)
-    if (response) setTime(response.data);
-    console.log(time);
-    console.log(time)
+    if (response){
+      setTime(response.data);
+    } 
   };
-*/
+  
   // tell the system if the system is on or off
-  const changeState = () => {
+  const changeState =  () => {
     if (toggle == false) setToggle(true);
     else setToggle(false);
-    axios
+    const response =  axios
       .post("http://localhost:8080/api/state", { on: toggle })
       .then((response) => setState(response.data.id));
-    getRooms();
+      if(response){
+        getRooms();
+      }
+      getRooms();
   };
 
   //update profile
@@ -140,7 +142,10 @@ const Simulation = () => {
         }
       )
       .catch((err) => console.log("Error", err));
-    getUsers();
+      if(response){
+        getUsers();
+        getRooms();
+      }
     if (currentUser !== undefined) UpdateProfile();
   };
 
@@ -290,6 +295,13 @@ const Simulation = () => {
             <div></div>
           )}
         </div>
+        <div style={{fontWeight:"600", textDecoration: "underline"}}>
+              Date and Time
+            </div>
+            <div>
+            {time}
+          </div>
+          <br/><br/>
         <div style={{ fontWeight: "600" }}>
           Outside Temperature.{" "}
           <span style={{ color: "#1E90FF" }}>
@@ -309,9 +321,6 @@ const Simulation = () => {
               </span>
             ))}{" "}
           </span>
-          <div>
-            
-          </div>
         </div>
       </Container>
     </>

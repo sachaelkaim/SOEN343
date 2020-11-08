@@ -15,6 +15,7 @@ const SHC = () => {
   const [location, setLocation] = useState([]);
   const [location1, setLocation1] = useState([]);
   const [location2, setLocation2] = useState([]);
+  const [autoMode, setAutoMode] = useState(true);
 
   const getRooms = async () => {
     const response = await axios
@@ -129,6 +130,25 @@ const SHC = () => {
     windows();
   }, [windowOpen]);
 
+    // send autoMode to backend
+    const changeState = async () => {
+      if (autoMode == false) setAutoMode(true);
+      else setAutoMode(false);
+      const response = await axios
+        .post("http://localhost:8080/api/core/setAutoMode", 
+        { autoMode: autoMode},
+        {
+          data: {
+              autoMode: autoMode  
+          },
+        }
+        )
+        .catch((err) => console.log("Error", err));
+        if(response){
+          getRooms();
+        }
+    };
+
   return (
     <>
       <h4 style={{ textAlign: "center" }}>Controls</h4>
@@ -213,13 +233,13 @@ const SHC = () => {
               <option>Select location</option>
               {layout.map((newlocation) => (
                 <>
-                 {newlocation.name !== "Outside" && newlocation.name !== "Backyard" &&(
-                <option key={newlocation.id} value={newlocation.name}>
-                  {newlocation.name}
-                
-                </option>
-                 )}
-                 </>
+                  {newlocation.name !== "Outside" &&
+                    newlocation.name !== "Backyard" && (
+                      <option key={newlocation.id} value={newlocation.name}>
+                        {newlocation.name}
+                      </option>
+                    )}
+                </>
               ))}
             </Form.Control>
             <Button
@@ -241,6 +261,8 @@ const SHC = () => {
           </Form>
         </Form.Group>
       </Form>
+      <h6>Set AutoMode</h6>
+      <BootstrapSwitchButton checked={autoMode} width={100} onChange={changeState} />
     </>
   );
 };

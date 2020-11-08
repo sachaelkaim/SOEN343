@@ -25,13 +25,10 @@ const SHS = () => {
   const [newTemperature, setNewTemperature] = useState([]);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const handleCloseUserMenu = () => setShowUserMenu(false);
-  // const id=0;
   const[userToEdit, setUserToEdit] = useState([]);
   const [idToEdit, setidToEdit] = useState();
   const [desiredName, setDesiredName] = useState();
-  const [desiredPrivilege, setDesiredPrivilege] = useState();
-  const [desiredLocation, setDesiredLocation] = useState();
-  const [userToEditFormData, setUserToEditFormData] = useState([]);
+  const [desiredPrivilege, setDesiredPrivilege] = useState("0");
 
   // retrieve list of all profiles
   const getUsers = async () => {
@@ -134,13 +131,16 @@ const SHS = () => {
       .catch((err) => console.log("Error", err));
     if (response)
       getUsers();
-    if (response && idToEdit == currentUser.id)
-      UpdateProfile();
+      setDesiredPrivilege("0");
+      if(currentUser != undefined){
+        if (response && idToEdit == currentUser.id)
+        UpdateProfile();
+      }
   };
 
   // triggers when currentuser sets a new location and updates location
   useEffect(() => {
-    if (currentUser == undefined || currentUser == "") {
+    if (currentUser == undefined || currentUser == "" || newLocation == "") {
       return console.log("cannot");
     }
     const putNewLocation = async () => {
@@ -157,6 +157,8 @@ const SHS = () => {
         .catch((err) => console.log("Error", err));
       getUsers();
       UpdateProfile();
+      getRooms();
+      setNewLocation("");
     };
     putNewLocation();
   }, [newLocation]);
@@ -167,11 +169,6 @@ const SHS = () => {
       .get(`http://localhost:8080/api/users/${currentUser.id}`)
       .catch((err) => console.log("Error", err));
     if (response && response.data) setCurrentUser(response.data);
-  };
-
-  // retrieve temperature info
-  const handleChange1 = (e) => {
-    setNewTemperature({ ...newTemperature, [e.target.name]: e.target.value });
   };
 
   // update permissions
@@ -192,6 +189,11 @@ const SHS = () => {
         return Permissions[privilege].join(",");
     }  
   }
+
+   // retrieve temperature info
+   const handleChange1 = (e) => {
+    setNewTemperature({ ...newTemperature, [e.target.name]: e.target.value });
+  };
 
   // update outdoor temperature
   const updateOutdoorTemperature = async (e) => {
@@ -259,7 +261,7 @@ const SHS = () => {
               <span
                 style={{
                   fontWeight: "600",
-                  color: "blue",
+                  color: "#1E90FF",
                   fontStyle: "italic",
                 }}
               >
@@ -274,7 +276,7 @@ const SHS = () => {
               &nbsp;
               {item.privilege}
               &nbsp;
-              <div>Permissions:({getPermissions(item.privilege,item.location)})</div>
+              <div style={{fontSize:"13px"}}>Permissions:({getPermissions(item.privilege,item.location)})</div>
               <Button
                 variant="light"
                 size="sm"

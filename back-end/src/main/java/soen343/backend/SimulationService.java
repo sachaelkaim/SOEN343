@@ -7,10 +7,15 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import soen343.backend.console.Console;
 import soen343.backend.console.ConsoleService;
+import soen343.backend.room.Room;
+import soen343.backend.room.RoomRepository;
 import soen343.backend.room.RoomService;
 import soen343.backend.state.StateService;
+import soen343.backend.user.User;
+import soen343.backend.user.UserRepository;
 import soen343.backend.user.UserService;
 import java.time.LocalDateTime;
+import java.util.Iterator;
 
 @EnableScheduling
 @Service
@@ -33,6 +38,12 @@ public class SimulationService {
     @Autowired
     private StateService state;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RoomRepository roomRepository;
+
     /* DATE AND TIME */
 
     @Bean
@@ -42,11 +53,11 @@ public class SimulationService {
 
     @Scheduled(fixedRate=500)
     public void dateAndTime() {
-        CoreModuleModel.setSimulationDateTime(CoreModuleModel.getSimulationDateTime().plusSeconds(1));
-    }
-
-    public LocalDateTime getDateAndTime(){
-        return  CoreModuleModel.getSimulationDateTime();
+        if(state.getCurrentState()) {
+            CoreModuleModel.setSimulationDateTime(CoreModuleModel.getSimulationDateTime().plusSeconds(1));
+        }
+        else
+            CoreModuleModel.setTime(CoreModuleModel.getTime());
     }
 
     /* SHC FEATURES*/
@@ -128,6 +139,55 @@ public class SimulationService {
         }
     }
 
+    public void setAutoMode(boolean autoMode){
+        CoreModuleModel.setAutoMode(autoMode);
+        if(state.getCurrentState()){
+            if(autoMode){
+                notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",  "Auto Mode is on."));
+                autoMode();
+            }
+
+            else
+                notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHC",  "Auto Mode is off."));
+        }
+    }
+
+    public void autoMode(){
+        if(CoreModuleModel.isAutoMode()) {
+            Iterable<User> users = userRepository.findAll();
+            Iterator<User> iter = users.iterator();
+            while (iter.hasNext()) {
+                User user = iter.next();
+                Iterable<Room> rooms = roomRepository.findAll();
+                Iterator<Room> iter1 = rooms.iterator();
+                while(iter1.hasNext()){
+                    Room room = iter1.next();
+                    if(user.getLocation().equals(room.getName())){
+                        room.setLightOn(true);
+                        roomRepository.save(room);
+                    }
+                }
+            }
+            Iterable<Room> rooms = roomRepository.findAll();
+            Iterator<Room> iter2 = rooms.iterator();
+            while(iter2.hasNext()){
+                int i = 0;
+                Room room = iter2.next();
+                Iterator<User> iter3 = users.iterator();
+                while (iter3.hasNext()) {
+                    User user = iter3.next();
+                    if (user.getLocation().equals(room.getName())){
+                        i++;
+                    }
+                }
+                if(i == 0){
+                    room.setLightOn(false);
+                    roomRepository.save(room);
+                }
+            }
+        }
+    }
+
     /* SHP FEATURES*/
 
     public void setAwayMode(boolean awayMode, String userPrivilege){
@@ -140,7 +200,7 @@ public class SimulationService {
                     }
                     else{
                         rooms.closeDoorsWindows();
-                        notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHP","Away mode is set."));
+                        notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHP","Away mode is on."));
                         securityModel.setAwayMode(true);
                     }
                 }
@@ -150,6 +210,7 @@ public class SimulationService {
             }
             else{
                 securityModel.setAwayMode(false);
+                notifications.saveNotification(new Console(CoreModuleModel.getTime(),"SHP","Away mode is off."));
             }
     }
 
