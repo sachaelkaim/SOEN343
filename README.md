@@ -1,6 +1,6 @@
 # **SOEN343 Team 6**
 ## **Objective**
-To develop a Smart Home Simulator web application. This application allows a user to simulate a smart home environment in which the user will be able to remotely set and control doors, lights, windows, ventilation, climate control and security.
+To develop a Smart Home Simulator web application. This application allows a user to simulate a smart home environment with controls over doors, lights, windows, ventilation, climate control and security.
 ## **Technologies Used**
 ### **Front-End** ###
 * React
