@@ -14,6 +14,7 @@ public class CoreModuleModel {
 	public static LocalDateTime simulationDateTime;
 	private static boolean AutoMode;
 	public static String dateTime;
+	public static int timeSpeed = 1;
 
 	public CoreModuleModel() 
 	{
@@ -36,5 +37,13 @@ public class CoreModuleModel {
 
 	public static void setAutoMode(boolean autoMode) {
 		AutoMode = autoMode;
+	}
+
+	public static int getTimeSpeed() {
+		return timeSpeed;
+	}
+
+	public static void setTimeSpeed(int timeSpeed) {
+		CoreModuleModel.timeSpeed = timeSpeed;
 	}
 }

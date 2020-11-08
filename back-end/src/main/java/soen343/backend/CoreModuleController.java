@@ -28,6 +28,12 @@ public class CoreModuleController {
             return "Not available";
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/core/timeSpeed")
+    @ResponseStatus( HttpStatus.OK )
+    public void timeSpeed(@RequestBody ObjectNode objectNode){
+        CoreModuleModel.setTimeSpeed(objectNode.get("timeSpeed").asInt());
+    }
+
     @RequestMapping(method = RequestMethod.PUT, value = "/core/light")
     @ResponseStatus( HttpStatus.OK )
     public void setLight(@RequestBody ObjectNode objectNode){

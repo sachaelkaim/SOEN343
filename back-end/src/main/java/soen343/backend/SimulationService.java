@@ -53,10 +53,10 @@ public class SimulationService {
         CoreModuleModel.setSimulationDateTime(CoreModuleModel.simulationDateTime);
     }
 
-    @Scheduled(fixedRate=500)
+    @Scheduled(fixedRate=1000)
     public void dateAndTime() {
         if(state.getCurrentState()) {
-            CoreModuleModel.simulationDateTime = CoreModuleModel.simulationDateTime.plusSeconds(1);
+            CoreModuleModel.simulationDateTime = CoreModuleModel.simulationDateTime.plusSeconds(CoreModuleModel.timeSpeed);
             CoreModuleModel.setSimulationDateTime(CoreModuleModel.simulationDateTime);
         }
     }
