@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Button, Form, DropdownButton, Dropdown } from "react-bootstrap";
-import { Modal } from 'react-bootstrap';
+import { Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { UserContext } from "../UserProvider";
@@ -8,12 +8,17 @@ import { LayoutContext } from "../LayoutProvider";
 import { AllUsersContext } from "../AllUsersProvider";
 
 //Permissions
-const Permissions={
-  0:["open/close windows","unlock doors","open/close garage"," turn on/off lights"],
-  1:["turn on/off lights","open/close windows"],
-  2:["turn on/off lights","open/close windows"],
-  3:["All permissions are revoked"]
-}
+const Permissions = {
+  0: [
+    "open/close windows",
+    "unlock doors",
+    "open/close garage",
+    " turn on/off lights",
+  ],
+  1: ["turn on/off lights", "open/close windows"],
+  2: ["turn on/off lights", "open/close windows"],
+  3: ["All permissions are revoked"],
+};
 // SHS module
 const SHS = () => {
   const [formData, setFormData] = useState([]);
@@ -25,7 +30,7 @@ const SHS = () => {
   const [newTemperature, setNewTemperature] = useState([]);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const handleCloseUserMenu = () => setShowUserMenu(false);
-  const[userToEdit, setUserToEdit] = useState([]);
+  const [userToEdit, setUserToEdit] = useState([]);
   const [idToEdit, setidToEdit] = useState();
   const [desiredName, setDesiredName] = useState();
   const [desiredPrivilege, setDesiredPrivilege] = useState("0");
@@ -98,7 +103,7 @@ const SHS = () => {
   };
 
   //Pass id to editing user menu
-  const handleShowUserMenu = async (e,item) => {
+  const handleShowUserMenu = async (e, item) => {
     e.preventDefault();
     console.log(e);
     console.log(item);
@@ -106,7 +111,7 @@ const SHS = () => {
     setidToEdit(item.id);
     // const data = userToEditFormData;
     // console.log(data);
-    if (showUserMenu == false){
+    if (showUserMenu == false) {
       setShowUserMenu(true);
     }
   };
@@ -115,28 +120,25 @@ const SHS = () => {
   const editUser = async (e) => {
     e.preventDefault();
     console.log(userToEdit);
-    if (desiredName == undefined){
+    if (desiredName == undefined) {
       setDesiredName(userToEdit.name);
     }
-    if (desiredPrivilege == undefined){
+    if (desiredPrivilege == undefined) {
       setDesiredPrivilege(userToEdit.privilege);
     }
     const response = await axios
-      .put(`http://localhost:8080/api/users/${idToEdit}`,
-      {
+      .put(`http://localhost:8080/api/users/${idToEdit}`, {
         id: idToEdit,
         name: desiredName,
         location: userToEdit.location,
-        privilege: desiredPrivilege
+        privilege: desiredPrivilege,
       })
       .catch((err) => console.log("Error", err));
-    if (response)
-      getUsers();
-      setDesiredPrivilege("0");
-      if(currentUser != undefined){
-        if (response && idToEdit == currentUser.id)
-        UpdateProfile();
-      }
+    if (response) getUsers();
+    setDesiredPrivilege("0");
+    if (currentUser != undefined) {
+      if (response && idToEdit == currentUser.id) UpdateProfile();
+    }
   };
 
   // triggers when currentuser sets a new location and updates location
@@ -173,26 +175,20 @@ const SHS = () => {
   };
 
   // update permissions
-  const getPermissions=(privilege,location)=>{
-
-    if(privilege==0)
-      return Permissions[privilege].join(",");
-    else{
-      if(location=="Outside")
-      {
-        return "All permissions are revoked"
+  const getPermissions = (privilege, location) => {
+    if (privilege == 0) return Permissions[privilege].join(",");
+    else {
+      if (location == "Outside") {
+        return "All permissions are revoked";
       }
-      if(privilege==1)
-        return Permissions[privilege].join(",");
-      if(privilege==2)
-        return Permissions[privilege].join(",");
-      if(privilege==3)
-        return Permissions[privilege].join(",");
-    }  
-  }
+      if (privilege == 1) return Permissions[privilege].join(",");
+      if (privilege == 2) return Permissions[privilege].join(",");
+      if (privilege == 3) return Permissions[privilege].join(",");
+    }
+  };
 
-   // retrieve temperature info
-   const handleChange1 = (e) => {
+  // retrieve temperature info
+  const handleChange1 = (e) => {
     setNewTemperature({ ...newTemperature, [e.target.name]: e.target.value });
   };
 
@@ -200,39 +196,40 @@ const SHS = () => {
   const updateOutdoorTemperature = async (e) => {
     e.preventDefault();
     const response = await axios
-      .put("http://localhost:8080/api/rooms/outdoorTemperature", 
-      { temperature: newTemperature.id },
-      {
-        data: {
-          temperature: newTemperature.id
-        },
-      }
+      .put(
+        "http://localhost:8080/api/rooms/outdoorTemperature",
+        { temperature: newTemperature.id },
+        {
+          data: {
+            temperature: newTemperature.id,
+          },
+        }
       )
       .catch((err) => console.log("Error", err));
     getRooms();
   };
 
+  // retrieve time speed info
+  const handleChange2 = (e) => {
+    setTimeSpeed({ ...timeSpeed, [e.target.name]: e.target.value });
+  };
 
-    // retrieve temperature info
-    const handleChange2 = (e) => {
-      setTimeSpeed({ ...timeSpeed, [e.target.name]: e.target.value });
-    };
-
+  // change time speed
   const updateTimeSpeed = async (e) => {
-    console.log(timeSpeed);
     e.preventDefault();
     const response = await axios
-      .post("http://localhost:8080/api/core/timeSpeed", 
-      { timeSpeed: timeSpeed.id },
-      {
-        data: {
-          timeSpeed: timeSpeed.id
-        },
-      }
+      .post(
+        "http://localhost:8080/api/core/timeSpeed",
+        { timeSpeed: timeSpeed.id },
+        {
+          data: {
+            timeSpeed: timeSpeed.id,
+          },
+        }
       )
       .catch((err) => console.log("Error", err));
-  }
-  
+  };
+
   return (
     <>
       <h4 style={{ textAlign: "center" }}>Simulator</h4>
@@ -296,7 +293,9 @@ const SHS = () => {
               &nbsp;
               {item.privilege}
               &nbsp;
-              <div style={{fontSize:"13px"}}>Permissions:({getPermissions(item.privilege,item.location)})</div>
+              <div style={{ fontSize: "13px" }}>
+                Permissions:({getPermissions(item.privilege, item.location)})
+              </div>
               <Button
                 variant="light"
                 size="sm"
@@ -305,51 +304,57 @@ const SHS = () => {
               >
                 Delete
               </Button>{" "}
-              <Button variant="light" size="sm" style={{ fontSize: "10px" }} onClick={(e) => handleShowUserMenu(e,item)}>
+              <Button
+                variant="light"
+                size="sm"
+                style={{ fontSize: "10px" }}
+                onClick={(e) => handleShowUserMenu(e, item)}
+              >
                 Edit {item.id}
               </Button>
-          { <Modal show={showUserMenu} onHide={handleCloseUserMenu}>
-          <Modal.Header closeButton>
-            <Modal.Title>Edit</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <h4>Change User Details</h4>
-            <Form inline>
-              <Form.Group>
-                  <Form.Label className="my-1 mr-2"></Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    placeholder="Enter new name"
-                    onChange= {(e) => setDesiredName(e.target.value)}
-                  >
-                  </Form.Control>
-                  <Form.Control
-                    as="select"
-                    className="my-1 mr-sm-2"
-                    onChange = {(e) => setDesiredPrivilege(e.target.value)}
-                  >
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                  </Form.Control>
-                  <Button
-                    type="submit"
-                    variant="dark"
-                    className="my-1"
-                    onClick={editUser}
-                  >
-                    Submit
-                  </Button>
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="dark" onClick={handleCloseUserMenu}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>}
+              {
+                <Modal show={showUserMenu} onHide={handleCloseUserMenu}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Edit</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <h4>Change User Details</h4>
+                    <Form inline>
+                      <Form.Group>
+                        <Form.Label className="my-1 mr-2"></Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          placeholder="Enter new name"
+                          onChange={(e) => setDesiredName(e.target.value)}
+                        ></Form.Control>
+                        <Form.Control
+                          as="select"
+                          className="my-1 mr-sm-2"
+                          onChange={(e) => setDesiredPrivilege(e.target.value)}
+                        >
+                          <option value="0">0</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                        </Form.Control>
+                        <Button
+                          type="submit"
+                          variant="dark"
+                          className="my-1"
+                          onClick={editUser}
+                        >
+                          Submit
+                        </Button>
+                      </Form.Group>
+                    </Form>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="dark" onClick={handleCloseUserMenu}>
+                      Close
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              }
             </div>
           ))}
         </div>
@@ -400,11 +405,12 @@ const SHS = () => {
             </div>
           </div>
         </Form>
-        <br/>
+        <br />
         <div>
           <Form>
             <Form.Group style={{ display: "inline" }}>
-            <span style={{ fontWeight: "600" }}>Outside Temperature</span>&nbsp;
+              <span style={{ fontWeight: "600" }}>Outside Temperature</span>
+              &nbsp;
               <input
                 name="id"
                 type="number"
@@ -424,11 +430,12 @@ const SHS = () => {
             </Button>
           </Form>
         </div>
-        <br/>
+        <br />
         <div>
           <Form>
             <Form.Group style={{ display: "inline" }}>
-            <span style={{ fontWeight: "600" }}>Time Speed</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span style={{ fontWeight: "600" }}>Time Speed</span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <input
                 name="id"
                 type="number"

@@ -1,5 +1,6 @@
 package soen343.backend;
 
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -15,6 +16,7 @@ import soen343.backend.user.User;
 import soen343.backend.user.UserRepository;
 import soen343.backend.user.UserService;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Iterator;
 
@@ -25,6 +27,8 @@ public class SimulationService {
     private static CoreModuleModel coreModel;
     private static SecurityModuleModel securityModel;
     boolean intruderPresent = false;
+    boolean authoritiesCalled = false;
+    private LocalDateTime timeToNotifyAuthorities = null;
 
     @Autowired
     private  UserService users;
@@ -49,7 +53,7 @@ public class SimulationService {
     @Bean
     public void startDateAndTime(){
         //simulationDateTime = LocalDateTime.of(2014, 6, 30, 12, 00);
-        CoreModuleModel.simulationDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        CoreModuleModel.simulationDateTime = LocalDateTime.now();
         CoreModuleModel.setSimulationDateTime(CoreModuleModel.simulationDateTime);
     }
 
@@ -165,7 +169,6 @@ public class SimulationService {
                     if(user.getLocation().equals(room.getName())){
                         room.setLightOn(true);
                         roomRepository.save(room);
-                        notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",  room.getName() + " light is on."));
                     }
                 }
             }
@@ -193,6 +196,7 @@ public class SimulationService {
     /* SHP FEATURES*/
 
     public void setAwayMode(boolean awayMode, String userPrivilege){
+        authoritiesCalled = false;
         intruderPresent = false;
         if(state.getCurrentState())
             if(awayMode){
@@ -203,7 +207,7 @@ public class SimulationService {
                     else{
                         rooms.closeDoorsWindows();
                         notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHP","Away mode is on."));
-                        securityModel.setAwayMode(true);
+                        SecurityModuleModel.setAwayMode(true);
                     }
                 }
                 else{
@@ -211,20 +215,30 @@ public class SimulationService {
                 }
             }
             else{
-                securityModel.setAwayMode(false);
+                SecurityModuleModel.setAwayMode(false);
                 notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHP","Away mode is off."));
             }
     }
 
-
-    @Scheduled(fixedRate=500)
+    @Scheduled(fixedRate=1000)
     public void checkIntruders() {
         if (state.getCurrentState()) {
-            if (securityModel.isAwayMode() && !intruderPresent) {
+            if (SecurityModuleModel.isAwayMode() && !intruderPresent) {
                 if (!users.allUsersOutside()) {
                     notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHC", "There are intruders..."));
                     intruderPresent = true;
+                    timeToNotifyAuthorities = CoreModuleModel.simulationDateTime.plusMinutes(SecurityModuleModel.timeCallAuthorities);
+                    notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHC", "Authorities will be called in " + SecurityModuleModel.timeCallAuthorities + " minutes."));
                 }
+            }
+        }
+        if(intruderPresent == true){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            String dateTime1 = timeToNotifyAuthorities.format(formatter);
+            String dateTime2 = CoreModuleModel.simulationDateTime.format(formatter);
+            if(dateTime1.equals(dateTime2) && authoritiesCalled == false){
+                notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHP", "Calling the authorities!"));
+                authoritiesCalled = true;
             }
         }
     }

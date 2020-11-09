@@ -63,9 +63,7 @@ const Simulation = () => {
     const response =  axios
       .post("http://localhost:8080/api/state", { on: toggle })
       .then((response) => setState(response.data.id));
-      if(response){
-        getRooms();
-      }
+      getRooms();
       getRooms();
   };
 
