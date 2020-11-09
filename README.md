@@ -32,8 +32,14 @@ Front-end
 4. Start the front-end typing `npm start`
 
 ## **Application**
+
+Simulation closed
 ![](https://i.imgur.com/NqAp7p2.png[/img])
+Simulation on
 ![](https://i.imgur.com/eFQ5XzW.png[/img])
+SHC tab
 ![](https://i.imgur.com/sVavmir.png[/img])
+SHP security intruders/authorities
 ![](https://i.imgur.com/KPrZ5qr.png[/img])
+Edit modal
 ![](https://i.imgur.com/NQheDf8.png[/img])
