@@ -1,6 +1,6 @@
 # **SOEN343 Team 6**
 ## **Objective**
-To develop a Smart Home Simulator
+To develop a Smart Home Simulator web application. This application allows a user to simulate a smart home environment with controls over doors, lights, windows, ventilation, climate control and security.
 ## **Technologies Used**
 ### **Front-End** ###
 * React
@@ -8,11 +8,11 @@ To develop a Smart Home Simulator
 * SprintBoot
 * H2 Database
 ## **Team Members**
-* Camil Bouzidi
-* Sacha Elkaim
-* Laurent Romulus
-* Mohammad Rakimul Huq
-* Ahmed Haffoudah
+* Camil Bouzidi (40099611)
+* Sacha Elkaim (29779698)
+* Laurent Romulus (40099600)
+* Mohammad Rakimul Huq (40072042)
+* Ahmed Haffoudah (40095428)
 ## **Requirements**
 * Java JDk 15
 * Maven
