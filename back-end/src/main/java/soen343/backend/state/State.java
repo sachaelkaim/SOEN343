@@ -1,18 +1,34 @@
 package soen343.backend.state;
 
 
+/**
+ * The type State.
+ */
 public class State {
 	private boolean isOn;
 
-	public State() {
+    /**
+     * Instantiates a new State.
+     */
+    public State() {
 		isOn = false;
 	}
 
-	public boolean isOn() {
+    /**
+     * Is on boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isOn() {
 		return isOn;
 	}
 
-	public void setOn(boolean isOn) {
+    /**
+     * Sets on.
+     *
+     * @param isOn the is on
+     */
+    public void setOn(boolean isOn) {
 		this.isOn = isOn;
 	}
 	
