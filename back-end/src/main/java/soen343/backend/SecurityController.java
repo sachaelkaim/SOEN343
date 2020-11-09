@@ -19,4 +19,10 @@ public class SecurityController {
         simulationService.setAwayMode(objectNode.get("awayMode").asBoolean(), objectNode.get("userPrivilege").asText());
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/security/notifyAuthoritiesTime")
+    @ResponseStatus( HttpStatus.OK )
+    public void notifyAuthoritiesTime(@RequestBody ObjectNode objectNode) {
+        SecurityModuleModel.setTimeCallAuthorities(objectNode.get("timeAuthorities").asInt());
+    }
+
 }
