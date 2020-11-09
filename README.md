@@ -32,14 +32,14 @@ Front-end
 4. Start the front-end typing `npm start`
 
 ## **Application**
-
-Simulation closed
+* Our application reads and loads a houseLayout json file [(json file)](https://github.com/sachaelkaim/SOEN343/blob/master/back-end/src/main/resources/json/houseLayout.json)
+* Simulation closed
 ![](https://i.imgur.com/NqAp7p2.png[/img])
-Simulation on
+* Simulation on
 ![](https://i.imgur.com/eFQ5XzW.png[/img])
-SHC tab
+* SHC tab
 ![](https://i.imgur.com/sVavmir.png[/img])
-SHP security intruders/authorities
+* SHP security intruders/authorities
 ![](https://i.imgur.com/KPrZ5qr.png[/img])
-Edit modal
+* Edit modal
 ![](https://i.imgur.com/NQheDf8.png[/img])
