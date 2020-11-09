@@ -27,6 +27,9 @@ import soen343.backend.console.ConsoleService;
 import java.util.Iterator;
 
 
+/**
+ * The type User service.
+ */
 @Service
 public class UserService {
 
@@ -42,6 +45,9 @@ public class UserService {
     @Autowired
     private ConsoleService notifications;
 
+    /**
+     * Add base users.
+     */
     @Bean
     public void addBaseUsers(){
     	mapper = new ObjectMapper();
@@ -86,14 +92,30 @@ public class UserService {
         }
     }
 
+    /**
+     * Get all users iterable.
+     *
+     * @return the iterable
+     */
     public Iterable<User> getAllUsers(){
         return userRepository.findAll();
     }
 
+    /**
+     * Get user user.
+     *
+     * @param id the id
+     * @return the user
+     */
     public User getUser(Long id){
         return userRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Add user.
+     *
+     * @param user the user
+     */
     public void addUser(User user){
         userRepository.save(user);
         try 
@@ -110,22 +132,40 @@ public class UserService {
         }
     }
 
+    /**
+     * Add parent.
+     */
     public void addParent(){
         addUser(new User( "new parent", "Outside", "0"));
     }
 
+    /**
+     * Add children.
+     */
     public void addChildren(){
         addUser(new User( "new child", "Outside", "1"));
     }
 
+    /**
+     * Add guest.
+     */
     public void addGuest(){
         addUser(new User( "new guest", "Outside", "2"));
     }
 
+    /**
+     * Add stranger.
+     */
     public void addStranger(){
         addUser(new User( "stranger", "Outside", "3"));
     }
-    
+
+    /**
+     * Edit user.
+     *
+     * @param id   the id
+     * @param user the user
+     */
     public void editUser(String id, User user){
     	Iterable<User> previousUsersIter = userRepository.findAll();
 		List<User> previousUsers = StreamSupport
@@ -151,6 +191,11 @@ public class UserService {
         }		
     }
 
+    /**
+     * Delete user.
+     *
+     * @param id the id
+     */
     public void deleteUser(Long id){
         userRepository.deleteById(id);
         Iterable<User> updatedUsersIter = userRepository.findAll();
@@ -166,6 +211,11 @@ public class UserService {
         }
     }
 
+    /**
+     * Add user.
+     *
+     * @param userName the user name
+     */
     public void addUser(String userName){
         User user;
     	if(userName.equals("parent")){
@@ -199,12 +249,25 @@ public class UserService {
         }
     }
 
+    /**
+     * Login user.
+     *
+     * @param id the id
+     * @return the user
+     */
     public User login(Long id){
         User loggedUser = userRepository.findById(id).orElse(null);
         notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHS","Logged in User: ID " + loggedUser.getId() + " " + loggedUser.getName() + "."));
         return loggedUser;
     }
 
+    /**
+     * Change user location boolean.
+     *
+     * @param id       the id
+     * @param location the location
+     * @return the boolean
+     */
     public boolean changeUserLocation(Long id, String location){
         if(location.equals("Select location")){
             return false;
@@ -219,6 +282,11 @@ public class UserService {
         }
     }
 
+    /**
+     * All users outside boolean.
+     *
+     * @return the boolean
+     */
     public boolean allUsersOutside(){
         Iterable<User> users = userRepository.findAll();
         Iterator<User> iter = users.iterator();
@@ -230,7 +298,12 @@ public class UserService {
         }
         return true;
     }
-    
+
+    /**
+     * Save.
+     *
+     * @param users the users
+     */
     public void save(List<User> users) {
     	userRepository.saveAll(users);
     }

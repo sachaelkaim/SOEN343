@@ -20,13 +20,22 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Iterator;
 
+/**
+ * The type Simulation service.
+ */
 @EnableScheduling
 @Service
 public class SimulationService {
 
     private static CoreModuleModel coreModel;
     private static SecurityModuleModel securityModel;
+    /**
+     * The Intruder present.
+     */
     boolean intruderPresent = false;
+    /**
+     * The Authorities called.
+     */
     boolean authoritiesCalled = false;
     private LocalDateTime timeToNotifyAuthorities = null;
 
@@ -50,6 +59,9 @@ public class SimulationService {
 
     /* DATE AND TIME */
 
+    /**
+     * Start date and time.
+     */
     @Bean
     public void startDateAndTime(){
         //simulationDateTime = LocalDateTime.of(2014, 6, 30, 12, 00);
@@ -57,6 +69,9 @@ public class SimulationService {
         CoreModuleModel.setSimulationDateTime(CoreModuleModel.simulationDateTime);
     }
 
+    /**
+     * Date and time.
+     */
     @Scheduled(fixedRate=1000)
     public void dateAndTime() {
         if(state.getCurrentState()) {
@@ -67,6 +82,14 @@ public class SimulationService {
 
     /* SHC FEATURES*/
 
+    /**
+     * Set light.
+     *
+     * @param userLocation the user location
+     * @param privilege    the privilege
+     * @param location     the location
+     * @param lightOn      the light on
+     */
     public void setLight(String userLocation, String privilege, String location, boolean lightOn){
         if(state.getCurrentState()){
             if(privilege.equals("0")){
@@ -97,6 +120,13 @@ public class SimulationService {
         }
     }
 
+    /**
+     * Set door.
+     *
+     * @param privilege the privilege
+     * @param location  the location
+     * @param doorLock  the door lock
+     */
     public void setDoor(String privilege, String location, String doorLock){
         if(state.getCurrentState()){
             if(privilege.equals("0")){
@@ -111,6 +141,14 @@ public class SimulationService {
         }
     }
 
+    /**
+     * Set window.
+     *
+     * @param userLocation the user location
+     * @param privilege    the privilege
+     * @param location     the location
+     * @param windowOpen   the window open
+     */
     public void setWindow(String userLocation, String privilege, String location, String windowOpen){
         if(state.getCurrentState()){
             if(privilege.equals("0")){
@@ -144,6 +182,11 @@ public class SimulationService {
         }
     }
 
+    /**
+     * Set auto mode.
+     *
+     * @param autoMode the auto mode
+     */
     public void setAutoMode(boolean autoMode){
         CoreModuleModel.setAutoMode(autoMode);
         if(state.getCurrentState()){
@@ -156,6 +199,9 @@ public class SimulationService {
         }
     }
 
+    /**
+     * Auto mode.
+     */
     public void autoMode(){
         if(CoreModuleModel.isAutoMode()) {
             Iterable<User> users = userRepository.findAll();
@@ -195,6 +241,12 @@ public class SimulationService {
 
     /* SHP FEATURES*/
 
+    /**
+     * Set away mode.
+     *
+     * @param awayMode      the away mode
+     * @param userPrivilege the user privilege
+     */
     public void setAwayMode(boolean awayMode, String userPrivilege){
         authoritiesCalled = false;
         intruderPresent = false;
@@ -220,6 +272,9 @@ public class SimulationService {
             }
     }
 
+    /**
+     * Check intruders.
+     */
     @Scheduled(fixedRate=1000)
     public void checkIntruders() {
         if (state.getCurrentState()) {

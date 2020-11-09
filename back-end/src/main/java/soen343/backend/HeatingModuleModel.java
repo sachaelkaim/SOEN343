@@ -1,38 +1,70 @@
 package soen343.backend;
 
+/**
+ * The type Heating module model.
+ */
 public class HeatingModuleModel {
 	//Static to be accessed anywhere
 	private static int tempOutside;
 	private static int tempInsideGeneral;
-	
-	HeatingModuleModel()
+
+    /**
+     * Instantiates a new Heating module model.
+     */
+    HeatingModuleModel()
 	{
 		HeatingModuleModel.tempOutside = 0;
 		HeatingModuleModel.tempInsideGeneral = 0;
 	}
-	
-	HeatingModuleModel(int tempOutside, int tempInsideGeneral)
+
+    /**
+     * Instantiates a new Heating module model.
+     *
+     * @param tempOutside       the temp outside
+     * @param tempInsideGeneral the temp inside general
+     */
+    HeatingModuleModel(int tempOutside, int tempInsideGeneral)
 	{
 		HeatingModuleModel.tempOutside = tempOutside;
 		HeatingModuleModel.tempInsideGeneral = tempInsideGeneral;
 	}
-	
-	public static int getTempOutside() 
+
+    /**
+     * Gets temp outside.
+     *
+     * @return the temp outside
+     */
+    public static int getTempOutside()
 	{
 		return tempOutside;
 	}
-	
-	public static void setTempOutside(int tempOutside) 
+
+    /**
+     * Sets temp outside.
+     *
+     * @param tempOutside the temp outside
+     */
+    public static void setTempOutside(int tempOutside)
 	{
 		HeatingModuleModel.tempOutside = tempOutside;
 	}
-	
-	public static int getTempInsideGeneral() 
+
+    /**
+     * Gets temp inside general.
+     *
+     * @return the temp inside general
+     */
+    public static int getTempInsideGeneral()
 	{
 		return tempInsideGeneral;
 	}
-	
-	public static void setTempInsideGeneral(int tempInsideGeneral) 
+
+    /**
+     * Sets temp inside general.
+     *
+     * @param tempInsideGeneral the temp inside general
+     */
+    public static void setTempInsideGeneral(int tempInsideGeneral)
 	{
 		HeatingModuleModel.tempInsideGeneral = tempInsideGeneral;
 	}

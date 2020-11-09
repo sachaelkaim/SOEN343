@@ -18,14 +18,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+/**
+ * The type Back end application.
+ */
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @EnableScheduling
 public class BackEndApplication {
 
+	/**
+	 * The entry point of application.
+	 *
+	 * @param args the input arguments
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(BackEndApplication.class, args);
 	}
 
+	/**
+	 * Runner command line runner.
+	 *
+	 * @param roomService the room service
+	 * @return the command line runner
+	 */
 	@Bean
 	CommandLineRunner runner(RoomService roomService) {
 		return args -> {
@@ -42,7 +56,13 @@ public class BackEndApplication {
 			}
 		};
 	}
-	
+
+	/**
+	 * User runner command line runner.
+	 *
+	 * @param userService the user service
+	 * @return the command line runner
+	 */
 	@Bean
 	CommandLineRunner userRunner(UserService userService) {
 		return args -> {

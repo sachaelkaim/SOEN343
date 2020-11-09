@@ -11,7 +11,9 @@ import java.util.Iterator;
 import java.util.List;
 
 
-
+/**
+ * The type Room service.
+ */
 @Service
 public class RoomService {
 
@@ -25,6 +27,11 @@ public class RoomService {
     @Autowired
     private ConsoleService notifications;
 
+    /**
+     * Get all rooms iterable.
+     *
+     * @return the iterable
+     */
     public Iterable<Room> getAllRooms(){
         if(state.getCurrentState()) {
             return roomRepository.findAll();
@@ -33,26 +40,60 @@ public class RoomService {
             return (Iterable<Room>) empty;
     }
 
+    /**
+     * Get room room.
+     *
+     * @param id the id
+     * @return the room
+     */
     public Room getRoom(String id){
         return roomRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Add room.
+     *
+     * @param room the room
+     */
     public void addRoom(Room room){
         roomRepository.save(room);
     }
 
+    /**
+     * Edit room.
+     *
+     * @param id   the id
+     * @param room the room
+     */
     public void editRoom(String id, Room room){
         roomRepository.save(room);
     }
 
+    /**
+     * Delete room.
+     *
+     * @param id the id
+     */
     public void deleteRoom(String id){
         roomRepository.deleteById(id);
     }
-    
+
+    /**
+     * Save.
+     *
+     * @param rooms the rooms
+     */
     public void save(List<Room> rooms){
         roomRepository.saveAll(rooms);
     }
 
+    /**
+     * Block window boolean.
+     *
+     * @param location    the location
+     * @param windowState the window state
+     * @return the boolean
+     */
     public boolean blockWindow(String location, String windowState){
         Room blockedRoom = roomRepository.findById(location).orElse(null);
         blockedRoom.setWindowState(windowState);
@@ -61,6 +102,12 @@ public class RoomService {
         return true;
     }
 
+    /**
+     * Set outdoor temperature boolean.
+     *
+     * @param outdoorTemperature the outdoor temperature
+     * @return the boolean
+     */
     public boolean setOutdoorTemperature(double outdoorTemperature){
         if(state.getCurrentState()){
             Room outdoorTemp = roomRepository.findById("Outside").orElse(null);
@@ -73,6 +120,9 @@ public class RoomService {
             return false;
     }
 
+    /**
+     * Close doors windows.
+     */
     public void closeDoorsWindows(){
         Iterable<Room> rooms = roomRepository.findAll();
         Iterator<Room> iter = rooms.iterator();
@@ -86,18 +136,37 @@ public class RoomService {
         roomRepository.saveAll(rooms);
     }
 
+    /**
+     * On off light.
+     *
+     * @param location the location
+     * @param lightOn  the light on
+     */
     public void onOffLight( String location, boolean lightOn ){
         Room room =  roomRepository.findById(location).orElse(null);
         room.setLightOn(lightOn);
         roomRepository.save(room);
     }
 
+    /**
+     * Unlock lock door.
+     *
+     * @param location the location
+     * @param doorLock the door lock
+     */
     public void unlockLockDoor( String location, String doorLock ){
         Room room =  roomRepository.findById(location).orElse(null);
         room.setDoorState(doorLock);
         roomRepository.save(room);
     }
 
+    /**
+     * Open close window boolean.
+     *
+     * @param location   the location
+     * @param windowOpen the window open
+     * @return the boolean
+     */
     public boolean openCloseWindow( String location, String windowOpen ){
         Room room =  roomRepository.findById(location).orElse(null);
         if(room.getWindowState().equals("BLOCKED")){

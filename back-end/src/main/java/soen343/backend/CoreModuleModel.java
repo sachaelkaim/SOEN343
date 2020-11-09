@@ -8,42 +8,87 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 
+/**
+ * The type Core module model.
+ */
 public class CoreModuleModel {
 
-	//Static to be accessed anywhere
+    /**
+     * The constant simulationDateTime.
+     */
+//Static to be accessed anywhere
 	public static LocalDateTime simulationDateTime;
 	private static boolean AutoMode;
-	public static String dateTime;
-	public static int timeSpeed = 1;
+    /**
+     * The constant dateTime.
+     */
+    public static String dateTime;
+    /**
+     * The constant timeSpeed.
+     */
+    public static int timeSpeed = 1;
 
-	public CoreModuleModel() 
+    /**
+     * Instantiates a new Core module model.
+     */
+    public CoreModuleModel()
 	{
 	}
 
-	public static LocalDateTime getSimulationDateTime() 
+    /**
+     * Gets simulation date time.
+     *
+     * @return the simulation date time
+     */
+    public static LocalDateTime getSimulationDateTime()
 	{
 		return simulationDateTime;
 	}
 
-	public static void setSimulationDateTime(LocalDateTime simulationDateTime) 
+    /**
+     * Sets simulation date time.
+     *
+     * @param simulationDateTime the simulation date time
+     */
+    public static void setSimulationDateTime(LocalDateTime simulationDateTime)
 	{
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		dateTime = simulationDateTime.format(formatter);
 	}
 
-	public static boolean isAutoMode() {
+    /**
+     * Is auto mode boolean.
+     *
+     * @return the boolean
+     */
+    public static boolean isAutoMode() {
 		return AutoMode;
 	}
 
-	public static void setAutoMode(boolean autoMode) {
+    /**
+     * Sets auto mode.
+     *
+     * @param autoMode the auto mode
+     */
+    public static void setAutoMode(boolean autoMode) {
 		AutoMode = autoMode;
 	}
 
-	public static int getTimeSpeed() {
+    /**
+     * Gets time speed.
+     *
+     * @return the time speed
+     */
+    public static int getTimeSpeed() {
 		return timeSpeed;
 	}
 
-	public static void setTimeSpeed(int timeSpeed) {
+    /**
+     * Sets time speed.
+     *
+     * @param timeSpeed the time speed
+     */
+    public static void setTimeSpeed(int timeSpeed) {
 		CoreModuleModel.timeSpeed = timeSpeed;
 	}
 }
