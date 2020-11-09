@@ -30,3 +30,10 @@ Front-end
 2. Head over to /frontend/
 3. Install dependencies typing `npm install` 
 4. Start the front-end typing `npm start`
+
+## **Application**
+![](https://i.imgur.com/NqAp7p2.png[/img])
+![](https://i.imgur.com/eFQ5XzW.png[/img])
+![](https://i.imgur.com/sVavmir.png[/img])
+![](https://i.imgur.com/KPrZ5qr.png[/img])
+![](https://i.imgur.com/NQheDf8.png[/img])
