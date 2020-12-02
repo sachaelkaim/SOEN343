@@ -7,7 +7,7 @@ import { UserContext } from "../UserProvider";
 const SHH = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const [locations, setLocations] = useState([]);
-  const [checkBoxState, setCheckBoxState] = useState([]);
+  const [zones, setZones] = useState([]);
   let checkBoxArr = [];
  
 
@@ -22,15 +22,27 @@ const SHH = () => {
     // Create new zone
     const createNewZone = async (e) => {
       e.preventDefault(); // prevent refresh on submit
+      unCheck();
       const response = await axios
       .post(`http://localhost:8080/api/heating/${checkBoxArr}`)
       .catch((err) => console.log("Error", err));
-    if (response && response.data) getAvailableLocations();;
-      
+    if (response && response.data) 
+    
+    getAvailableLocations();
+    displayZones();
     };
+
+     // display zones
+  const displayZones = async () => {
+    const response = await axios
+      .get("http://localhost:8080/api/heating/displayZones")
+      .catch((err) => console.log("Error", err));
+    if (response && response.data) setZones(response.data);
+  };
 
   // checkbox onchange
   const onChange = (e) => {
+    
     if (e.target.type === "checkbox" && !e.target.checked) {
       for (var i=checkBoxArr.length; i--; ) {
         if (checkBoxArr[i] === e.target.value) checkBoxArr.splice(i, 1);
@@ -41,8 +53,18 @@ const SHH = () => {
     console.log(checkBoxArr);
   };
 
+  // uncheck all after submitting zone
+  function unCheck() {
+    var x = document.getElementsByClassName("myCheck");
+    console.log(x);
+    for(var i=0; i<=x.length-1; i++) {
+      x[i].checked = false;
+      }  
+  }
+
   useEffect(() => {
     getAvailableLocations();
+    displayZones();
   }, []);
 
   return (
@@ -50,26 +72,35 @@ const SHH = () => {
       <h4 style={{ textAlign: "center" }}>Heating</h4>
       <br />
       <h6>Set Zone</h6>
-      <Form onSubmit={createNewZone}>
-        <div></div>
-        {["checkbox"].map((type) => (
-          <div key={`inline-${type}`} className="mb-3">
-            {locations.map((item) => (
+      {locations.map((item) => (
               <div key={item.id}>
-                <Form.Check
-                  inline
-                  label={item}
-                  type={type}
-                  value={item}
-                  id={`inline-${type}-1`}
-                  onChange={onChange}
-                />
+                <input type="checkbox" className="myCheck" name={item} value={item}  onChange={onChange}/>&nbsp;
+                <label for={item}>{item}</label>
               </div>
             ))}
-          </div>
-        ))}
-        <Button variant="dark" on type="submit">New Zone</Button>
-      </Form>
+            <Button variant="dark" onClick={createNewZone}>New Zone</Button>
+      <div>
+      {zones.map((item) => (
+              <div key={item.id}>
+                {item.zone}{item.locations}
+              </div>
+            ))}
+      </div>
+      <br/>
+      <DropdownButton
+            id="dropdown-basic-button"
+            title="select zone"
+           
+            variant="dark"
+            style={{ display: "inline" }}
+          >
+            {zones.map((item) => (
+              <div key={item.id}>
+                <Dropdown.Item eventKey={item.zone}>{item.zone}</Dropdown.Item>
+              </div>
+            ))}
+          </DropdownButton>
+         
     </>
   );
 };

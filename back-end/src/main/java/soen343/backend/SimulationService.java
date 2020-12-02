@@ -340,5 +340,5 @@ public class SimulationService {
     public List<HeatingModuleModel> displayZones() {
         return zones;
     }
-    
+
 }
