@@ -1,6 +1,5 @@
 package soen343.backend;
 
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -15,10 +14,12 @@ import soen343.backend.state.StateService;
 import soen343.backend.user.User;
 import soen343.backend.user.UserRepository;
 import soen343.backend.user.UserService;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * The type Simulation service.
@@ -29,6 +30,9 @@ public class SimulationService {
 
     private static CoreModuleModel coreModel;
     private static SecurityModuleModel securityModel;
+    private List<HeatingModuleModel> zones = new ArrayList<>();
+    private static int zoneCounter = 0;
+
     /**
      * The Intruder present.
      */
@@ -287,7 +291,7 @@ public class SimulationService {
                 }
             }
         }
-        if(intruderPresent == true){
+        if(intruderPresent){
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
             String dateTime1 = timeToNotifyAuthorities.format(formatter);
             String dateTime2 = CoreModuleModel.simulationDateTime.format(formatter);
@@ -298,4 +302,43 @@ public class SimulationService {
         }
     }
 
+
+    /* SHH FEATURES*/
+
+    public ArrayList<String> availableLocations (){
+        ArrayList<String> empty = new ArrayList<>();
+       // if(state.getCurrentState()){
+            ArrayList<String> availableRooms = new ArrayList<>();
+            Iterable<Room> rooms = roomRepository.findAll();
+            Iterator<Room> iter1 = rooms.iterator();
+            while(iter1.hasNext()) {
+                Room room = iter1.next();
+                if(!"Outside".equals(room.getName()) && !"Backyard".equals(room.getName())){
+                    availableRooms.add(room.getName());
+                }
+            }
+            zones.forEach(d -> {
+                ArrayList<String> arr = new ArrayList<>(d.getLocations());
+                arr.forEach(i -> {
+                    availableRooms.remove(i);
+                });
+            });
+
+            return availableRooms;
+      //  }
+      //  else return (ArrayList<String>) empty;
+        }
+
+    public void addZone (ArrayList<String> locations){
+        HeatingModuleModel zone = new HeatingModuleModel();
+        zone.setLocations(locations);
+        zoneCounter++;
+        zone.setZone("Zone" + zoneCounter);
+        zones.add(zone);
+    }
+
+    public List<HeatingModuleModel> displayZones() {
+        return zones;
+    }
+    
 }
