@@ -306,8 +306,9 @@ public class SimulationService {
     /* SHH FEATURES*/
 
     public ArrayList<String> availableLocations (){
+
         ArrayList<String> empty = new ArrayList<>();
-       // if(state.getCurrentState()){
+        if(state.getCurrentState()){
             ArrayList<String> availableRooms = new ArrayList<>();
             Iterable<Room> rooms = roomRepository.findAll();
             Iterator<Room> iter1 = rooms.iterator();
@@ -325,16 +326,19 @@ public class SimulationService {
             });
 
             return availableRooms;
-      //  }
-      //  else return (ArrayList<String>) empty;
+        }
+        else return (ArrayList<String>) empty;
         }
 
-    public void addZone (ArrayList<String> locations){
-        HeatingModuleModel zone = new HeatingModuleModel();
-        zone.setLocations(locations);
-        zoneCounter++;
-        zone.setZone("Zone" + zoneCounter);
-        zones.add(zone);
+    public void addZone (ArrayList<String> locations, String privilege){
+        if(privilege.equals("0")){
+            HeatingModuleModel zone = new HeatingModuleModel();
+            zone.setLocations(locations);
+            zoneCounter++;
+            zone.setZone("Zone" + zoneCounter);
+            zones.add(zone);
+        }
+      else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission!"));
     }
 
     public List<HeatingModuleModel> displayZones() {

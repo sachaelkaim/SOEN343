@@ -35,19 +35,22 @@ const Console = () => {
 
   return (
     <>
-      {notifications.map((newnotification) => (
-        <div key={newnotification.id}>
-          {newnotification.time}&nbsp;
-          {newnotification.module == "SHS" && (
-            <span style={{ color: "#1E90FF" }}>{newnotification.module}</span>
+      {notifications.map((newNotification) => (
+        <div key={newNotification.id}>
+          {newNotification.time}&nbsp;
+          {newNotification.module == "SHS" && (
+            <span style={{ color: "#1E90FF" }}>{newNotification.module}</span>
           )}
-           {newnotification.module == "SHC" && (
-            <span style={{ color: "orange" }}>{newnotification.module}</span>
+           {newNotification.module == "SHC" && (
+            <span style={{ color: "orange" }}>{newNotification.module}</span>
           )}
-          {newnotification.module == "SHP" && (
-            <span style={{ color: "green" }}>{newnotification.module}</span>
+          {newNotification.module == "SHP" && (
+            <span style={{ color: "green" }}>{newNotification.module}</span>
           )}
-          &nbsp;{newnotification.message}
+           {newNotification.module == "SHH" && (
+            <span style={{ color: "red" }}>{newNotification.module}</span>
+          )}
+          &nbsp;{newNotification.message}
         </div>
       ))}
     </>
