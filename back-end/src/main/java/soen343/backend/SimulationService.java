@@ -337,7 +337,7 @@ public class SimulationService {
             zoneCounter++;
             zone.setZone("Zone" + zoneCounter);
             zones.add(zone);
-            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "New zone: " + zone.getZone() + " , " + zone.getLocations()));
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "New " + zone.getZone() + " : " + zone.getLocations()));
         }
       else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission!"));
     }

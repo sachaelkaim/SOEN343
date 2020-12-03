@@ -22,21 +22,20 @@ const SHH = () => {
 
   // Create new zone
   const createNewZone = async (e) => {
-    if (
-      currentUser == undefined 
-    ) {
+    if (currentUser == undefined) {
       return console.log("cannot process");
     }
     e.preventDefault(); // prevent refresh on submit
     unCheck();
     const response = await axios
-      .post(`http://localhost:8080/api/heating/${checkBoxArr}`,
-      { userPrivilege: currentUser.privilege },
-      {
-        data: {
-          userPrivilege: currentUser.privilege
-        },
-      }
+      .post(
+        `http://localhost:8080/api/heating/${checkBoxArr}`,
+        { userPrivilege: currentUser.privilege },
+        {
+          data: {
+            userPrivilege: currentUser.privilege,
+          },
+        }
       )
       .catch((err) => console.log("Error", err));
     if (response && response.data) getAvailableLocations();
@@ -69,11 +68,11 @@ const SHH = () => {
     for (var i = 0; i <= x.length - 1; i++) {
       x[i].checked = false;
     }
-  }
+  };
 
   const setZoneTemperature = (e) => {
-console.log(e);
-  }
+    console.log(e);
+  };
 
   useEffect(() => {
     getAvailableLocations();
@@ -86,7 +85,7 @@ console.log(e);
       <br />
       <h6>Set Zone</h6>
       {locations.map((item) => (
-        <div key={item.id} style={{display: "inline-block"}}>
+        <div key={item.id} style={{ display: "inline-block" }}>
           <input
             type="checkbox"
             className="myCheck"
@@ -96,14 +95,14 @@ console.log(e);
           />
           &nbsp;
           <label for={item}>{item}</label>
-          &nbsp;  &nbsp;  
+          &nbsp; &nbsp;
         </div>
       ))}
-      <br/>
+      <br />
       <Button variant="dark" onClick={createNewZone}>
         New Zone
       </Button>
-    
+      <br />
       <br />
       <h6>Set Zone Temperature</h6>
       <Form>
@@ -116,22 +115,30 @@ console.log(e);
               custom
               onChange={(e) => setZoneTemperature(e.target.value)}
             >
-              <option>Select zone</option>
+              <option>Zone</option>
               {zones.map((item) => (
                 <option key={item.zone} value={item.zone}>
                   {item.zone}
                 </option>
               ))}
             </Form.Control>
-            <Button
-              size="ms"
-              variant="dark"
-              className="my-1"
-          
+            <Form.Control
+              as="select"
+              className="my-1 mr-sm-2"
+              id="selectBox1"
+              custom
+              onChange={(e) => setZoneTemperature(e.target.value)}
             >
-              LightOn
+              <option>Period</option>
+              {zones.map((item) => (
+                <option key={item.zone} value={item.zone}>
+                  {item.zone}
+                </option>
+              ))}
+            </Form.Control>
+            <Button size="ms" variant="dark" className="my-1">
+              Submit
             </Button>
-           
           </Form>
         </Form.Group>
       </Form>
