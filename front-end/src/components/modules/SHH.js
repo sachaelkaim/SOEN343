@@ -64,11 +64,15 @@ const SHH = () => {
   };
 
   // uncheck all after submitting zone
-  function unCheck() {
+  const unCheck = () => {
     var x = document.getElementsByClassName("myCheck");
     for (var i = 0; i <= x.length - 1; i++) {
       x[i].checked = false;
     }
+  }
+
+  const setZoneTemperature = (e) => {
+console.log(e);
   }
 
   useEffect(() => {
@@ -99,28 +103,38 @@ const SHH = () => {
       <Button variant="dark" onClick={createNewZone}>
         New Zone
       </Button>
-      <div>
-        {zones.map((item) => (
-          <div key={item.id}>
-            {item.zone}
-            {item.locations}
-          </div>
-        ))}
-      </div>
+    
       <br />
       <h6>Set Zone Temperature</h6>
-      <DropdownButton
-        id="dropdown-basic-button"
-        title="select zone"
-        variant="dark"
-        style={{ display: "inline" }}
-      >
-        {zones.map((item) => (
-          <div key={item.id}>
-            <Dropdown.Item eventKey={item.zone}>{item.zone}</Dropdown.Item>
-          </div>
-        ))}
-      </DropdownButton>
+      <Form>
+        <Form.Group>
+          <Form inline>
+            <Form.Control
+              as="select"
+              className="my-1 mr-sm-2"
+              id="selectBox1"
+              custom
+              onChange={(e) => setZoneTemperature(e.target.value)}
+            >
+              <option>Select zone</option>
+              {zones.map((item) => (
+                <option key={item.zone} value={item.zone}>
+                  {item.zone}
+                </option>
+              ))}
+            </Form.Control>
+            <Button
+              size="ms"
+              variant="dark"
+              className="my-1"
+          
+            >
+              LightOn
+            </Button>
+           
+          </Form>
+        </Form.Group>
+      </Form>
     </>
   );
 };
