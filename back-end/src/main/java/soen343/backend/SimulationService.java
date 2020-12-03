@@ -353,7 +353,6 @@ public class SimulationService {
                 i.setTemperature(temperature);
                 i.setPeriod(period);
                 notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "Set " + i.getZone() + " temperature to " + i.getTemperature() + "C"));
-                System.out.print(i.toString());
             }
             regulateZone = true;
         });
@@ -364,7 +363,6 @@ public class SimulationService {
         Iterable<Room> rooms = roomRepository.findAll();
         if(state.getCurrentState() && regulateZone){
             zones.forEach(i -> {
-                System.out.println(i.getPeriod());
                 if(i.getPeriod() == 1){
                     ArrayList<String> arr = new ArrayList<>(i.getLocations());
                     arr.forEach(d -> {
@@ -390,15 +388,9 @@ public class SimulationService {
         }
     }
 
-    public ArrayList<Double> getCurrentTemperatures(){
-        ArrayList<Double> temperatures = new ArrayList<>();
+    public Iterable<Room> getCurrentTemperatures(){
         Iterable<Room> rooms = roomRepository.findAll();
-        Iterator<Room> iter1 = rooms.iterator();
-        while(iter1.hasNext()) {
-            Room room = iter1.next();
-            temperatures.add(room.getTemperature());
-        }
-        return temperatures;
+        return rooms;
     }
 
 

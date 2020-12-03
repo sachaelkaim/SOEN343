@@ -46,7 +46,7 @@ public class HeatingController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/heating/getCurrentTemperatures")
     @ResponseStatus( HttpStatus.OK )
-    public ArrayList<Double> getCurrentTemperatures() {
+    public Iterable<soen343.backend.room.Room> getCurrentTemperatures() {
         return simulationService.getCurrentTemperatures();
 
     }

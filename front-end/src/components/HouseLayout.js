@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from "react";
-import { LayoutContext } from "./LayoutProvider";
 import { AllUsersContext } from "./AllUsersProvider";
 import { Navbar } from "react-bootstrap";
 import lightBulbOn from "../images/lightbulbon.png";
@@ -13,9 +12,7 @@ import axios from "axios";
 
 // Fetch house layout
 const HouseLayout = () => {
-  const { layout, setLayout } = useContext(LayoutContext);
   const { users, setUsers } = useContext(AllUsersContext);
-  const[currentTemperatures, setCurrentTemperatures] = ([]);
   const [locations, setLocations] = useState([]);
 
 // retrieve updated temperatures
@@ -51,7 +48,7 @@ const [seconds, setSeconds] = useState(0);
         </Navbar.Brand>
       </Navbar>
       <div style={{ textAlign: "center", marginLeft: "1%", marginTop: "20px" }}>
-        {layout.map((room) => (
+        {locations.map((room) => (
           <div
             key={room.name}
             style={{
@@ -172,11 +169,6 @@ const [seconds, setSeconds] = useState(0);
           </div>
         ))}
       </div>
-      {locations.map((cTemp) => (
-              <div key={cTemp.id}>
-               {cTemp}
-              </div>
-            ))}
     </>
   );
 };
