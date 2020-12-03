@@ -37,4 +37,18 @@ public class HeatingController {
         return simulationService.displayZones();
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/heating/setZoneTemperature")
+    @ResponseStatus( HttpStatus.OK )
+    public void setZoneTemperature(@RequestBody ObjectNode objectNode) {
+        simulationService.setZoneTemperature(objectNode.get("zone").asText(), objectNode.get("period").asInt(), objectNode.get("temperature").asDouble());
+
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/heating/getCurrentTemperatures")
+    @ResponseStatus( HttpStatus.OK )
+    public ArrayList<Double> getCurrentTemperatures() {
+        return simulationService.getCurrentTemperatures();
+
+    }
+
 }

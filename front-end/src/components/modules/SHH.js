@@ -58,8 +58,7 @@ const SHH = () => {
       }
     } else {
       checkBoxArr.push(e.target.value);
-    }
-    console.log(checkBoxArr);
+    } 
   };
 
   // uncheck all after submitting zone

@@ -15,6 +15,7 @@ import soen343.backend.user.User;
 import soen343.backend.user.UserRepository;
 import soen343.backend.user.UserService;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class SimulationService {
     private static SecurityModuleModel securityModel;
     private List<HeatingModuleModel> zones = new ArrayList<>();
     private static int zoneCounter = 0;
+    private static boolean regulateZone = false;
 
     /**
      * The Intruder present.
@@ -324,7 +326,6 @@ public class SimulationService {
                     availableRooms.remove(i);
                 });
             });
-
             return availableRooms;
         }
         else return (ArrayList<String>) empty;
@@ -345,5 +346,60 @@ public class SimulationService {
     public List<HeatingModuleModel> displayZones() {
         return zones;
     }
+
+    public void setZoneTemperature(String zone, int period, double temperature){
+        zones.forEach(i -> {
+            if( i.getZone().equals(zone)){
+                i.setTemperature(temperature);
+                i.setPeriod(period);
+                notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "Set " + i.getZone() + " temperature to " + i.getTemperature() + "C"));
+                System.out.print(i.toString());
+            }
+            regulateZone = true;
+        });
+    }
+
+    @Scheduled(fixedRate=1000)
+    public void regulateZoneTemperatures(){
+        Iterable<Room> rooms = roomRepository.findAll();
+        if(state.getCurrentState() && regulateZone){
+            zones.forEach(i -> {
+                System.out.println(i.getPeriod());
+                if(i.getPeriod() == 1){
+                    ArrayList<String> arr = new ArrayList<>(i.getLocations());
+                    arr.forEach(d -> {
+                        Iterator<Room> iter1 = rooms.iterator();
+                        while(iter1.hasNext()){
+                            Room room = iter1.next();
+                            if(d.equals(room.getName())){
+
+                                if(i.getTemperature() != room.getTemperature()){
+                                    double tempInc = room.getTemperature();
+                                    tempInc += 0.1;
+                                    double temp = tempInc;
+                                    DecimalFormat df = new DecimalFormat("#.###");
+                                    tempInc = Double.valueOf(df.format(temp));
+                                    room.setTemperature(tempInc);
+                                    roomRepository.save(room);
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    public ArrayList<Double> getCurrentTemperatures(){
+        ArrayList<Double> temperatures = new ArrayList<>();
+        Iterable<Room> rooms = roomRepository.findAll();
+        Iterator<Room> iter1 = rooms.iterator();
+        while(iter1.hasNext()) {
+            Room room = iter1.next();
+            temperatures.add(room.getTemperature());
+        }
+        return temperatures;
+    }
+
 
 }

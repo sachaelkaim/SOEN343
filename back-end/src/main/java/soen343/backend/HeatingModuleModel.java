@@ -9,14 +9,17 @@ public class HeatingModuleModel {
 
 	private String zone;
 	private ArrayList<String> Locations;
+	private int period;
+	private double temperature;
 
 	public HeatingModuleModel(){
-
 	}
 
-	public HeatingModuleModel(String zone, ArrayList<String> locations) {
+	public HeatingModuleModel(String zone, ArrayList<String> locations, int period, double temperature) {
 		this.zone = zone;
 		Locations = locations;
+		this.period = period;
+		this.temperature = temperature;
 	}
 
 	public String getZone() {
@@ -35,11 +38,29 @@ public class HeatingModuleModel {
 		Locations = locations;
 	}
 
+	public int getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(int period) {
+		this.period = period;
+	}
+
+	public double getTemperature() {
+		return temperature;
+	}
+
+	public void setTemperature(double temperature) {
+		this.temperature = temperature;
+	}
+
 	@Override
 	public String toString() {
 		return "HeatingModuleModel{" +
 				"zone='" + zone + '\'' +
 				", Locations=" + Locations +
+				", period=" + period +
+				", temperature=" + temperature +
 				'}';
 	}
 
