@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { LayoutContext } from "./LayoutProvider";
+import React, { useEffect, useState, useContext } from "react";
 import { AllUsersContext } from "./AllUsersProvider";
 import { Navbar } from "react-bootstrap";
 import lightBulbOn from "../images/lightbulbon.png";
@@ -9,11 +8,35 @@ import doorClosed from "../images/doorclosed.png";
 import block from "../images/block.png";
 import windowOpen from "../images/windowopen.png";
 import windowClose from "../images/windowclosed.png";
+import axios from "axios";
 
 // Fetch house layout
 const HouseLayout = () => {
-  const { layout, setLayout } = useContext(LayoutContext);
   const { users, setUsers } = useContext(AllUsersContext);
+  const [locations, setLocations] = useState([]);
+
+// retrieve updated temperatures
+const getUpdatedTemperatures = async () => {
+  const response = await axios
+    .get("http://localhost:8080/api/heating/getCurrentTemperatures")
+    .catch((err) => console.log("Error", err));
+  if (response && response.data) setLocations(response.data);
+};
+
+const [seconds, setSeconds] = useState(0);
+
+  // set interval to fetch updated temperatures
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds((seconds) => seconds + 1);
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
+
+  //call getUpdatedTemperatures to get updated temperatures from backend
+  useEffect(() => {
+    getUpdatedTemperatures();
+  }, [seconds]);
 
   return (
     <>
@@ -25,7 +48,7 @@ const HouseLayout = () => {
         </Navbar.Brand>
       </Navbar>
       <div style={{ textAlign: "center", marginLeft: "1%", marginTop: "20px" }}>
-        {layout.map((room) => (
+        {locations.map((room) => (
           <div
             key={room.name}
             style={{

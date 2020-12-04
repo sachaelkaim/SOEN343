@@ -5,6 +5,7 @@ import Simulation from "./Simulation";
 import SHS from "./modules/SHS";
 import SHC from "./modules/SHC";
 import SHP from "./modules/SHP";
+import SHH from "./modules/SHH";
 import Console from "./modules/Console";
 import AllUsersProvider from "./AllUsersProvider";
 
@@ -46,7 +47,9 @@ const Dashboard = () => {
                       <Tab eventKey="SHP" title="SHP">
                         <SHP />
                       </Tab>
-                      <Tab eventKey="SHH" title="SHH"></Tab>
+                      <Tab eventKey="SHH" title="SHH">
+                        <SHH />
+                      </Tab>
                     </Tabs>
                   </div>
                 </Col>

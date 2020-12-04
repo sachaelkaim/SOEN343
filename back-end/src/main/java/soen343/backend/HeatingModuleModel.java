@@ -1,71 +1,67 @@
 package soen343.backend;
 
+import java.util.ArrayList;
+
 /**
  * The type Heating module model.
  */
 public class HeatingModuleModel {
-	//Static to be accessed anywhere
-	private static int tempOutside;
-	private static int tempInsideGeneral;
 
-    /**
-     * Instantiates a new Heating module model.
-     */
-    HeatingModuleModel()
-	{
-		HeatingModuleModel.tempOutside = 0;
-		HeatingModuleModel.tempInsideGeneral = 0;
+	private String zone;
+	private ArrayList<String> Locations;
+	private int period;
+	private double temperature;
+
+	public HeatingModuleModel(){
 	}
 
-    /**
-     * Instantiates a new Heating module model.
-     *
-     * @param tempOutside       the temp outside
-     * @param tempInsideGeneral the temp inside general
-     */
-    HeatingModuleModel(int tempOutside, int tempInsideGeneral)
-	{
-		HeatingModuleModel.tempOutside = tempOutside;
-		HeatingModuleModel.tempInsideGeneral = tempInsideGeneral;
+	public HeatingModuleModel(String zone, ArrayList<String> locations, int period, double temperature) {
+		this.zone = zone;
+		Locations = locations;
+		this.period = period;
+		this.temperature = temperature;
 	}
 
-    /**
-     * Gets temp outside.
-     *
-     * @return the temp outside
-     */
-    public static int getTempOutside()
-	{
-		return tempOutside;
+	public String getZone() {
+		return zone;
 	}
 
-    /**
-     * Sets temp outside.
-     *
-     * @param tempOutside the temp outside
-     */
-    public static void setTempOutside(int tempOutside)
-	{
-		HeatingModuleModel.tempOutside = tempOutside;
+	public void setZone(String zone) {
+		this.zone = zone;
 	}
 
-    /**
-     * Gets temp inside general.
-     *
-     * @return the temp inside general
-     */
-    public static int getTempInsideGeneral()
-	{
-		return tempInsideGeneral;
+	public ArrayList<String> getLocations() {
+		return Locations;
 	}
 
-    /**
-     * Sets temp inside general.
-     *
-     * @param tempInsideGeneral the temp inside general
-     */
-    public static void setTempInsideGeneral(int tempInsideGeneral)
-	{
-		HeatingModuleModel.tempInsideGeneral = tempInsideGeneral;
+	public void setLocations(ArrayList<String> locations) {
+		Locations = locations;
 	}
+
+	public int getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(int period) {
+		this.period = period;
+	}
+
+	public double getTemperature() {
+		return temperature;
+	}
+
+	public void setTemperature(double temperature) {
+		this.temperature = temperature;
+	}
+
+	@Override
+	public String toString() {
+		return "HeatingModuleModel{" +
+				"zone='" + zone + '\'' +
+				", Locations=" + Locations +
+				", period=" + period +
+				", temperature=" + temperature +
+				'}';
+	}
+
 }
