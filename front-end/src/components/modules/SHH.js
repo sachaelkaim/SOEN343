@@ -10,6 +10,9 @@ const SHH = () => {
   const { layout, setLayout } = useContext(LayoutContext);
   const [locations, setLocations] = useState([]);
   const [zones, setZones] = useState([]);
+  const [zoneSelected, setZoneSelected] = useState("");
+  const [periodSelected, setPeriodSelected] = useState("");
+  const [timeSelected, setTimeSelected] = useState("");
   let checkBoxArr = [];
 
   // retrieve list of all available locations for zone selection
@@ -69,10 +72,41 @@ const SHH = () => {
     }
   };
 
-  const setZoneTemperature = (e) => {
-    console.log(e);
+  const setSelectedZone = (e) => {
+    setZoneSelected(e);
   };
 
+  const setSelectedPeriod = (e) => {
+    setPeriodSelected(e);
+  };
+
+  const setSelectedTime = (e) => {
+    setTimeSelected(e);
+  };
+
+    // change zone temperature
+    const handleSetTemperature = async (e) => {
+      if (currentUser == undefined || zoneSelected === "Zones" || periodSelected === "Periods" || timeSelected === null) {
+        return console.log("cannot process");
+      }
+      e.preventDefault(); // prevent refresh on submit
+      const response = await axios
+        .post(
+          `http://localhost:8080/api/heating/setZoneTemperature`,
+          { userPrivilege: currentUser.privilege, zone: zoneSelected, period: periodSelected , temperature: timeSelected},
+          {
+            data: {
+              userPrivilege: currentUser.privilege,
+              zone: zoneSelected,
+              period: periodSelected,
+              temperature: timeSelected
+            },
+          }
+        )
+        .catch((err) => console.log("Error", err));
+    };
+
+  //update available checkboxes and hide if sim is off
   useEffect(() => {
     getAvailableLocations();
     displayZones();
@@ -110,11 +144,11 @@ const SHH = () => {
             <Form.Control
               as="select"
               className="my-1 mr-sm-2"
-              id="selectBox1"
+              id="selectBox"
               custom
-              onChange={(e) => setZoneTemperature(e.target.value)}
+              onChange={(e) => setSelectedZone(e.target.value)}
             >
-              <option>Zone</option>
+              <option>Zones</option>
               {zones.map((item) => (
                 <option key={item.zone} value={item.zone}>
                   {item.zone}
@@ -126,16 +160,22 @@ const SHH = () => {
               className="my-1 mr-sm-2"
               id="selectBox1"
               custom
-              onChange={(e) => setZoneTemperature(e.target.value)}
+              onChange={(e) => setSelectedPeriod(e.target.value)}
             >
-              <option>Period</option>
-              {zones.map((item) => (
-                <option key={item.zone} value={item.zone}>
-                  {item.zone}
-                </option>
-              ))}
+              <option>Periods</option>
+              <option value={1}>00:00 to 08:00</option>
+              <option value={2}>08:00 to 16:00</option>
+              <option value={3}>16:00 to 00:00</option>
             </Form.Control>
-            <Button size="ms" variant="dark" className="my-1">
+            <input
+                name="temp"
+                type="number"
+                placeholder="Temp"
+                style={{ width: "15%", height:"37px" }}
+                onChange={(e) => setSelectedTime(e.target.value)}
+              />
+              &nbsp;
+            <Button size="ms" variant="dark" className="my-1"   onClick={handleSetTemperature}>
               Submit
             </Button>
           </Form>

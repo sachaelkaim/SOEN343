@@ -338,7 +338,7 @@ public class SimulationService {
             zoneCounter++;
             zone.setZone("Zone" + zoneCounter);
             zones.add(zone);
-            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "New " + zone.getZone() + " : " + zone.getLocations()));
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "New " + zone.getZone() + " : " + zone.getLocations() + "."));
         }
       else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission!"));
     }
@@ -347,15 +347,18 @@ public class SimulationService {
         return zones;
     }
 
-    public void setZoneTemperature(String zone, int period, double temperature){
-        zones.forEach(i -> {
-            if( i.getZone().equals(zone)){
-                i.setTemperature(temperature);
-                i.setPeriod(period);
-                notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "Set " + i.getZone() + " temperature to " + i.getTemperature() + "C"));
-            }
-            regulateZone = true;
-        });
+    public void setZoneTemperature(String privilege, String zone, int period, double temperature){
+        if(privilege.equals("0")){
+            zones.forEach(i -> {
+                if( i.getZone().equals(zone)){
+                    i.setTemperature(temperature);
+                    i.setPeriod(period);
+                    notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "Set " + i.getZone() + " temperature to " + i.getTemperature() + "C."));
+                }
+                regulateZone = true;
+            });
+        }
+        else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission!"));
     }
 
     @Scheduled(fixedRate=1000)
