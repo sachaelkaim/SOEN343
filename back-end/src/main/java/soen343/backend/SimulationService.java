@@ -399,161 +399,77 @@ public class SimulationService {
                     ArrayList<String> zoneRooms = new ArrayList<>(i.getLocations());
                     if(j == 0) { // 00:00 and 08:00 increase/decrease temp until desired temp
                         if (time >= 0 && time < 8) {
-                            if (temperature.get(j) != null) {
-                                zoneRooms.forEach(d -> {
-                                    while (iter1.hasNext()) {
-                                        Room room = iter1.next();
-                                        if (d.equals(room.getName())) {
-                                            if (temperature.get(j) != room.getTemperature()) {
-                                                i.setHVAC(true);
-                                                double temp2 = room.getTemperature();
-                                                if (room.getTemperature() > temperature.get(j)) {
-                                                    temp2 -= 0.1;
-                                                }
-                                                if (room.getTemperature() < temperature.get(j)) {
-                                                    temp2 += 0.1;
-                                                }
-                                                double temp3 = temp2;
-                                                DecimalFormat df = new DecimalFormat("#.##");
-                                                temp2 = Double.valueOf(df.format(temp3));
-                                                room.setTemperature(temp2);
-                                                roomRepository.save(room);
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-                            else{
-                                Room outside = roomService.getRoom("Outside");
-                                double outsideTemp = outside.getTemperature();
-                                zoneRooms.forEach(d -> {
-                                    while (iter2.hasNext()) {
-                                        Room room = iter2.next();
-                                        if (d.equals(room.getName())) {
-                                            double temp2 = room.getTemperature();
-                                            if (room.getTemperature() > outsideTemp) {
-                                                temp2 -= 0.1;
-                                            }
-                                            if (room.getTemperature() < outsideTemp) {
-                                                temp2 += 0.1;
-                                            }
-                                            double temp3 = temp2;
-                                            DecimalFormat df = new DecimalFormat("#.##");
-                                            temp2 = Double.valueOf(df.format(temp3));
-                                            room.setTemperature(temp2);
-                                            roomRepository.save(room);
-                                        }
-                                    }
-                                });
-                            }
+                            periods(iter1, iter2, i, temperature, j, zoneRooms);
                         }
                     }
                     else if(j == 1) { // 00:00 and 08:00 increase/decrease temp until desired temp
                         if (time >= 8 && time < 16) {
-                            if (temperature.get(j) != null) {
-                                zoneRooms.forEach(d -> {
-                                    while (iter1.hasNext()) {
-                                        Room room = iter1.next();
-                                        if (d.equals(room.getName())) {
-                                            if (temperature.get(j) != room.getTemperature()) {
-                                                i.setHVAC(true);
-                                                double temp2 = room.getTemperature();
-                                                if (room.getTemperature() > temperature.get(j)) {
-                                                    temp2 -= 0.1;
-                                                }
-                                                if (room.getTemperature() < temperature.get(j)) {
-                                                    temp2 += 0.1;
-                                                }
-                                                double temp3 = temp2;
-                                                DecimalFormat df = new DecimalFormat("#.##");
-                                                temp2 = Double.valueOf(df.format(temp3));
-                                                room.setTemperature(temp2);
-                                                roomRepository.save(room);
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-                            else{
-                                Room outside = roomService.getRoom("Outside");
-                                double outsideTemp = outside.getTemperature();
-                                zoneRooms.forEach(d -> {
-                                    while (iter2.hasNext()) {
-                                        Room room = iter2.next();
-                                        if (d.equals(room.getName())) {
-                                            double temp2 = room.getTemperature();
-                                            if (room.getTemperature() > outsideTemp) {
-                                                temp2 -= 0.1;
-                                            }
-                                            if (room.getTemperature() < outsideTemp) {
-                                                temp2 += 0.1;
-                                            }
-                                            double temp3 = temp2;
-                                            DecimalFormat df = new DecimalFormat("#.##");
-                                            temp2 = Double.valueOf(df.format(temp3));
-                                            room.setTemperature(temp2);
-                                            roomRepository.save(room);
-                                        }
-                                    }
-                                });
-                            }
+                            periods(iter1, iter2, i, temperature, j, zoneRooms);
                         }
                     }
                     else if(j == 2) { // 00:00 and 08:00 increase/decrease temp until desired temp
-                        if (time >= 16 && time != 0) {
-                            if (temperature.get(j) != null) {
-                                zoneRooms.forEach(d -> {
-                                    while (iter1.hasNext()) {
-                                        Room room = iter1.next();
-                                        if (d.equals(room.getName())) {
-                                            if (temperature.get(j) != room.getTemperature()) {
-                                                i.setHVAC(true);
-                                                double temp2 = room.getTemperature();
-                                                if (room.getTemperature() > temperature.get(j)) {
-                                                    temp2 -= 0.1;
-                                                }
-                                                if (room.getTemperature() < temperature.get(j)) {
-                                                    temp2 += 0.1;
-                                                }
-                                                double temp3 = temp2;
-                                                DecimalFormat df = new DecimalFormat("#.##");
-                                                temp2 = Double.valueOf(df.format(temp3));
-                                                room.setTemperature(temp2);
-                                                roomRepository.save(room);
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-                            else{
-                                Room outside = roomService.getRoom("Outside");
-                                double outsideTemp = outside.getTemperature();
-                                zoneRooms.forEach(d -> {
-                                    while (iter2.hasNext()) {
-                                        Room room = iter2.next();
-                                        if (d.equals(room.getName())) {
-                                            double temp2 = room.getTemperature();
-                                            if (room.getTemperature() > outsideTemp) {
-                                                temp2 -= 0.1;
-                                            }
-                                            if (room.getTemperature() < outsideTemp) {
-                                                temp2 += 0.1;
-                                            }
-                                            double temp3 = temp2;
-                                            DecimalFormat df = new DecimalFormat("#.##");
-                                            temp2 = Double.valueOf(df.format(temp3));
-                                            room.setTemperature(temp2);
-                                            roomRepository.save(room);
-                                        }
-                                    }
-                                });
-                            }
+                        if (time >= 16) {
+                            periods(iter1, iter2, i, temperature, j, zoneRooms);
                         }
                     }
                 });
 
             });
         }
+    }
+
+    public void periods(Iterator<Room> iter1, Iterator<Room> iter2, HeatingModuleModel i, ArrayList<Double> temperature, Integer j, ArrayList<String> zoneRooms) {
+        if (temperature.get(j) != null) {
+            zoneRooms.forEach(d -> {
+                while (iter1.hasNext()) {
+                    Room room = iter1.next();
+                    if (d.equals(room.getName())) {
+                        if (temperature.get(j) != room.getTemperature()) {
+                            i.setHVAC(true);
+                            double temp2 = room.getTemperature();
+                            if (room.getTemperature() > temperature.get(j)) {
+                                temp2 -= 0.1;
+                            }
+                            if (room.getTemperature() < temperature.get(j)) {
+                                temp2 += 0.1;
+                            }
+                            double temp3 = temp2;
+                            DecimalFormat df = new DecimalFormat("#.##");
+                            temp2 = Double.valueOf(df.format(temp3));
+                            room.setTemperature(temp2);
+                            roomRepository.save(room);
+                        }
+                    }
+                }
+            });
+        }
+        else{
+            zoneToOutsideTemperature(iter2, zoneRooms);
+        }
+    }
+
+    public void zoneToOutsideTemperature(Iterator<Room> iter2, ArrayList<String> zoneRooms) {
+        Room outside = roomService.getRoom("Outside");
+        double outsideTemp = outside.getTemperature();
+        zoneRooms.forEach(d -> {
+            while (iter2.hasNext()) {
+                Room room = iter2.next();
+                if (d.equals(room.getName())) {
+                    double temp2 = room.getTemperature();
+                    if (room.getTemperature() > outsideTemp) {
+                        temp2 -= 0.1;
+                    }
+                    if (room.getTemperature() < outsideTemp) {
+                        temp2 += 0.1;
+                    }
+                    double temp3 = temp2;
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    temp2 = Double.valueOf(df.format(temp3));
+                    room.setTemperature(temp2);
+                    roomRepository.save(room);
+                }
+            }
+        });
     }
 
     public Iterable<Room> getCurrentTemperatures(){
