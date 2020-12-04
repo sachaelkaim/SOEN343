@@ -30,8 +30,8 @@ const Simulation = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [firstSummerMonth, setFirstSummerMonth] = useState();
-  const [lastSummerMonth, setLastSummerMonth] = useState();
+  const [firstSummerMonth, setFirstSummerMonth] = useState("");
+  const [lastSummerMonth, setLastSummerMonth] = useState("");
   
   const [time, setTime] = useState([""]);
   const [seconds, setSeconds] = useState(0);
@@ -99,17 +99,18 @@ const Simulation = () => {
       .catch((err) => console.log("Error", err));
   };
 
-  const handleFirstSummerMonthChange = (e) => {
-    //e.preventDefault(); // prevent refresh on submit
-    setFirstSummerMonth({ ...firstSummerMonth, e});
-    console.log(e.target.value);
+  const handleFirstSummerMonthChange = (val) => {
+    setFirstSummerMonth(val);
+    console.log(val);
     console.log(firstSummerMonth);
     console.log("hi");
   };
 
   const handleLastSummerMonthChange = (e) => {
-    setLastSummerMonth({ ...lastSummerMonth, e});
+    setLastSummerMonth(e);
+    console.log(e)
     console.log(lastSummerMonth);
+    console.log("hi last")
   };
 
   //update profile
@@ -346,25 +347,54 @@ const Simulation = () => {
           </div>
           <br/><br/>
           <div>
-          <DropdownButton
-            id="dropdown-basic-button"
-            title="Set First Summer Month"
-            variant="dark"
-            onSelect={handleFirstSummerMonthChange}
-          >
-            <Dropdown.Item eventKey="1">January</Dropdown.Item>
-            <Dropdown.Item eventKey="2">February</Dropdown.Item>
-            <Dropdown.Item eventKey="3">March</Dropdown.Item>
-            <Dropdown.Item eventKey="4">April</Dropdown.Item>
-            <Dropdown.Item eventKey="5">May</Dropdown.Item>
-            <Dropdown.Item eventKey="6">June</Dropdown.Item>
-            <Dropdown.Item eventKey="7">July</Dropdown.Item>
-            <Dropdown.Item eventKey="8">August</Dropdown.Item>
-            <Dropdown.Item eventKey="9">September</Dropdown.Item>
-            <Dropdown.Item eventKey="10">October</Dropdown.Item>
-            <Dropdown.Item eventKey="11">November</Dropdown.Item>
-            <Dropdown.Item eventKey="12">December</Dropdown.Item>
-          </DropdownButton>
+      <Form>
+        <Form.Group>
+          <Form inline>
+            <Form.Control
+              as="select"
+              className="my-1 mr-sm-2"
+              id="selectBox1"
+              custom
+              onChange={(e) => handleFirstSummerMonthChange(e.target.value)}
+            >
+              <option>First Summer Month</option>
+              <option value={1}>January</option>
+              <option value={2}>February</option>
+              <option value={3}>March</option>
+              <option value={4}>April</option>
+              <option value={5}>May</option>
+              <option value={6}>June</option>
+              <option value={7}>July</option>
+              <option value={8}>August</option>
+              <option value={9}>September</option>
+              <option value={10}>October</option>
+              <option value={11}>November</option>
+              <option value={12}>December</option>
+            </Form.Control>
+            <Form.Control
+              as="select"
+              className="my-1 mr-sm-2"
+              id="selectBox1"
+              custom
+              onChange={(e) => handleLastSummerMonthChange(e.target.value)}
+            >
+              <option>First Summer Month</option>
+              <option value={1}>January</option>
+              <option value={2}>February</option>
+              <option value={3}>March</option>
+              <option value={4}>April</option>
+              <option value={5}>May</option>
+              <option value={6}>June</option>
+              <option value={7}>July</option>
+              <option value={8}>August</option>
+              <option value={9}>September</option>
+              <option value={10}>October</option>
+              <option value={11}>November</option>
+              <option value={12}>December</option>
+            </Form.Control>
+          </Form>
+        </Form.Group>
+      </Form>
           <br/>
           <DropdownButton
             id="dropdown-basic-button"

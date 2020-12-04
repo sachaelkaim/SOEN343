@@ -556,6 +556,20 @@ public class SimulationService {
         }
     }
 
+    public void setFirstSummerMonth(String privilege, int month) {
+    	if(privilege.equals("0")){
+            zones.get(0).setFirstSummerMonth(month);
+        }
+        else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission to change summer months!"));
+    }
+    
+    public void setLastSummerMonth(String privilege, int month) {
+    	if(privilege.equals("0")){
+            zones.get(0).setLastSummerMonth(month);
+        }
+        else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission to change summer months!"));
+    }
+    
     public Iterable<Room> getCurrentTemperatures(){
         Iterable<Room> rooms = roomRepository.findAll();
         return rooms;
