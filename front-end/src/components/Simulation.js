@@ -30,6 +30,8 @@ const Simulation = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [firstSummerMonth, setFirstSummerMonth] = useState();
+  const [lastSummerMonth, setLastSummerMonth] = useState();
   
   const [time, setTime] = useState([""]);
   const [seconds, setSeconds] = useState(0);
@@ -65,6 +67,49 @@ const Simulation = () => {
       .then((response) => setState(response.data.id));
       getRooms();
       getRooms();
+  };
+
+  const updateFirstSummerMonth = async (e) => {
+    e.preventDefault();
+    const response = await axios
+      .post(
+        "http://localhost:8080/api/core/firstSummerMonth",
+        { firstSummerMonth: firstSummerMonth.id },
+        {
+          data: {
+            firstSummerMonth: firstSummerMonth.id,
+          },
+        }
+      )
+      .catch((err) => console.log("Error", err));
+  };
+
+  const updateLastSummerMonth = async (e) => {
+    e.preventDefault();
+    const response = await axios
+      .post(
+        "http://localhost:8080/api/core/lastSummerMonth",
+        { lastSummerMonth: lastSummerMonth.id },
+        {
+          data: {
+            lastSummerMonth: lastSummerMonth.id,
+          },
+        }
+      )
+      .catch((err) => console.log("Error", err));
+  };
+
+  const handleFirstSummerMonthChange = (e) => {
+    //e.preventDefault(); // prevent refresh on submit
+    setFirstSummerMonth({ ...firstSummerMonth, e});
+    console.log(e.target.value);
+    console.log(firstSummerMonth);
+    console.log("hi");
+  };
+
+  const handleLastSummerMonthChange = (e) => {
+    setLastSummerMonth({ ...lastSummerMonth, e});
+    console.log(lastSummerMonth);
   };
 
   //update profile
@@ -298,6 +343,48 @@ const Simulation = () => {
             </div>
             <div>
             {time}
+          </div>
+          <br/><br/>
+          <div>
+          <DropdownButton
+            id="dropdown-basic-button"
+            title="Set First Summer Month"
+            variant="dark"
+            onSelect={handleFirstSummerMonthChange}
+          >
+            <Dropdown.Item eventKey="1">January</Dropdown.Item>
+            <Dropdown.Item eventKey="2">February</Dropdown.Item>
+            <Dropdown.Item eventKey="3">March</Dropdown.Item>
+            <Dropdown.Item eventKey="4">April</Dropdown.Item>
+            <Dropdown.Item eventKey="5">May</Dropdown.Item>
+            <Dropdown.Item eventKey="6">June</Dropdown.Item>
+            <Dropdown.Item eventKey="7">July</Dropdown.Item>
+            <Dropdown.Item eventKey="8">August</Dropdown.Item>
+            <Dropdown.Item eventKey="9">September</Dropdown.Item>
+            <Dropdown.Item eventKey="10">October</Dropdown.Item>
+            <Dropdown.Item eventKey="11">November</Dropdown.Item>
+            <Dropdown.Item eventKey="12">December</Dropdown.Item>
+          </DropdownButton>
+          <br/>
+          <DropdownButton
+            id="dropdown-basic-button"
+            title="Set Last Summer Month"
+            onSelect={handleLastSummerMonthChange}
+            variant="dark"
+          >
+            <Dropdown.Item eventKey="1">January</Dropdown.Item>
+            <Dropdown.Item eventKey="2">February</Dropdown.Item>
+            <Dropdown.Item eventKey="3">March</Dropdown.Item>
+            <Dropdown.Item eventKey="4">April</Dropdown.Item>
+            <Dropdown.Item eventKey="5">May</Dropdown.Item>
+            <Dropdown.Item eventKey="6">June</Dropdown.Item>
+            <Dropdown.Item eventKey="7">July</Dropdown.Item>
+            <Dropdown.Item eventKey="8">August</Dropdown.Item>
+            <Dropdown.Item eventKey="9">September</Dropdown.Item>
+            <Dropdown.Item eventKey="10">October</Dropdown.Item>
+            <Dropdown.Item eventKey="11">November</Dropdown.Item>
+            <Dropdown.Item eventKey="12">December</Dropdown.Item>
+          </DropdownButton>
           </div>
           <br/><br/>
         <div style={{ fontWeight: "600" }}>
