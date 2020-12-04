@@ -52,7 +52,7 @@ public class SimulationService {
     private  ConsoleService notifications;
 
     @Autowired
-    private RoomService rooms;
+    private RoomService roomService;
 
     @Autowired
     private StateService state;
@@ -99,7 +99,7 @@ public class SimulationService {
     public void setLight(String userLocation, String privilege, String location, boolean lightOn){
         if(state.getCurrentState()){
             if(privilege.equals("0")){
-                rooms.onOffLight(location,lightOn);
+                roomService.onOffLight(location,lightOn);
                 if(lightOn == true)
                     notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + " light is on."));
                 else
@@ -110,7 +110,7 @@ public class SimulationService {
                     notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + ". Guest/Child does not have permission."));
                 }
                 else if(userLocation.equals(location)){
-                    rooms.onOffLight(location,lightOn);
+                    roomService.onOffLight(location,lightOn);
                     if(lightOn == true){
                         notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + " light is on."));
                     }
@@ -136,7 +136,7 @@ public class SimulationService {
     public void setDoor(String privilege, String location, String doorLock){
         if(state.getCurrentState()){
             if(privilege.equals("0")){
-                rooms.unlockLockDoor(location,doorLock);
+                roomService.unlockLockDoor(location,doorLock);
                 if(doorLock.equals("UNLOCKED"))
                     notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + " door is unlocked."));
                 else
@@ -158,7 +158,7 @@ public class SimulationService {
     public void setWindow(String userLocation, String privilege, String location, String windowOpen){
         if(state.getCurrentState()){
             if(privilege.equals("0")){
-                boolean notBlocked = rooms.openCloseWindow(location,windowOpen);
+                boolean notBlocked = roomService.openCloseWindow(location,windowOpen);
                 if(notBlocked){
                     if(windowOpen.equals("OPEN"))
                         notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + " light is on."));
@@ -171,7 +171,7 @@ public class SimulationService {
                     notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + ". Guest/Child does not have permission."));
                 }
                 else if(userLocation.equals(location)){
-                    boolean notBlocked = rooms.openCloseWindow(location,windowOpen);
+                    boolean notBlocked = roomService.openCloseWindow(location,windowOpen);
                     if(notBlocked){
                         if(windowOpen.equals("OPEN"))
                             notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",location + " light is on."));
@@ -263,7 +263,7 @@ public class SimulationService {
                         notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHP","Away mode cannot be set by Stranger/Guest"));
                     }
                     else{
-                        rooms.closeDoorsWindows();
+                        roomService.closeDoorsWindows();
                         notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHP","Away mode is on."));
                         SecurityModuleModel.setAwayMode(true);
                     }
@@ -308,7 +308,6 @@ public class SimulationService {
     /* SHH FEATURES*/
 
     public ArrayList<String> availableLocations (){
-
         ArrayList<String> empty = new ArrayList<>();
         if(state.getCurrentState()){
             ArrayList<String> availableRooms = new ArrayList<>();
@@ -329,7 +328,7 @@ public class SimulationService {
             return availableRooms;
         }
         else return (ArrayList<String>) empty;
-        }
+    }
 
     public void addZone (ArrayList<String> locations, String privilege){
         if(privilege.equals("0")){
@@ -351,9 +350,29 @@ public class SimulationService {
         if(privilege.equals("0")){
             zones.forEach(i -> {
                 if( i.getZone().equals(zone)){
-                    i.setTemperature(temperature);
-                    i.setPeriod(period);
-                    notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "Set " + i.getZone() + " temperature to " + i.getTemperature() + "C."));
+                    ArrayList<Integer> temp = new ArrayList<>();
+                    temp.add(-1);
+                    temp.add(-1);
+                    temp.add(-1);
+                    ArrayList<Double> temp1 = new ArrayList<>();
+                    temp1.add(-1.0);
+                    temp1.add(-1.0);
+                    temp1.add(-1.0);
+                    temp.set(period, period);
+                    temp1.set(period, temperature);
+                    i.setPeriods(temp);
+                    i.setTemperatures(temp1);
+                    String displayPeriod = null;
+                   if(period == 0){
+                       displayPeriod = " between 00:00 and 08:00.";
+                   }
+                    if(period == 1){
+                        displayPeriod = " between 08:00 and 16:00.";
+                    }
+                    if(period == 2){
+                        displayPeriod = " between 16:00 and 00:00.";
+                    }
+                    notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", zone + " temperature set at " + temp1.get(period) + "C" + displayPeriod));
                 }
                 regulateZone = true;
             });
@@ -363,30 +382,80 @@ public class SimulationService {
 
     @Scheduled(fixedRate=1000)
     public void regulateZoneTemperatures(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH");
+        int time = Integer.parseInt(CoreModuleModel.simulationDateTime.format(formatter));
         Iterable<Room> rooms = roomRepository.findAll();
+        Iterator<Room> iter1 = rooms.iterator();
+        Iterator<Room> iter2 = rooms.iterator();
         if(state.getCurrentState() && regulateZone){
             zones.forEach(i -> {
-                if(i.getPeriod() == 1){
-                    ArrayList<String> arr = new ArrayList<>(i.getLocations());
-                    arr.forEach(d -> {
-                        Iterator<Room> iter1 = rooms.iterator();
-                        while(iter1.hasNext()){
-                            Room room = iter1.next();
-                            if(d.equals(room.getName())){
-
-                                if(i.getTemperature() != room.getTemperature()){
-                                    double tempInc = room.getTemperature();
-                                    tempInc += 0.1;
-                                    double temp = tempInc;
-                                    DecimalFormat df = new DecimalFormat("#.###");
-                                    tempInc = Double.valueOf(df.format(temp));
-                                    room.setTemperature(tempInc);
-                                    roomRepository.save(room);
-                                }
+                ArrayList<Integer> temp = new ArrayList<>(i.getPeriods());
+                ArrayList<Double> temp1 = new ArrayList<>(i.getTemperatures());
+                temp.forEach(j -> {
+                    switch(j){
+                        case 0: // 00:00 and 08:00 increase/decrease temp until desired temp
+                            ArrayList<String> zoneRooms = new ArrayList<>(i.getLocations());
+                            if(time >= 0 && time < 8){
+                                zoneRooms.forEach(d -> {
+                                    while(iter1.hasNext()){
+                                        Room room = iter1.next();
+                                        if(d.equals(room.getName())){
+                                            if(temp1.get(0) != room.getTemperature()){
+                                                double temp2 = room.getTemperature();
+                                                if(room.getTemperature() > temp1.get(0)){
+                                                    temp2 -= 0.1;
+                                                }
+                                                if(room.getTemperature() < temp1.get(0)){
+                                                    temp2 += 0.1;
+                                                }
+                                                double temp3 = temp2;
+                                                DecimalFormat df = new DecimalFormat("#.##");
+                                                temp2 = Double.valueOf(df.format(temp3));
+                                                room.setTemperature(temp2);
+                                                roomRepository.save(room);
+                                            }
+                                        }
+                                    }
+                                });
                             }
-                        }
-                    });
-                }
+                            // THIS BUGIN IT.
+                            else{ // temp goes back to outside temp
+                                Room outside = roomService.getRoom("Outside");
+                                double outsideTemp = outside.getTemperature();
+                                System.out.println("im in else");
+                                zoneRooms.forEach(d -> {
+                                    while (iter2.hasNext()) {
+                                        Room room = iter2.next();
+                                            if (d.equals(room.getName())) {
+                                                if (temp1.get(0) != room.getTemperature()) {
+                                                    System.out.println(room.getTemperature());
+                                                    double temp2 = room.getTemperature();
+                                                    if (room.getTemperature() > outsideTemp) {
+                                                        temp2 -= 0.1;
+                                                    }
+                                                    if (room.getTemperature() < outsideTemp) {
+                                                        temp2 += 0.1;
+                                                    }
+                                                    double temp3 = temp2;
+                                                    DecimalFormat df = new DecimalFormat("#.##");
+                                                    temp2 = Double.valueOf(df.format(temp3));
+                                                    room.setTemperature(temp2);
+                                                    roomRepository.save(room);
+                                                }
+                                            }
+                                        }
+                                });
+                            }
+                            break;
+
+
+                        case 1: break; // 08:00 and 16:00
+                    }
+                });
+
+
+
+
             });
         }
     }

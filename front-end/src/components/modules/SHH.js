@@ -163,9 +163,9 @@ const SHH = () => {
               onChange={(e) => setSelectedPeriod(e.target.value)}
             >
               <option>Periods</option>
-              <option value={1}>00:00 to 08:00</option>
-              <option value={2}>08:00 to 16:00</option>
-              <option value={3}>16:00 to 00:00</option>
+              <option value={0}>00:00 to 08:00</option>
+              <option value={1}>08:00 to 16:00</option>
+              <option value={2}>16:00 to 00:00</option>
             </Form.Control>
             <input
                 name="temp"
