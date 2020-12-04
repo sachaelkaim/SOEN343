@@ -8,6 +8,7 @@ import { LayoutContext } from "../LayoutProvider";
 const SHH = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const { layout, setLayout } = useContext(LayoutContext);
+  const [location, setLocation] = useState([]);
   const [locations, setLocations] = useState([]);
   const [zones, setZones] = useState([]);
   const [zoneSelected, setZoneSelected] = useState("");
@@ -249,6 +250,41 @@ const SHH = () => {
             >
               Submit
             </Button>
+
+            &nbsp;
+            <h6>Set Room Temperature</h6>
+            &nbsp;
+          <Form.Group>
+            <Form inline>
+            <Form.Control
+              as="select"
+              className="my-1 mr-sm-2"
+              id="selectBox1"
+              custom
+              onChange={(e) => setLocation(e.target.value)}
+            >
+              <option>Select location</option>
+              {layout.map((newlocation) => (
+                <option key={newlocation.id} value={newlocation.name}>
+                  {newlocation.name}
+                </option>
+              ))}
+
+               <input
+                name="temp"
+                type="number"
+                placeholder="Temp"
+                style={{ width: "15%", height:"37px" }}
+                onChange={(e) => setSelectedTime(e.target.value)}
+              />
+              
+              <Button size="ms" variant="dark" className="my-1"   onClick={handleSetTemperature}>
+                Submit
+              </Button>
+
+            </Form.Control> 
+          </Form>
+        </Form.Group>
           </Form>
         </Form.Group>
       </Form>
