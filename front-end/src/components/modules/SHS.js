@@ -414,7 +414,7 @@ const SHS = () => {
               <input
                 name="id"
                 type="number"
-                placeholder="Value"
+                placeholder=""
                 style={{ width: "10%" }}
                 onChange={handleChange1}
               />
@@ -439,7 +439,7 @@ const SHS = () => {
               <input
                 name="id"
                 type="number"
-                placeholder="Value"
+                placeholder=""
                 style={{ width: "10%" }}
                 onChange={handleChange2}
               />

@@ -9,17 +9,19 @@ public class HeatingModuleModel {
 
 	private String zone;
 	private ArrayList<String> Locations;
-	private int period;
-	private double temperature;
+	private ArrayList<Integer> periods;
+	private boolean HVAC;
+	private ArrayList<Double> temperatures;
 
 	public HeatingModuleModel(){
 	}
 
-	public HeatingModuleModel(String zone, ArrayList<String> locations, int period, double temperature) {
+	public HeatingModuleModel(String zone, ArrayList<String> locations, ArrayList<Integer> period, boolean HVAC, ArrayList<Double> temperature) {
 		this.zone = zone;
 		Locations = locations;
-		this.period = period;
-		this.temperature = temperature;
+		this.periods = period;
+		this.HVAC = HVAC;
+		this.temperatures = temperature;
 	}
 
 	public String getZone() {
@@ -38,20 +40,28 @@ public class HeatingModuleModel {
 		Locations = locations;
 	}
 
-	public int getPeriod() {
-		return period;
+	public ArrayList<Integer> getPeriods() {
+		return periods;
 	}
 
-	public void setPeriod(int period) {
-		this.period = period;
+	public void setPeriods(ArrayList<Integer> periods) {
+		this.periods = periods;
 	}
 
-	public double getTemperature() {
-		return temperature;
+	public ArrayList<Double> getTemperatures() {
+		return temperatures;
 	}
 
-	public void setTemperature(double temperature) {
-		this.temperature = temperature;
+	public void setTemperatures(ArrayList<Double> temperatures) {
+		this.temperatures = temperatures;
+	}
+
+	public boolean isHVAC() {
+		return HVAC;
+	}
+
+	public void setHVAC(boolean HVAC) {
+		this.HVAC = HVAC;
 	}
 
 	@Override
@@ -59,8 +69,9 @@ public class HeatingModuleModel {
 		return "HeatingModuleModel{" +
 				"zone='" + zone + '\'' +
 				", Locations=" + Locations +
-				", period=" + period +
-				", temperature=" + temperature +
+				", period=" + periods +
+				", HVAC=" + HVAC +
+				", temperature=" + temperatures +
 				'}';
 	}
 
