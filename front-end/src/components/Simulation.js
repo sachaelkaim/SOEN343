@@ -69,48 +69,77 @@ const Simulation = () => {
       getRooms();
   };
 
-  const updateFirstSummerMonth = async (e) => {
+  const setSummerMonths = async (e) => {    
+    postFirstSummerMonth(e);
+    postLastSummerMonth(e);
+  };
+
+  const postFirstSummerMonth = async (e) => {
     e.preventDefault();
+    if (currentUser == undefined){
+      return console.log("current user selection is not valid");
+    }
+
+    if ((firstSummerMonth == null) || !(0 < firstSummerMonth < 13)){
+      return console.log("cannot use this month value");
+    }
+
+    console.log("correct summer months flow, first: "+firstSummerMonth);
     const response = await axios
       .post(
-        "http://localhost:8080/api/core/firstSummerMonth",
-        { firstSummerMonth: firstSummerMonth.id },
+        "http://localhost:8080/api/heating/setFirstSummerMonth",
+        { userPrivilege: currentUser.privilege, firstSummerMonth: firstSummerMonth},
         {
           data: {
-            firstSummerMonth: firstSummerMonth.id,
+            userPrivilege: currentUser.privilege,
+            firstSummerMonth: firstSummerMonth,
           },
         }
       )
       .catch((err) => console.log("Error", err));
   };
 
-  const updateLastSummerMonth = async (e) => {
+  const postLastSummerMonth = async (e) => {
     e.preventDefault();
-    const response = await axios
+    if (currentUser == undefined){
+      return console.log("current user selection is not valid");
+    }
+
+    if ((lastSummerMonth == null) || !(0 < lastSummerMonth < 13)){
+      return console.log("cannot use this month value");
+    }
+    
+    console.log("correct summer months flow, last: "+lastSummerMonth);
+    const response2 = await axios
       .post(
-        "http://localhost:8080/api/core/lastSummerMonth",
-        { lastSummerMonth: lastSummerMonth.id },
+        "http://localhost:8080/api/heating/setLastSummerMonth",
+        { userPrivilege: currentUser.privilege, lastSummerMonth: lastSummerMonth},
         {
           data: {
-            lastSummerMonth: lastSummerMonth.id,
+            userPrivilege: currentUser.privilege,
+            lastSummerMonth: lastSummerMonth,
           },
         }
       )
       .catch((err) => console.log("Error", err));
   };
 
-  const handleFirstSummerMonthChange = (val) => {
-    setFirstSummerMonth(val);
-    console.log(val);
-    console.log(firstSummerMonth);
+  const updateFirstSummerMonth = (e) => {
+    setFirstSummerMonth(e);
+    console.log("e is "+e);
+    console.log("PRE: firstSummerMonth is "+firstSummerMonth);
+    setFirstSummerMonth(e);
+    console.log("POST: firstSummerMonth is "+firstSummerMonth);
     console.log("hi");
   };
 
-  const handleLastSummerMonthChange = (e) => {
+  const updateLastSummerMonth = (e) => {
     setLastSummerMonth(e);
-    console.log(e)
-    console.log(lastSummerMonth);
-    console.log("hi last")
+    console.log("e is "+e);
+    console.log("PRE: lastSummerMonth is "+lastSummerMonth);
+    setLastSummerMonth(e);
+    console.log("POST: lastSummerMonth is "+lastSummerMonth);
+    console.log("hi");
   };
 
   //update profile
@@ -355,7 +384,7 @@ const Simulation = () => {
               className="my-1 mr-sm-2"
               id="selectBox1"
               custom
-              onChange={(e) => handleFirstSummerMonthChange(e.target.value)}
+              onChange={(e) => updateFirstSummerMonth(e.target.value)}
             >
               <option>First Summer Month</option>
               <option value={1}>January</option>
@@ -376,7 +405,7 @@ const Simulation = () => {
               className="my-1 mr-sm-2"
               id="selectBox1"
               custom
-              onChange={(e) => handleLastSummerMonthChange(e.target.value)}
+              onChange={(e) => updateLastSummerMonth(e.target.value)}
             >
               <option>First Summer Month</option>
               <option value={1}>January</option>
@@ -392,30 +421,14 @@ const Simulation = () => {
               <option value={11}>November</option>
               <option value={12}>December</option>
             </Form.Control>
+            <Button size="ms" variant="dark" className="my-1"   onClick={setSummerMonths}>
+              Submit Summer Months
+            </Button>
           </Form>
         </Form.Group>
       </Form>
-          <br/>
-          <DropdownButton
-            id="dropdown-basic-button"
-            title="Set Last Summer Month"
-            onSelect={handleLastSummerMonthChange}
-            variant="dark"
-          >
-            <Dropdown.Item eventKey="1">January</Dropdown.Item>
-            <Dropdown.Item eventKey="2">February</Dropdown.Item>
-            <Dropdown.Item eventKey="3">March</Dropdown.Item>
-            <Dropdown.Item eventKey="4">April</Dropdown.Item>
-            <Dropdown.Item eventKey="5">May</Dropdown.Item>
-            <Dropdown.Item eventKey="6">June</Dropdown.Item>
-            <Dropdown.Item eventKey="7">July</Dropdown.Item>
-            <Dropdown.Item eventKey="8">August</Dropdown.Item>
-            <Dropdown.Item eventKey="9">September</Dropdown.Item>
-            <Dropdown.Item eventKey="10">October</Dropdown.Item>
-            <Dropdown.Item eventKey="11">November</Dropdown.Item>
-            <Dropdown.Item eventKey="12">December</Dropdown.Item>
-          </DropdownButton>
-          </div>
+      <br/>
+      </div>
           <br/><br/>
         <div style={{ fontWeight: "600" }}>
           Outside Temperature.{" "}

@@ -558,14 +558,16 @@ public class SimulationService {
 
     public void setFirstSummerMonth(String privilege, int month) {
     	if(privilege.equals("0")){
-            zones.get(0).setFirstSummerMonth(month);
+            HeatingModuleModel.setFirstSummerMonth(month);
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "New first summer month set: "+month));
         }
         else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission to change summer months!"));
     }
     
     public void setLastSummerMonth(String privilege, int month) {
     	if(privilege.equals("0")){
-            zones.get(0).setLastSummerMonth(month);
+            HeatingModuleModel.setLastSummerMonth(month);
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "New last summer month set: "+month));
         }
         else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission to change summer months!"));
     }

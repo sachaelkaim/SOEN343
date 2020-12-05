@@ -18,14 +18,14 @@ public class HeatingModuleModel {
 	public HeatingModuleModel(){
 	}
 
-	public HeatingModuleModel(String zone, ArrayList<String> locations, ArrayList<Integer> period, boolean HVAC, ArrayList<Double> temperature, int firstSummerMonth, int lastSummerMonth) {
+	public HeatingModuleModel(String zone, ArrayList<String> locations, ArrayList<Integer> period, boolean HVAC, ArrayList<Double> temperature) {
 		this.zone = zone;
 		Locations = locations;
 		this.periods = period;
 		this.HVAC = HVAC;
 		this.temperatures = temperature;
-		this.firstSummerMonth = firstSummerMonth;
-		this.lastSummerMonth = lastSummerMonth;
+		this.firstSummerMonth = 6;
+		this.lastSummerMonth = 12;
 	}
 
 	public String getZone() {
@@ -72,7 +72,7 @@ public class HeatingModuleModel {
 		return firstSummerMonth;
 	}
 	
-	public void setFirstSummerMonth(int firstSummerMonthNew) {
+	public static void setFirstSummerMonth(int firstSummerMonthNew) {
 		firstSummerMonth = firstSummerMonthNew;
 	}
 	
@@ -80,7 +80,7 @@ public class HeatingModuleModel {
 		return lastSummerMonth;
 	}
 	
-	public void setLastSummerMonth(int lastSummerMonthNew) {
+	public static void setLastSummerMonth(int lastSummerMonthNew) {
 		lastSummerMonth = lastSummerMonthNew;
 	}
 
