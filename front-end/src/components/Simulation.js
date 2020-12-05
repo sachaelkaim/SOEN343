@@ -374,7 +374,6 @@ const Simulation = () => {
             <div>
             {time}
           </div>
-          <br/><br/>
           <div>
       <Form>
         <Form.Group>
@@ -382,6 +381,7 @@ const Simulation = () => {
             <Form.Control
               as="select"
               className="my-1 mr-sm-2"
+              size="s"
               id="selectBox1"
               custom
               onChange={(e) => updateFirstSummerMonth(e.target.value)}
@@ -403,11 +403,12 @@ const Simulation = () => {
             <Form.Control
               as="select"
               className="my-1 mr-sm-2"
+              size="s"
               id="selectBox1"
               custom
               onChange={(e) => updateLastSummerMonth(e.target.value)}
             >
-              <option>First Summer Month</option>
+              <option>Last Summer Month</option>
               <option value={1}>January</option>
               <option value={2}>February</option>
               <option value={3}>March</option>
@@ -421,7 +422,7 @@ const Simulation = () => {
               <option value={11}>November</option>
               <option value={12}>December</option>
             </Form.Control>
-            <Button size="ms" variant="dark" className="my-1"   onClick={setSummerMonths}>
+            <Button size="s" variant="dark" className="my-1"   onClick={setSummerMonths}>
               Submit Summer Months
             </Button>
           </Form>
