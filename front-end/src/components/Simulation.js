@@ -349,19 +349,15 @@ const Simulation = () => {
               </div>
               {currentUser.id}
               <br />
-              <br />
               <div style={{ fontWeight: "600", textDecoration: "underline" }}>
                 User
               </div>
               {currentUser.name}
               <br />
-              <br />
               <div style={{ fontWeight: "600", textDecoration: "underline" }}>
                 Location
               </div>
               {currentUser.location}
-              <br />
-              <br />
               &nbsp;
             </div>
           ) : (
@@ -428,9 +424,7 @@ const Simulation = () => {
           </Form>
         </Form.Group>
       </Form>
-      <br/>
       </div>
-          <br/><br/>
         <div style={{ fontWeight: "600" }}>
           Outside Temperature.{" "}
           <span style={{ color: "#1E90FF" }}>
