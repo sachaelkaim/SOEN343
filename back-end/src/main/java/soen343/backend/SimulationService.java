@@ -574,12 +574,16 @@ public class SimulationService {
                     double temp2 = room.getTemperature();
                     String str = Double.toString(temp2);
                     if (room.getTemperature() > outsideTemp) {
+                        room.setAirconditionerOn(false);
+                        room.setHeaterOn(false);
                         if(str.length() == 5)
                             temp2 -= 0.05;
                         else
                             temp2 -= 0.1;
                     }
                     if (room.getTemperature() < outsideTemp) {
+                        room.setAirconditionerOn(false);
+                        room.setHeaterOn(false);
                         if(str.length() == 5)
                             temp2 += 0.05;
                         else
