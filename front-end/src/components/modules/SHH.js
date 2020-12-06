@@ -11,9 +11,9 @@ const SHH = () => {
   const [locations, setLocations] = useState([]);
   const [zones, setZones] = useState([]);
   const [zoneSelected, setZoneSelected] = useState("");
-  const [periodSelected, setPeriodSelected] = useState("");
+  const [periodSelected, setPeriodSelected] = useState("Period");
   const [temperatureSelected, setTemperatureSelected] = useState("");
-  const [season, setSeason] = useState("");
+  const [season, setSeason] = useState("Season");
   const [seasonTemperature, setSeasonTemperature] = useState("");
   let checkBoxArr = [];
 
@@ -63,7 +63,7 @@ const SHH = () => {
       }
     } else {
       checkBoxArr.push(e.target.value);
-    } 
+    }
   };
 
   // uncheck all after submitting zone
@@ -86,48 +86,57 @@ const SHH = () => {
     setTemperatureSelected(e);
   };
 
-    // change zone temperature
-    const handleSetTemperature = async (e) => {
-      if (currentUser == undefined) {
-        return console.log("cannot process");
-      }
-      e.preventDefault(); // prevent refresh on submit
-      const response = await axios
-        .post(
-          `http://localhost:8080/api/heating/setZoneTemperature`,
-          { userPrivilege: currentUser.privilege, zone: zoneSelected, period: periodSelected , temperature: temperatureSelected},
-          {
-            data: {
-              userPrivilege: currentUser.privilege,
-              zone: zoneSelected,
-              period: periodSelected,
-              temperature: temperatureSelected
-            },
-          }
-        )
-        .catch((err) => console.log("Error", err));
-    };
+  // change zone temperature
+  const handleSetTemperature = async (e) => {
+    if (currentUser == undefined || periodSelected === "Period") {
+      return console.log("cannot process");
+    }
+    e.preventDefault(); // prevent refresh on submit
+    const response = await axios
+      .post(
+        `http://localhost:8080/api/heating/setZoneTemperature`,
+        {
+          userPrivilege: currentUser.privilege,
+          zone: zoneSelected,
+          period: periodSelected,
+          temperature: temperatureSelected,
+        },
+        {
+          data: {
+            userPrivilege: currentUser.privilege,
+            zone: zoneSelected,
+            period: periodSelected,
+            temperature: temperatureSelected,
+          },
+        }
+      )
+      .catch((err) => console.log("Error", err));
+  };
 
-     // change zone temperature
-     const handleSeasonTemperature = async (e) => {
-      if (currentUser === undefined) {
-        return console.log("cannot process");
-      }
-      e.preventDefault(); // prevent refresh on submit
-      const response = await axios
-        .post(
-          `http://localhost:8080/api/heating/setSeasonTemperature`,
-          { userPrivilege: currentUser.privilege, seasons: season, temperature: seasonTemperature},
-          {
-            data: {
-              userPrivilege: currentUser.privilege,
-              seasons: season,
-              temperature: seasonTemperature
-            },
-          }
-        )
-        .catch((err) => console.log("Error", err));
-    };
+  // change zone temperature
+  const handleSeasonTemperature = async (e) => {
+    if (currentUser === undefined || season === "Season") {
+      return console.log("cannot process");
+    }
+    e.preventDefault(); // prevent refresh on submit
+    const response = await axios
+      .post(
+        `http://localhost:8080/api/heating/setSeasonTemperature`,
+        {
+          userPrivilege: currentUser.privilege,
+          seasons: season,
+          temperature: seasonTemperature,
+        },
+        {
+          data: {
+            userPrivilege: currentUser.privilege,
+            seasons: season,
+            temperature: seasonTemperature,
+          },
+        }
+      )
+      .catch((err) => console.log("Error", err));
+  };
 
   //update available checkboxes and hide if sim is off
   useEffect(() => {
@@ -171,6 +180,7 @@ const SHH = () => {
               custom
               onChange={(e) => setSelectedZone(e.target.value)}
             >
+              <option>Zones</option>
               {zones.map((item) => (
                 <option key={item.zone} value={item.zone}>
                   {item.zone}
@@ -184,19 +194,25 @@ const SHH = () => {
               custom
               onChange={(e) => setSelectedPeriod(e.target.value)}
             >
+              <option value={"Period"}>Period</option>
               <option value={0}>00:00 to 08:00</option>
               <option value={1}>08:00 to 16:00</option>
               <option value={2}>16:00 to 00:00</option>
             </Form.Control>
             <input
-                name="temp"
-                type="number"
-                placeholder="0"
-                style={{ width: "15%", height:"37px" }}
-                onChange={(e) => setSelectedTemperature(e.target.value)}
-              />
-              &nbsp;
-            <Button size="ms" variant="dark" className="my-1" onClick={handleSetTemperature}>
+              name="temp"
+              type="number"
+              placeholder="0"
+              style={{ width: "15%", height: "37px" }}
+              onChange={(e) => setSelectedTemperature(e.target.value)}
+            />
+            &nbsp;
+            <Button
+              size="ms"
+              variant="dark"
+              className="my-1"
+              onClick={handleSetTemperature}
+            >
               Submit
             </Button>
           </Form>
@@ -213,18 +229,24 @@ const SHH = () => {
               custom
               onChange={(e) => setSeason(e.target.value)}
             >
+              <option value={"Season"}>Season</option>
               <option value={0}>Summer</option>
               <option value={1}>Winter</option>
             </Form.Control>
             <input
-                name="temp"
-                type="number"
-                placeholder="0"
-                style={{ width: "15%", height:"37px" }}
-                onChange={(e) => setSeasonTemperature(e.target.value)}
-              />
-              &nbsp;
-            <Button size="ms" variant="dark" className="my-1" onClick={handleSeasonTemperature}>
+              name="temp"
+              type="number"
+              placeholder="0"
+              style={{ width: "15%", height: "37px" }}
+              onChange={(e) => setSeasonTemperature(e.target.value)}
+            />
+            &nbsp;
+            <Button
+              size="ms"
+              variant="dark"
+              className="my-1"
+              onClick={handleSeasonTemperature}
+            >
               Submit
             </Button>
           </Form>
