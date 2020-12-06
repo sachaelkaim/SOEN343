@@ -50,20 +50,6 @@ public class HeatingController {
         return simulationService.getCurrentTemperatures();
 
     }
-    
-    @RequestMapping(method = RequestMethod.POST, value = "/heating/setFirstSummerMonth")
-    @ResponseStatus( HttpStatus.OK )
-    public void setFirstSummerMonth(@RequestBody ObjectNode objectNode) {
-    	simulationService.setFirstSummerMonth(objectNode.get("userPrivilege").asText(), objectNode.get("firstSummerMonth").asInt());
-
-    }
-    
-    @RequestMapping(method = RequestMethod.POST, value = "/heating/setLastSummerMonth")
-    @ResponseStatus( HttpStatus.OK )
-    public void setLastSummerMonth(@RequestBody ObjectNode objectNode) {
-        simulationService.setLastSummerMonth(objectNode.get("userPrivilege").asText(), objectNode.get("lastSummerMonth").asInt());
-
-    }
 
     @RequestMapping(method = RequestMethod.POST, value = "/heating/setSeasonTemperature")
     @ResponseStatus( HttpStatus.OK )
