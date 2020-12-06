@@ -221,34 +221,42 @@ public class SimulationService {
         if(CoreModuleModel.isAutoMode()) {
             Iterable<User> users = userRepository.findAll();
             Iterator<User> iter = users.iterator();
-            while (iter.hasNext()) {
-                User user = iter.next();
-                Iterable<Room> rooms = roomRepository.findAll();
-                Iterator<Room> iter1 = rooms.iterator();
-                while(iter1.hasNext()){
-                    Room room = iter1.next();
-                    if(user.getLocation().equals(room.getName())){
-                        room.setLightOn(true);
-                        roomRepository.save(room);
-                    }
-                }
-            }
+            iterateUserLights(iter);
             Iterable<Room> rooms = roomRepository.findAll();
             Iterator<Room> iter2 = rooms.iterator();
-            while(iter2.hasNext()){
-                int i = 0;
-                Room room = iter2.next();
-                Iterator<User> iter3 = users.iterator();
-                while (iter3.hasNext()) {
-                    User user = iter3.next();
-                    if (user.getLocation().equals(room.getName())){
-                        i++;
-                    }
+            iterateRoomLights(users, iter2);
+        }
+    }
+
+    public void iterateRoomLights(Iterable<User> users, Iterator<Room> iter2) {
+        while(iter2.hasNext()){
+            int i = 0;
+            Room room = iter2.next();
+            Iterator<User> iter3 = users.iterator();
+            while (iter3.hasNext()) {
+                User user = iter3.next();
+                if (user.getLocation().equals(room.getName())){
+                    i++;
                 }
-                if(i == 0){
-                    room.setLightOn(false);
+            }
+            if(i == 0){
+                room.setLightOn(false);
+                roomRepository.save(room);
+                notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",  room.getName() + " light is off."));
+            }
+        }
+    }
+
+    public void iterateUserLights(Iterator<User> iter) {
+        while (iter.hasNext()) {
+            User user = iter.next();
+            Iterable<Room> rooms = roomRepository.findAll();
+            Iterator<Room> iter1 = rooms.iterator();
+            while(iter1.hasNext()){
+                Room room = iter1.next();
+                if(user.getLocation().equals(room.getName())){
+                    room.setLightOn(true);
                     roomRepository.save(room);
-                    notifications.saveNotification(new Console(CoreModuleModel.dateTime,"SHC",  room.getName() + " light is off."));
                 }
             }
         }
