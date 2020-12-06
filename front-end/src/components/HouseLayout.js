@@ -8,6 +8,9 @@ import doorClosed from "../images/doorclosed.png";
 import block from "../images/block.png";
 import windowOpen from "../images/windowopen.png";
 import windowClose from "../images/windowclosed.png";
+import heaterOn from "../images/radiatorOn.png";
+import airconditionerOn from "../images/AirConditionerOn.png";
+
 import axios from "axios";
 
 // Fetch house layout
