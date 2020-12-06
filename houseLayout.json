@@ -1,0 +1,64 @@
+
+[
+    {
+      "name": "Outside",
+      "doorState": "UNLOCKED",
+      "lightOn": false,
+      "heaterOn": false,
+      "airconditionerOn": false, 
+      "temperature": 23.00
+    },
+    {
+      "name": "Garage",
+      "windowState": "CLOSED",
+      "doorState": "UNLOCKED", 
+      "lightOn": false,
+       "heaterOn": false,
+      "airconditionerOn": false,
+      "temperature": 23.00
+    },
+    {
+      "name": "Kitchen",
+      "windowState": "CLOSED",
+      "doorState": "UNLOCKED", 
+      "lightOn": false,
+       "heaterOn": false,
+      "airconditionerOn": false,
+      "temperature": 23.00
+    },
+    {
+      "name": "Living Room",
+      "windowState": "CLOSED",
+      "doorState": "UNLOCKED", 
+      "heaterOn": false,
+      "airconditionerOn": false,
+      "lightOn": false,
+      "temperature": 23.00
+    },
+    {
+      "name": "Bedroom 1",
+      "windowState": "CLOSED",
+      "doorState": "UNLOCKED", 
+      "lightOn": false,
+      "heaterOn": false,
+      "airconditionerOn": false,
+      "temperature": 23.00
+    },
+    {
+      "name": "Bedroom 2",
+      "windowState": "CLOSED",
+      "doorState": "UNLOCKED",
+      "lightOn": false,
+       "heaterOn": false,
+      "airconditionerOn": false,
+      "temperature": 23.00
+    },
+    {
+    "name": "Backyard",
+    "doorState": "UNLOCKED",
+    "lightOn": false,
+     "heaterOn": false,
+      "airconditionerOn": false,
+    "temperature": 23.00
+    }
+]
