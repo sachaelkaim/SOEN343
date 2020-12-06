@@ -41,6 +41,8 @@ public class SimulationService {
     private static int incrementSpeedSchedule = 1000;
     private static double summerTemperature;
     private static double winterTemperature;
+    private static int firstSummerMonth = 1;
+    private static int lastSummerMonth = 6;
 
     /**
      * The Intruder present.
@@ -379,6 +381,9 @@ public class SimulationService {
                 regulateZone = true;
             });
         }
+        else if(!state.getCurrentState()){
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "Simulation is off!"));
+        }
         else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission!"));
     }
 
@@ -607,8 +612,27 @@ public class SimulationService {
                 notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "Winter season temperature set to  "+ temperature + "C."));
             }
         }
-        if(!"0".equals(privilege)){
-            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission!"));
+        else if(!state.getCurrentState()){
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "Simulation is off!"));
+        }
+        else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission!"));
+    }
+
+    public void setFirstSummerMonth(String privilege, int month) {
+        if(privilege.equals("0") && state.getCurrentState()){
+            firstSummerMonth = month;
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "New first summer month set: "+month));
+        }
+        else if(!state.getCurrentState()){
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "Simulation is off!"));
+        }
+        else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission to change Summer months!"));
+    }
+
+    public void setLastSummerMonth(String privilege, int month) {
+        if(privilege.equals("0") && state.getCurrentState()){
+            lastSummerMonth = month;
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "New last summer month set: "+month));
         }
     }
 
