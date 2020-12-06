@@ -11,6 +11,8 @@
       "windowState": "CLOSED",
       "doorState": "UNLOCKED", 
       "lightOn": false,
+      "airconditionerOn": false,
+       "heaterOn": false,
       "temperature": 23.00
     },
     {
@@ -18,6 +20,8 @@
       "windowState": "CLOSED",
       "doorState": "UNLOCKED", 
       "lightOn": false,
+      "airconditionerOn": false,
+       "heaterOn": false,
       "temperature": 23.00
     },
     {
@@ -25,6 +29,8 @@
       "windowState": "CLOSED",
       "doorState": "UNLOCKED", 
       "lightOn": false,
+      "airconditionerOn": false,
+       "heaterOn": false,
       "temperature": 23.00
     },
     {
@@ -32,6 +38,8 @@
       "windowState": "CLOSED",
       "doorState": "UNLOCKED", 
       "lightOn": false,
+      "airconditionerOn": false,
+       "heaterOn": false,
       "temperature": 23.00
     },
     {
@@ -39,6 +47,8 @@
       "windowState": "CLOSED",
       "doorState": "UNLOCKED",
       "lightOn": false,
+      "airconditionerOn": false,
+       "heaterOn": false,
       "temperature": 23.00
     },
     {

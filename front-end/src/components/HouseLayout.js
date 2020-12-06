@@ -8,6 +8,9 @@ import doorClosed from "../images/doorclosed.png";
 import block from "../images/block.png";
 import windowOpen from "../images/windowopen.png";
 import windowClose from "../images/windowclosed.png";
+import heaterOn from "../images/radiatoron.png";
+import airconditionerOn from "../images/AirConditionerOn.png";
+
 import axios from "axios";
 
 // Fetch house layout
@@ -148,7 +151,30 @@ const [seconds, setSeconds] = useState(0);
                       float: "left",
                     }}
                   ></img>
-                )}
+                  )}
+                  {room.heaterOn == true && (
+                    <img
+                      src={heaterOn}
+                      style={{
+                        height: "60px",
+                        width: "60px",
+                        opacity: "100%",
+                        float: "left",
+                      }}
+                    ></img>
+                  )}
+                  {room.airconditionerOn == true && (
+                    <img
+                      src={airconditionerOn}
+                      style={{
+                        height: "60px",
+                        width: "60px",
+                        opacity: "100%",
+                        float: "left",
+                      }}
+                    ></img>
+                  )}
+                
                 <br /> <br />
               </div>
               <span>

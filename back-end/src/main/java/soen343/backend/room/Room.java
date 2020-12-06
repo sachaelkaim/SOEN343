@@ -15,8 +15,11 @@ public class Room {
     private String name;
     private String windowState;
     private String doorState;
-	private boolean lightOn = true;
+  	private boolean lightOn = true;
+    private boolean heaterOn = false;
+    private boolean airconditionerOn = false;
     private double temperature;
+    
 
 
     /**
@@ -133,6 +136,21 @@ public class Room {
      */
     public void setTemperature(double temperature) {
 		this.temperature = temperature;
+	}
+    public boolean isHeaterOn() {
+		return heaterOn;
+	}
+
+	public void setHeaterOn(boolean heaterOn) {
+		this.heaterOn = heaterOn;
+	}
+
+	public boolean isAirconditionerOn() {
+		return airconditionerOn;
+	}
+
+	public void setAirconditionerOn(boolean airconditionerOn) {
+		this.airconditionerOn = airconditionerOn;
 	}
 
     
