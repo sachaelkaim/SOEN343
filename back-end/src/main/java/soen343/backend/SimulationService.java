@@ -19,6 +19,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,6 +38,11 @@ public class SimulationService {
     private boolean potentialPipeBurst = false;
     private static boolean  pause = false;
     private static boolean  unpause = false;
+    private static int incrementSpeedSchedule = 1000;
+    private static double summerTemperature;
+    private static double winterTemperature;
+    private static int firstSummerMonth = 1;
+    private static int lastSummerMonth = 6;
 
     /**
      * The Intruder present.
@@ -351,7 +357,7 @@ public class SimulationService {
 
     public void setZoneTemperature(String privilege, String zone, int period, double temperature){
         potentialPipeBurst = false;
-        if(privilege.equals("0")){
+        if(privilege.equals("0") && state.getCurrentState()){
             zones.forEach(i -> {
                 if(i.getZone().equals(zone)){
                     i.setHVAC("false");
@@ -375,33 +381,50 @@ public class SimulationService {
                 regulateZone = true;
             });
         }
+        else if(!state.getCurrentState()){
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "Simulation is off!"));
+        }
         else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission!"));
     }
 
     @Scheduled(fixedRate=1000)
     public void regulateZoneTemperatures(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH");
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("MMM");
         int time = Integer.parseInt(CoreModuleModel.simulationDateTime.format(formatter));
+        String date = CoreModuleModel.simulationDateTime.format(formatter1);
+        int dateInt = months(date);
         if(state.getCurrentState() && regulateZone){
+            int finalDateInt = dateInt;
             zones.forEach(i -> {
-                System.out.println(i);
                 ArrayList<Integer> period = new ArrayList<>(i.getPeriods());
-                ArrayList<Double> temperature = new ArrayList<>(i.getTemperatures());
+                ArrayList<Double> temperature;
+                if(SecurityModuleModel.isAwayMode()){
+                    if(finalDateInt >= firstSummerMonth && finalDateInt <= lastSummerMonth){ //summer months  1 to 6
+                        temperature = new ArrayList<Double>(Arrays.asList(summerTemperature, summerTemperature, summerTemperature));
+                    }
+                    else
+                        temperature = new ArrayList<Double>(Arrays.asList(winterTemperature, winterTemperature, winterTemperature));
+                }
+                else{
+                    temperature = new ArrayList<>(i.getTemperatures());
+                }
+                ArrayList<Double> finalTemperature = temperature;
                 period.forEach(j -> {
                     ArrayList<String> zoneRooms = new ArrayList<>(i.getLocations());
                     if(j == 0) { // 00:00 and 08:00 increase/decrease temp until desired temp
                         if (time >= 0 && time < 8) {
-                            periods(i, temperature, j, zoneRooms);
+                            periods(i, finalTemperature, j, zoneRooms);
                         }
                     }
                     else if(j == 1) { // 00:00 and 08:00 increase/decrease temp until desired temp
                         if (time >= 8 && time < 16) {
-                            periods(i, temperature, j, zoneRooms);
+                            periods(i, finalTemperature, j, zoneRooms);
                         }
                     }
                     else if(j == 2) { // 00:00 and 08:00 increase/decrease temp until desired temp
                         if (time >= 16) {
-                            periods(i, temperature, j, zoneRooms);
+                            periods(i, finalTemperature, j, zoneRooms);
                         }
                     }
                 });
@@ -410,22 +433,47 @@ public class SimulationService {
         }
     }
 
-    public void setFirstSummerMonth(String privilege, int month) {
-    	if(privilege.equals("0")){
-            HeatingModuleModel.setFirstSummerMonth(month);
-            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "New first summer month set: "+month));
+    public int months(String date) {
+        int dateInt = 0;
+        if(date.equals("Dec")){
+            dateInt = 12;
         }
-        else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission to change summer months!"));
-    }
-    
-    public void setLastSummerMonth(String privilege, int month) {
-    	if(privilege.equals("0")){
-            HeatingModuleModel.setLastSummerMonth(month);
-            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "New last summer month set: "+month));
+        if(date.equals("Nov")){
+            dateInt = 11;
         }
-        else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission to change summer months!"));
+        if(date.equals("Oct")){
+            dateInt = 10;
+        }
+        if(date.equals("Sep")){
+            dateInt = 9;
+        }
+        if(date.equals("Aug")){
+            dateInt = 8;
+        }
+        if(date.equals("Jul")){
+            dateInt = 7;
+        }
+        if(date.equals("Jun")){
+            dateInt = 6;
+        }
+        if(date.equals("May")){
+            dateInt = 5;
+        }
+        if(date.equals("Apr")){
+            dateInt = 4;
+        }
+        if(date.equals("Mar")){
+            dateInt = 3;
+        }
+        if(date.equals("Feb")){
+            dateInt = 2;
+        }
+        if(date.equals("Jan")){
+            dateInt = 1;
+        }
+        return dateInt;
     }
-    
+
     public void periods(HeatingModuleModel i, ArrayList<Double> temperature, Integer j, ArrayList<String> zoneRooms) {
         if (temperature.get(j) != -1000.0) {
             pause = false;
@@ -470,7 +518,6 @@ public class SimulationService {
                         	double threshold1 = temperature.get(j) + 0.25;
                             double threshold2 = temperature.get(j) - 0.25;
                             double temp2 = room.getTemperature();
-                            System.out.println(temp2);
                             Room outside = roomService.getRoom("Outside");
                             double outsideTemp = outside.getTemperature();
                             if (room.getTemperature() > outsideTemp) {
@@ -527,12 +574,16 @@ public class SimulationService {
                     double temp2 = room.getTemperature();
                     String str = Double.toString(temp2);
                     if (room.getTemperature() > outsideTemp) {
+                        room.setAirconditionerOn(false);
+                        room.setHeaterOn(false);
                         if(str.length() == 5)
                             temp2 -= 0.05;
                         else
                             temp2 -= 0.1;
                     }
                     if (room.getTemperature() < outsideTemp) {
+                        room.setAirconditionerOn(false);
+                        room.setHeaterOn(false);
                         if(str.length() == 5)
                             temp2 += 0.05;
                         else
@@ -553,5 +604,40 @@ public class SimulationService {
         return rooms;
     }
 
+    public void setSeasonTemperature(int season, double temperature, String privilege ){
+        if(state.getCurrentState() && privilege.equals("0")){
+            regulateZone = true;
+            if(season == 0){
+                summerTemperature = temperature;
+                notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "Summer season temperature set to  "+ temperature + "C."));
+            }
+            if(season == 1){
+                winterTemperature = temperature;
+                notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "Winter season temperature set to  "+ temperature + "C."));
+            }
+        }
+        else if(!state.getCurrentState()){
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "Simulation is off!"));
+        }
+        else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission!"));
+    }
+
+    public void setFirstSummerMonth(String privilege, int month) {
+        if(privilege.equals("0") && state.getCurrentState()){
+            firstSummerMonth = month;
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "New first summer month set: "+month));
+        }
+        else if(!state.getCurrentState()){
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "Simulation is off!"));
+        }
+        else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission to change Summer months!"));
+    }
+
+    public void setLastSummerMonth(String privilege, int month) {
+        if(privilege.equals("0") && state.getCurrentState()){
+            lastSummerMonth = month;
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "New last summer month set: "+month));
+        }
+    }
 
 }

@@ -216,6 +216,10 @@ const SHS = () => {
 
   // change time speed
   const updateTimeSpeed = async (e) => {
+    if (timeSpeed === undefined) {
+      e.preventDefault();
+      return console.log("cannot");
+    }
     e.preventDefault();
     const response = await axios
       .post(
