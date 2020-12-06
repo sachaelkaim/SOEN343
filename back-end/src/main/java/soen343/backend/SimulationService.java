@@ -446,14 +446,18 @@ public class SimulationService {
                             double temp2 = room.getTemperature();
                             String str = Double.toString(temp2);
                             if (room.getTemperature() > temperature.get(j)) {
-                                if(str.length() == 5){
+                                room.setAirconditionerOn(true);
+                                room.setHeaterOn(false);
+                            	if(str.length() == 5){
                                     temp2 -= 0.05;
                                 }
                                 else
                                     temp2 -= 0.1;
                             }
                             if (room.getTemperature() < temperature.get(j)) {
-                                if(str.length() == 5){
+                              room.setHeaterOn(true);
+                              room.setAirconditionerOn(false);
+                            	if(str.length() == 5){
                                     temp2 += 0.05;
                                 }
                                 else
@@ -466,7 +470,9 @@ public class SimulationService {
                             roomRepository.save(room);
                         }
                         if(i.isHVAC().equals("paused")){
-                            double threshold1 = temperature.get(j) + 0.25;
+                            room.setAirconditionerOn(false);
+                            room.setHeaterOn(false);
+                        	double threshold1 = temperature.get(j) + 0.25;
                             double threshold2 = temperature.get(j) - 0.25;
                             double temp2 = room.getTemperature();
                             Room outside = roomService.getRoom("Outside");
