@@ -12,6 +12,8 @@ public class HeatingModuleModel {
 	private ArrayList<Integer> periods;
 	private boolean HVAC;
 	private ArrayList<Double> temperatures;
+	private static int firstSummerMonth;
+	private static int lastSummerMonth;
 
 	public HeatingModuleModel(){
 	}
@@ -22,6 +24,8 @@ public class HeatingModuleModel {
 		this.periods = period;
 		this.HVAC = HVAC;
 		this.temperatures = temperature;
+		this.firstSummerMonth = 6;
+		this.lastSummerMonth = 12;
 	}
 
 	public String getZone() {
@@ -63,6 +67,22 @@ public class HeatingModuleModel {
 	public void setHVAC(boolean HVAC) {
 		this.HVAC = HVAC;
 	}
+	
+	public int getFirstSummerMonth() {
+		return firstSummerMonth;
+	}
+	
+	public static void setFirstSummerMonth(int firstSummerMonthNew) {
+		firstSummerMonth = firstSummerMonthNew;
+	}
+	
+	public int getLastSummerMonth() {
+		return lastSummerMonth;
+	}
+	
+	public static void setLastSummerMonth(int lastSummerMonthNew) {
+		lastSummerMonth = lastSummerMonthNew;
+	}
 
 	@Override
 	public String toString() {
@@ -72,6 +92,8 @@ public class HeatingModuleModel {
 				", period=" + periods +
 				", HVAC=" + HVAC +
 				", temperature=" + temperatures +
+				", firstSummerMonth=" + firstSummerMonth +
+				", lastSummerMonth=" + lastSummerMonth +
 				'}';
 	}
 

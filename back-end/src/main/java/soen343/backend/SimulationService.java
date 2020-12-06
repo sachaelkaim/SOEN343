@@ -418,6 +418,22 @@ public class SimulationService {
         }
     }
 
+    public void setFirstSummerMonth(String privilege, int month) {
+    	if(privilege.equals("0")){
+            HeatingModuleModel.setFirstSummerMonth(month);
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "New first summer month set: "+month));
+        }
+        else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission to change summer months!"));
+    }
+    
+    public void setLastSummerMonth(String privilege, int month) {
+    	if(privilege.equals("0")){
+            HeatingModuleModel.setLastSummerMonth(month);
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "New last summer month set: "+month));
+        }
+        else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission to change summer months!"));
+    }
+    
     public void periods(Iterator<Room> iter1, Iterator<Room> iter2, HeatingModuleModel i, ArrayList<Double> temperature, Integer j, ArrayList<String> zoneRooms) {
         if (temperature.get(j) != null) {
             zoneRooms.forEach(d -> {
