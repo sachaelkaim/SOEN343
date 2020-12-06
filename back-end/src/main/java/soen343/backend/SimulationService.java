@@ -34,9 +34,9 @@ public class SimulationService {
     private List<HeatingModuleModel> zones = new ArrayList<>();
     private static int zoneCounter = 0;
     private static boolean regulateZone = false;
-    private static boolean initializeArr = false;
-    private ArrayList<Integer> periods = new ArrayList<>();
-    private ArrayList<Double> temperatures = new ArrayList<>();
+    private boolean potentialPipeBurst = false;
+    private static boolean  pause = false;
+    private static boolean  unpause = false;
 
     /**
      * The Intruder present.
@@ -350,19 +350,13 @@ public class SimulationService {
     }
 
     public void setZoneTemperature(String privilege, String zone, int period, double temperature){
+        potentialPipeBurst = false;
         if(privilege.equals("0")){
             zones.forEach(i -> {
-                if( i.getZone().equals(zone)){
-                    if(initializeArr == false){
-                        periods.add(0);
-                        periods.add(1);
-                        periods.add(2);
-                        temperatures.add(null);
-                        temperatures.add(null);
-                        temperatures.add(null);
-                        initializeArr = true;
-                    }
-                    periods.set(period, period);
+                if(i.getZone().equals(zone)){
+                    i.setHVAC("false");
+                    ArrayList<Integer> periods = new ArrayList<>(i.getPeriods());
+                    ArrayList<Double> temperatures = new ArrayList<>(i.getTemperatures());
                     temperatures.set(period, temperature);
                     i.setPeriods(periods);
                     i.setTemperatures(temperatures);
@@ -388,28 +382,26 @@ public class SimulationService {
     public void regulateZoneTemperatures(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH");
         int time = Integer.parseInt(CoreModuleModel.simulationDateTime.format(formatter));
-        Iterable<Room> rooms = roomRepository.findAll();
-        Iterator<Room> iter1 = rooms.iterator();
-        Iterator<Room> iter2 = rooms.iterator();
         if(state.getCurrentState() && regulateZone){
             zones.forEach(i -> {
+                System.out.println(i);
                 ArrayList<Integer> period = new ArrayList<>(i.getPeriods());
                 ArrayList<Double> temperature = new ArrayList<>(i.getTemperatures());
                 period.forEach(j -> {
                     ArrayList<String> zoneRooms = new ArrayList<>(i.getLocations());
                     if(j == 0) { // 00:00 and 08:00 increase/decrease temp until desired temp
                         if (time >= 0 && time < 8) {
-                            periods(iter1, iter2, i, temperature, j, zoneRooms);
+                            periods(i, temperature, j, zoneRooms);
                         }
                     }
                     else if(j == 1) { // 00:00 and 08:00 increase/decrease temp until desired temp
                         if (time >= 8 && time < 16) {
-                            periods(iter1, iter2, i, temperature, j, zoneRooms);
+                            periods(i, temperature, j, zoneRooms);
                         }
                     }
                     else if(j == 2) { // 00:00 and 08:00 increase/decrease temp until desired temp
                         if (time >= 16) {
-                            periods(iter1, iter2, i, temperature, j, zoneRooms);
+                            periods(i, temperature, j, zoneRooms);
                         }
                     }
                 });
@@ -434,20 +426,33 @@ public class SimulationService {
         else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission to change summer months!"));
     }
     
-    public void periods(Iterator<Room> iter1, Iterator<Room> iter2, HeatingModuleModel i, ArrayList<Double> temperature, Integer j, ArrayList<String> zoneRooms) {
-        if (temperature.get(j) != null) {
+    public void periods(HeatingModuleModel i, ArrayList<Double> temperature, Integer j, ArrayList<String> zoneRooms) {
+        if (temperature.get(j) != -1000.0) {
+            pause = false;
+            unpause = false;
             zoneRooms.forEach(d -> {
+                Iterable<Room> rooms = roomRepository.findAll();
+                Iterator<Room> iter1 = rooms.iterator();
                 while (iter1.hasNext()) {
                     Room room = iter1.next();
                     if (d.equals(room.getName())) {
-                        if (temperature.get(j) != room.getTemperature()) {
-                            i.setHVAC(true);
+                        if (temperature.get(j) != room.getTemperature() &&  !"paused".equals(i.isHVAC())) {
+                            i.setHVAC("true");
                             double temp2 = room.getTemperature();
+                            String str = Double.toString(temp2);
                             if (room.getTemperature() > temperature.get(j)) {
-                                temp2 -= 0.1;
+                                if(str.length() == 5){
+                                    temp2 -= 0.05;
+                                }
+                                else
+                                    temp2 -= 0.1;
                             }
                             if (room.getTemperature() < temperature.get(j)) {
-                                temp2 += 0.1;
+                                if(str.length() == 5){
+                                    temp2 += 0.05;
+                                }
+                                else
+                                    temp2 += 0.1;
                             }
                             double temp3 = temp2;
                             DecimalFormat df = new DecimalFormat("#.##");
@@ -455,28 +460,77 @@ public class SimulationService {
                             room.setTemperature(temp2);
                             roomRepository.save(room);
                         }
+                        if(i.isHVAC().equals("paused")){
+                            double threshold1 = temperature.get(j) + 0.25;
+                            double threshold2 = temperature.get(j) - 0.25;
+                            double temp2 = room.getTemperature();
+                            System.out.println(temp2);
+                            Room outside = roomService.getRoom("Outside");
+                            double outsideTemp = outside.getTemperature();
+                            if (room.getTemperature() > outsideTemp) {
+                                temp2 -= 0.05;
+
+                            }
+                            if (room.getTemperature() < outsideTemp) {
+                                temp2 += 0.05;
+
+                            }
+                            double temp3 = temp2;
+                            DecimalFormat df = new DecimalFormat("#.##");
+                            temp2 = Double.valueOf(df.format(temp3));
+                            room.setTemperature(temp2);
+                            roomRepository.save(room);
+                            if(temp2 > threshold1 || temp2 < threshold2){
+                                unpause = true;
+                            }
+                        }
+                        if(temperature.get(j) == room.getTemperature()){
+                            pause = true;
+                            room.setTemperature(room.getTemperature());
+                            roomRepository.save(room);
+                        }
+                        if(room.getTemperature() == 0 && !potentialPipeBurst){
+                            potentialPipeBurst = true;
+                            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "0C, potential pipes burst in " + i.getLocations()));
+                        }
                     }
                 }
             });
+            if(pause == true){
+                i.setHVAC("paused");
+            }
+            if(unpause == true){
+                i.setHVAC("false");
+            }
         }
         else{
-            zoneToOutsideTemperature(iter2, zoneRooms);
+            zoneToOutsideTemperature(i, zoneRooms);
         }
     }
 
-    public void zoneToOutsideTemperature(Iterator<Room> iter2, ArrayList<String> zoneRooms) {
+    public void zoneToOutsideTemperature(HeatingModuleModel i, ArrayList<String> zoneRooms) {
         Room outside = roomService.getRoom("Outside");
         double outsideTemp = outside.getTemperature();
         zoneRooms.forEach(d -> {
+            Iterable<Room> rooms = roomRepository.findAll();
+            Iterator<Room> iter2 = rooms.iterator();
             while (iter2.hasNext()) {
                 Room room = iter2.next();
                 if (d.equals(room.getName())) {
+                    i.setHVAC("false");
                     double temp2 = room.getTemperature();
+                    String str = Double.toString(temp2);
                     if (room.getTemperature() > outsideTemp) {
-                        temp2 -= 0.1;
+                        if(str.length() == 5)
+                            temp2 -= 0.05;
+                        else
+                            temp2 -= 0.1;
                     }
                     if (room.getTemperature() < outsideTemp) {
-                        temp2 += 0.1;
+                        if(str.length() == 5)
+                            temp2 += 0.05;
+                        else
+                            temp2 += 0.1;
                     }
                     double temp3 = temp2;
                     DecimalFormat df = new DecimalFormat("#.##");

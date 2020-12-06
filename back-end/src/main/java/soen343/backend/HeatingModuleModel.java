@@ -1,6 +1,7 @@
 package soen343.backend;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * The type Heating module model.
@@ -9,16 +10,16 @@ public class HeatingModuleModel {
 
 	private String zone;
 	private ArrayList<String> Locations;
-	private ArrayList<Integer> periods;
-	private boolean HVAC;
-	private ArrayList<Double> temperatures;
+	private ArrayList<Integer> periods = new ArrayList<Integer>(Arrays.asList(0, 1, 2));
+	private String HVAC;
+	private ArrayList<Double> temperatures = new ArrayList<Double>(Arrays.asList(-1000.0, -1000.0, -1000.0));
 	private static int firstSummerMonth;
 	private static int lastSummerMonth;
 
 	public HeatingModuleModel(){
 	}
 
-	public HeatingModuleModel(String zone, ArrayList<String> locations, ArrayList<Integer> period, boolean HVAC, ArrayList<Double> temperature) {
+	public HeatingModuleModel(String zone, ArrayList<String> locations, ArrayList<Integer> period, String HVAC, ArrayList<Double> temperature) {
 		this.zone = zone;
 		Locations = locations;
 		this.periods = period;
@@ -60,11 +61,11 @@ public class HeatingModuleModel {
 		this.temperatures = temperatures;
 	}
 
-	public boolean isHVAC() {
+	public String isHVAC() {
 		return HVAC;
 	}
 
-	public void setHVAC(boolean HVAC) {
+	public void setHVAC(String HVAC) {
 		this.HVAC = HVAC;
 	}
 	
