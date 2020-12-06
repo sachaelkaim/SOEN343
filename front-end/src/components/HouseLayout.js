@@ -148,7 +148,30 @@ const [seconds, setSeconds] = useState(0);
                       float: "left",
                     }}
                   ></img>
-                )}
+                  )}
+                  {room.heaterOn == true && (
+                    <img
+                      src={heaterOn}
+                      style={{
+                        height: "60px",
+                        width: "60px",
+                        opacity: "100%",
+                        float: "left",
+                      }}
+                    ></img>
+                  )}
+                  {room.airconditionerOn == true && (
+                    <img
+                      src={airconditionerOn}
+                      style={{
+                        height: "60px",
+                        width: "60px",
+                        opacity: "100%",
+                        float: "left",
+                      }}
+                    ></img>
+                  )}
+                
                 <br /> <br />
               </div>
               <span>
