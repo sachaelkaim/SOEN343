@@ -400,7 +400,7 @@ public class SimulationService {
                 ArrayList<Integer> period = new ArrayList<>(i.getPeriods());
                 ArrayList<Double> temperature;
                 if(SecurityModuleModel.isAwayMode()){
-                    if(finalDateInt >= 1 && finalDateInt <= 6){ //summer months  1 to 6
+                    if(finalDateInt >= firstSummerMonth && finalDateInt <= lastSummerMonth){ //summer months  1 to 6
                         temperature = new ArrayList<Double>(Arrays.asList(summerTemperature, summerTemperature, summerTemperature));
                     }
                     else
