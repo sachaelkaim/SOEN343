@@ -68,7 +68,7 @@ public class HeatingController {
     @RequestMapping(method = RequestMethod.POST, value = "/heating/setSeasonTemperature")
     @ResponseStatus( HttpStatus.OK )
     public void setSeasonTemperature(@RequestBody ObjectNode objectNode) {
-        simulationService.setSeasonTemperature(objectNode.get("season").asInt(), objectNode.get("temperature").asDouble(),objectNode.get("privilege").asText());
+        simulationService.setSeasonTemperature(objectNode.get("seasons").asInt(), objectNode.get("temperature").asDouble(),objectNode.get("userPrivilege").asText());
 
     }
 }

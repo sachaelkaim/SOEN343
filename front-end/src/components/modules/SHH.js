@@ -13,6 +13,8 @@ const SHH = () => {
   const [zoneSelected, setZoneSelected] = useState("");
   const [periodSelected, setPeriodSelected] = useState("");
   const [timeSelected, setTimeSelected] = useState("");
+  const [season, setSeason] = useState("");
+  const [seasonTemperature, setSeasonTemperature] = useState("");
   let checkBoxArr = [];
 
   // retrieve list of all available locations for zone selection
@@ -106,6 +108,27 @@ const SHH = () => {
         .catch((err) => console.log("Error", err));
     };
 
+     // change zone temperature
+     const handleSeasonTemperature = async (e) => {
+      if (currentUser == undefined || season === null || seasonTemperature === null || checkBoxArr.length != 0) {
+        return console.log("cannot process");
+      }
+      e.preventDefault(); // prevent refresh on submit
+      const response = await axios
+        .post(
+          `http://localhost:8080/api/heating/setSeasonTemperature`,
+          { userPrivilege: currentUser.privilege, seasons: season, temperature: seasonTemperature},
+          {
+            data: {
+              userPrivilege: currentUser.privilege,
+              seasons: season,
+              temperature: seasonTemperature
+            },
+          }
+        )
+        .catch((err) => console.log("Error", err));
+    };
+
   //update available checkboxes and hide if sim is off
   useEffect(() => {
     getAvailableLocations();
@@ -175,7 +198,36 @@ const SHH = () => {
                 onChange={(e) => setSelectedTime(e.target.value)}
               />
               &nbsp;
-            <Button size="ms" variant="dark" className="my-1"   onClick={handleSetTemperature}>
+            <Button size="ms" variant="dark" className="my-1" onClick={handleSetTemperature}>
+              Submit
+            </Button>
+          </Form>
+        </Form.Group>
+      </Form>
+      <h6>Set Season Temperature</h6>
+      <Form>
+        <Form.Group>
+          <Form inline>
+            <Form.Control
+              as="select"
+              className="my-1 mr-sm-2"
+              id="selectBox1"
+              custom
+              onChange={(e) => setSeason(e.target.value)}
+            >
+              <option>Seasons</option>
+              <option value={0}>Summer</option>
+              <option value={1}>Winter</option>
+            </Form.Control>
+            <input
+                name="temp"
+                type="number"
+                placeholder="Temp"
+                style={{ width: "15%", height:"37px" }}
+                onChange={(e) => setSeasonTemperature(e.target.value)}
+              />
+              &nbsp;
+            <Button size="ms" variant="dark" className="my-1" onClick={handleSeasonTemperature}>
               Submit
             </Button>
           </Form>

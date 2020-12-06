@@ -388,7 +388,6 @@ public class SimulationService {
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("MMM");
         int time = Integer.parseInt(CoreModuleModel.simulationDateTime.format(formatter));
         String date = CoreModuleModel.simulationDateTime.format(formatter1);
-        System.out.println(date);
         int dateInt = 0;
         if(date.equals("Dec")){
             dateInt = 12;
@@ -578,6 +577,9 @@ public class SimulationService {
                 winterTemperature = temperature;
                 notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "Winter season temperature set to  "+ temperature + "C."));
             }
+        }
+        if(!"0".equals(privilege)){
+            notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission!"));
         }
     }
 
