@@ -19,7 +19,6 @@ public class Room {
     private boolean heaterOn = false;
     private boolean airconditionerOn = false;
     private double temperature;
-    
 
 
     /**
@@ -137,19 +136,40 @@ public class Room {
     public void setTemperature(double temperature) {
 		this.temperature = temperature;
 	}
+
+    /**
+     * Is heater on boolean.
+     *
+     * @return the boolean
+     */
     public boolean isHeaterOn() {
 		return heaterOn;
 	}
 
-	public void setHeaterOn(boolean heaterOn) {
+    /**
+     * Sets heater on.
+     *
+     * @param heaterOn the heater on
+     */
+    public void setHeaterOn(boolean heaterOn) {
 		this.heaterOn = heaterOn;
 	}
 
-	public boolean isAirconditionerOn() {
+    /**
+     * Is airconditioner on boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isAirconditionerOn() {
 		return airconditionerOn;
 	}
 
-	public void setAirconditionerOn(boolean airconditionerOn) {
+    /**
+     * Sets airconditioner on.
+     *
+     * @param airconditionerOn the airconditioner on
+     */
+    public void setAirconditionerOn(boolean airconditionerOn) {
 		this.airconditionerOn = airconditionerOn;
 	}
 

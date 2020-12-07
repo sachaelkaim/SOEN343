@@ -1,19 +1,13 @@
 package soen343.backend;
 
 import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import soen343.backend.room.Room;
 import soen343.backend.room.RoomService;
 import soen343.backend.user.User;
