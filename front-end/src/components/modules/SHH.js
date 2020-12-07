@@ -250,43 +250,46 @@ const SHH = () => {
             >
               Submit
             </Button>
-
-            &nbsp;
-            <h6>Set Room Temperature</h6>
-            &nbsp;
-          <Form.Group>
-            <Form inline>
+          </Form>
+        </Form.Group>
+          </Form>
+      <Form>
+      <h6>Set Room Temperature</h6>
+      <Form.Group>
+          <Form inline>
             <Form.Control
-              as="select"
-              className="my-1 mr-sm-2"
-              id="selectBox1"
-              custom
-              onChange={(e) => setLocation(e.target.value)}
+               as="select"
+               className="my-1 mr-sm-2"
+               id="selectBox1"
+               custom
+               onChange={(e) => setLocation(e.target.value)}
+             >
+               <option>Select location</option>
+               {layout.map((newlocation) => (
+                 <option key={newlocation.id} value={newlocation.name}>
+                   {newlocation.name}
+                 </option>
+               ))}
+            </Form.Control>
+            <input
+              name="temp"
+              type="number"
+              placeholder="0"
+              style={{ width: "15%", height: "37px" }}
+              onChange={(e) => setSelectedTemperature(e.target.value)}
+            />
+            &nbsp;
+            <Button
+              size="ms"
+              variant="dark"
+              className="my-1"
+              onClick={handleSeasonTemperature}
             >
-              <option>Select location</option>
-              {layout.map((newlocation) => (
-                <option key={newlocation.id} value={newlocation.name}>
-                  {newlocation.name}
-                </option>
-              ))}
-
-               <input
-                name="temp"
-                type="number"
-                placeholder="Temp"
-                style={{ width: "15%", height:"37px" }}
-                onChange={(e) => setSelectedTime(e.target.value)}
-              />
-              
-              <Button size="ms" variant="dark" className="my-1"   onClick={handleSetTemperature}>
-                Submit
-              </Button>
-
-            </Form.Control> 
-          </Form>
-        </Form.Group>
-          </Form>
-        </Form.Group>
+              Submit
+            </Button>
+           
+      </Form>
+      </Form.Group>
       </Form>
     </>
   );
