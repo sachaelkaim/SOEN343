@@ -283,7 +283,7 @@ const SHH = () => {
               size="ms"
               variant="dark"
               className="my-1"
-              onClick={handleSeasonTemperature}
+              onClick={handleSetTemperature}
             >
               Submit
             </Button>
