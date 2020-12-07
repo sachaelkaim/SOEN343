@@ -496,10 +496,12 @@ public class SimulationService {
                             i.setHVAC("true");
                             double temp2 = room.getTemperature();
                             String str = Double.toString(temp2);
+                            String decimals =  str.substring(str.lastIndexOf(".") + 1);
                             if (room.getTemperature() > temperature.get(j)) {
                                 room.setAirconditionerOn(true);
                                 room.setHeaterOn(false);
-                            	if(str.length() == 5){
+                            	if(decimals.length() == 2){
+
                                     temp2 -= 0.05;
                                 }
                                 else
@@ -508,7 +510,7 @@ public class SimulationService {
                             if (room.getTemperature() < temperature.get(j)) {
                               room.setHeaterOn(true);
                               room.setAirconditionerOn(false);
-                            	if(str.length() == 5){
+                            	if(decimals.length() == 2){
                                     temp2 += 0.05;
                                 }
                                 else
@@ -581,10 +583,11 @@ public class SimulationService {
                     i.setHVAC("false");
                     double temp2 = room.getTemperature();
                     String str = Double.toString(temp2);
+                    String decimals =  str.substring(str.lastIndexOf(".") + 1);
                     if (room.getTemperature() > outsideTemp) {
                         room.setAirconditionerOn(false);
                         room.setHeaterOn(false);
-                        if(str.length() == 5)
+                        if(str.length() == 2)
                             temp2 -= 0.05;
                         else
                             temp2 -= 0.1;
@@ -592,7 +595,7 @@ public class SimulationService {
                     if (room.getTemperature() < outsideTemp) {
                         room.setAirconditionerOn(false);
                         room.setHeaterOn(false);
-                        if(str.length() == 5)
+                        if(str.length() == 2)
                             temp2 += 0.05;
                         else
                             temp2 += 0.1;
