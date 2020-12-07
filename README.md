@@ -43,3 +43,7 @@ Front-end
 ![](https://i.imgur.com/KPrZ5qr.png[/img])
 * Edit modal
 ![](https://i.imgur.com/NQheDf8.png[/img])
+* SHH tab
+![](https://i.imgur.com/l4gyoDH.png[/img])
+* SHH tab
+![](https://i.imgur.com/k3hQVdM.png[/img])
