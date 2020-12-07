@@ -228,6 +228,12 @@ public class SimulationService {
         }
     }
 
+    /**
+     * Iterate room lights.
+     *
+     * @param users the users
+     * @param iter2 the iter 2
+     */
     public void iterateRoomLights(Iterable<User> users, Iterator<Room> iter2) {
         while(iter2.hasNext()){
             int i = 0;
@@ -247,6 +253,11 @@ public class SimulationService {
         }
     }
 
+    /**
+     * Iterate user lights.
+     *
+     * @param iter the iter
+     */
     public void iterateUserLights(Iterator<User> iter) {
         while (iter.hasNext()) {
             User user = iter.next();
@@ -324,6 +335,11 @@ public class SimulationService {
 
     /* SHH FEATURES*/
 
+    /**
+     * Available locations array list.
+     *
+     * @return the array list
+     */
     public ArrayList<String> availableLocations (){
         ArrayList<String> empty = new ArrayList<>();
         if(state.getCurrentState()){
@@ -347,6 +363,12 @@ public class SimulationService {
         else return (ArrayList<String>) empty;
     }
 
+    /**
+     * Add zone.
+     *
+     * @param locations the locations
+     * @param privilege the privilege
+     */
     public void addZone (ArrayList<String> locations, String privilege){
         if(privilege.equals("0")){
             HeatingModuleModel zone = new HeatingModuleModel();
@@ -359,10 +381,23 @@ public class SimulationService {
       else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission!"));
     }
 
+    /**
+     * Display zones list.
+     *
+     * @return the list
+     */
     public List<HeatingModuleModel> displayZones() {
         return zones;
     }
 
+    /**
+     * Set zone temperature.
+     *
+     * @param privilege   the privilege
+     * @param zone        the zone
+     * @param period      the period
+     * @param temperature the temperature
+     */
     public void setZoneTemperature(String privilege, String zone, int period, double temperature){
         potentialPipeBurst = false;
         if(privilege.equals("0") && state.getCurrentState()){
@@ -395,6 +430,9 @@ public class SimulationService {
         else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission!"));
     }
 
+    /**
+     * Regulate zone temperatures.
+     */
     @Scheduled(fixedRate=1000)
     public void regulateZoneTemperatures(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH");
@@ -441,6 +479,12 @@ public class SimulationService {
         }
     }
 
+    /**
+     * Months int.
+     *
+     * @param date the date
+     * @return the int
+     */
     public int months(String date) {
         int dateInt = 0;
         if(date.equals("Dec")){
@@ -482,6 +526,14 @@ public class SimulationService {
         return dateInt;
     }
 
+    /**
+     * Periods.
+     *
+     * @param i           the
+     * @param temperature the temperature
+     * @param j           the j
+     * @param zoneRooms   the zone rooms
+     */
     public void periods(HeatingModuleModel i, ArrayList<Double> temperature, Integer j, ArrayList<String> zoneRooms) {
         if (temperature.get(j) != -1000.0) {
             pause = false;
@@ -571,6 +623,12 @@ public class SimulationService {
         }
     }
 
+    /**
+     * Zone to outside temperature.
+     *
+     * @param i         the
+     * @param zoneRooms the zone rooms
+     */
     public void zoneToOutsideTemperature(HeatingModuleModel i, ArrayList<String> zoneRooms) {
         Room outside = roomService.getRoom("Outside");
         double outsideTemp = outside.getTemperature();
@@ -610,11 +668,23 @@ public class SimulationService {
         });
     }
 
+    /**
+     * Get current temperatures iterable.
+     *
+     * @return the iterable
+     */
     public Iterable<Room> getCurrentTemperatures(){
         Iterable<Room> rooms = roomRepository.findAll();
         return rooms;
     }
 
+    /**
+     * Set season temperature.
+     *
+     * @param season      the season
+     * @param temperature the temperature
+     * @param privilege   the privilege
+     */
     public void setSeasonTemperature(int season, double temperature, String privilege ){
         if(state.getCurrentState() && privilege.equals("0")){
             regulateZone = true;
@@ -633,6 +703,12 @@ public class SimulationService {
         else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission!"));
     }
 
+    /**
+     * Sets first summer month.
+     *
+     * @param privilege the privilege
+     * @param month     the month
+     */
     public void setFirstSummerMonth(String privilege, int month) {
         if(privilege.equals("0") && state.getCurrentState()){
             firstSummerMonth = month;
@@ -644,6 +720,12 @@ public class SimulationService {
         else notifications.saveNotification(new Console(CoreModuleModel.dateTime, "SHH", "No Permission to change Summer months!"));
     }
 
+    /**
+     * Sets last summer month.
+     *
+     * @param privilege the privilege
+     * @param month     the month
+     */
     public void setLastSummerMonth(String privilege, int month) {
         if(privilege.equals("0") && state.getCurrentState()){
             lastSummerMonth = month;
