@@ -4,7 +4,7 @@
       "name": "Outside",
       "doorState": "UNLOCKED",
       "lightOn": false,
-      "temperature": 23.00
+      "temperature": 5.00
     },
     {
       "name": "Garage",
@@ -13,7 +13,7 @@
       "lightOn": false,
       "airconditionerOn": false,
        "heaterOn": false,
-      "temperature": 23.00
+      "temperature": 5.00
     },
     {
       "name": "Kitchen",
@@ -22,7 +22,7 @@
       "lightOn": false,
       "airconditionerOn": false,
        "heaterOn": false,
-      "temperature": 23.00
+      "temperature": 5.00
     },
     {
       "name": "Living Room",
@@ -31,7 +31,7 @@
       "lightOn": false,
       "airconditionerOn": false,
        "heaterOn": false,
-      "temperature": 23.00
+      "temperature": 5.00
     },
     {
       "name": "Bedroom 1",
@@ -40,7 +40,7 @@
       "lightOn": false,
       "airconditionerOn": false,
        "heaterOn": false,
-      "temperature": 23.00
+      "temperature": 5.00
     },
     {
       "name": "Bedroom 2",
@@ -49,12 +49,12 @@
       "lightOn": false,
       "airconditionerOn": false,
        "heaterOn": false,
-      "temperature": 23.00
+      "temperature": 5.00
     },
     {
     "name": "Backyard",
     "doorState": "UNLOCKED",
     "lightOn": false,
-    "temperature": 23.00
+    "temperature": 5.00
     }
 ]

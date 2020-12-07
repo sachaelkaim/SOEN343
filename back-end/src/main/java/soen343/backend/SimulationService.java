@@ -499,7 +499,8 @@ public class SimulationService {
                             if (room.getTemperature() > temperature.get(j)) {
                                 room.setAirconditionerOn(true);
                                 room.setHeaterOn(false);
-                            	if(str.length() == 5){
+                            	if(str.length() == 5 || str.length() == 4){
+
                                     temp2 -= 0.05;
                                 }
                                 else
@@ -508,7 +509,7 @@ public class SimulationService {
                             if (room.getTemperature() < temperature.get(j)) {
                               room.setHeaterOn(true);
                               room.setAirconditionerOn(false);
-                            	if(str.length() == 5){
+                            	if(str.length() == 5 || str.length() == 4){
                                     temp2 += 0.05;
                                 }
                                 else
@@ -584,7 +585,7 @@ public class SimulationService {
                     if (room.getTemperature() > outsideTemp) {
                         room.setAirconditionerOn(false);
                         room.setHeaterOn(false);
-                        if(str.length() == 5)
+                        if(str.length() == 5 || str.length() == 4)
                             temp2 -= 0.05;
                         else
                             temp2 -= 0.1;
