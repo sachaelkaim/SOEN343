@@ -55,38 +55,18 @@ public class UserService {
     	User child = new User( "child", "Outside", "1");
     	User guest = new User( "guest", "Outside", "2");
     	User stranger = new User( "stranger", "Outside", "3");
-    	
-    	
-        /*userRepository.save(parent);
-        userRepository.save(child);
-        userRepository.save(guest);
-        userRepository.save(stranger);*/
     	try 
     	{
     		List<User> initUsers = Arrays.asList(parent,child,guest,stranger);
     		usersFile = new File("./src/main/resources/json/users.json");
-    		/*String parentInfo = mapper.writeValueAsString(parent);
-    		String childInfo = mapper.writeValueAsString(child);*/
-    		List<String> lines = Files.readAllLines(usersFile.toPath());
-    		if (lines.size() == 0 ) {
-    			//Files.write(usersFile.toPath(), Arrays.asList(parentInfo), StandardOpenOption.CREATE);
+    		try {
+	    		List<String> lines = Files.readAllLines(usersFile.toPath());
+	        	if (lines.size() == 0 ) {
+	        		throw new EmptyUserFileException("We expected a user file, but it is empty. We'll create one now.");
+	        	}
+    		} catch (EmptyUserFileException e) {
     			mapper.writeValue(usersFile, initUsers);
-    		} else {
-    			//Files.write(usersFile.toPath(), Arrays.asList(parentInfo), StandardOpenOption.APPEND);
     		}
-    		
-    		//Files.write(usersFile.toPath(), Arrays.asList(childInfo), StandardOpenOption.APPEND);
-    		
-    		
-    		
-    		/*FileWriter fileWriter = new FileWriter(usersFile, true);
-    		
-    		SequenceWriter seqWriter = mapper.writer().writeValuesAsArray(fileWriter);
-    		seqWriter.write(parent);
-    		seqWriter.write(child);
-    		seqWriter.write(guest);
-    		seqWriter.write(stranger);
-    		seqWriter.close();*/
     	} catch (IOException e) {
             e.printStackTrace();
         }
